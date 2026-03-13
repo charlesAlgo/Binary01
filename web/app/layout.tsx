@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -44,6 +45,7 @@ export default function RootLayout({
         <Navbar />
         <div className="pt-16">{children}</div>
         <Footer />
+        <ChatWidget />
       </body>
     </html>
   );
