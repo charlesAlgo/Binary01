@@ -1,0 +1,33 @@
+# MCP config — contains API keys, never commit
+.mcp.json
+
+# Env files — never commit any variant
+.env
+.env.local
+.env.development
+.env.development.local
+.env.production
+.env.production.local
+.env.test
+.env.test.local
+.env*.local
+
+# Credentials & key files — never commit
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+serviceAccount.json
+service-account*.json
+*-credentials.json
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editor noise
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
