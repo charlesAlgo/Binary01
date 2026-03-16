@@ -33,7 +33,17 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "DataLife",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev"}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "DataLife — AI & Data Solutions by Charles Shalua",
+      },
+    ],
   },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev"),
 };
 
 export default function RootLayout({

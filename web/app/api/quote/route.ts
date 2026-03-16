@@ -1,21 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabase";
+import { Resend } from "resend";
+import QuoteConfirmationEmail from "@/components/emails/QuoteConfirmationEmail";
 
-/**
- * POST /api/quote
- *
- * Receives a contact/quote form submission from the /contact page.
- *
- * Real implementation will:
- *   1. Insert a row into the Supabase `leads` table using SUPABASE_SERVICE_ROLE_KEY.
- *   2. POST a Slack notification to SLACK_WEBHOOK_URL with the lead summary.
- *   3. Send a confirmation email to the client via Resend using RESEND_API_KEY.
- *
- * Environment variables required (real implementation):
- *   - SUPABASE_SERVICE_ROLE_KEY
- *   - NEXT_PUBLIC_SUPABASE_URL
- *   - SLACK_WEBHOOK_URL
- *   - RESEND_API_KEY
- */
+/* ─── Simple in-memory rate limiter (per IP, max 3 requests / 10 min) ──── */
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 3;
+const WINDOW_MS = 10 * 60 * 1000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT) return true;
+  entry.count += 1;
+  return false;
+}
 
 interface QuoteRequestBody {
   name: string;
@@ -30,6 +33,14 @@ interface QuoteRequestBody {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { success: false, error: "Too many requests. Please wait a few minutes and try again." },
+      { status: 429 }
+    );
+  }
+
   let body: unknown;
 
   try {
@@ -66,19 +77,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  if (
-    !description ||
-    typeof description !== "string" ||
-    description.trim() === ""
-  ) {
+  if (!description || typeof description !== "string" || description.trim() === "") {
     return NextResponse.json(
       { success: false, error: "Field 'description' is required." },
       { status: 422 }
     );
   }
 
-  // --- STUB: Log received data ---
-  console.log("[/api/quote] Quote request received:", {
+  const lead = {
     name: name.trim(),
     email: email.trim(),
     company: company?.trim() ?? null,
@@ -86,32 +92,49 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     description: description.trim(),
     budget: budget?.trim() ?? null,
     timeline: timeline?.trim() ?? null,
-    receivedAt: new Date().toISOString(),
-  });
+    source: "quote_form",
+  };
 
-  // --- REAL IMPLEMENTATION (TODO) ---
   // Step 1: Insert into Supabase `leads` table
-  // const supabase = createClient(
-  //   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  //   process.env.SUPABASE_SERVICE_ROLE_KEY!
-  // );
-  // await supabase.from("leads").insert({ name, email, company, service, description, budget, timeline, source: "quote_form" });
+  const { error: dbError } = await supabaseAdmin.from("leads").insert(lead);
+  if (dbError) {
+    console.error("[/api/quote] Supabase insert error:", dbError.message);
+    return NextResponse.json(
+      { success: false, error: "Failed to save your request. Please try again." },
+      { status: 500 }
+    );
+  }
 
-  // Step 2: Send Slack notification
-  // await fetch(process.env.SLACK_WEBHOOK_URL!, {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ text: `New quote request from ${name} (${email}) — Service: ${service}` }),
-  // });
+  // Step 2: Send confirmation email via Resend (fire-and-forget)
+  if (process.env.RESEND_API_KEY) {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    resend.emails.send({
+      from: "Charles Shalua <no-reply@datalife.dev>",
+      to: lead.email,
+      subject: "Got your quote request — I'll respond within 24 hours",
+      react: QuoteConfirmationEmail({ name: lead.name, service: lead.service }),
+    }).catch((err) => console.error("[/api/quote] Resend error:", err));
+  }
 
-  // Step 3: Send confirmation email via Resend
-  // const resend = new Resend(process.env.RESEND_API_KEY);
-  // await resend.emails.send({
-  //   from: "Charles Shalua <no-reply@charlesshalua.com>",
-  //   to: email,
-  //   subject: "We received your quote request",
-  //   react: QuoteConfirmationEmail({ name, service }),
-  // });
+  // Step 3: Slack notification (fire-and-forget — don't block the response)
+  if (process.env.SLACK_WEBHOOK_URL) {
+    fetch(process.env.SLACK_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: [
+          `*New quote request!* 🚀`,
+          `*Name:* ${lead.name}`,
+          `*Email:* ${lead.email}`,
+          `*Company:* ${lead.company ?? "—"}`,
+          `*Service:* ${lead.service}`,
+          `*Budget:* ${lead.budget ?? "—"}`,
+          `*Timeline:* ${lead.timeline ?? "—"}`,
+          `*Description:* ${lead.description}`,
+        ].join("\n"),
+      }),
+    }).catch((err) => console.error("[/api/quote] Slack notify error:", err));
+  }
 
   return NextResponse.json(
     {
