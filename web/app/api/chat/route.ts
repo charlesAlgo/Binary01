@@ -1,136 +1,133 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
+import { generateText } from "ai";
+import { createGroq } from "@ai-sdk/groq";
+import { supabaseAdmin } from "@/lib/supabase";
 
-/**
- * POST /api/chat
- *
- * Receives a chat message from the ChatWidget and returns a reply.
- *
- * Real implementation will:
- *   1. Use LangChain to retrieve relevant context from ChromaDB (CHROMA_URL)
- *      seeded with service descriptions, FAQ, and pricing from /data/knowledge-base/.
- *   2. Stream the response via the Vercel AI SDK using ANTHROPIC_API_KEY or
- *      OPENAI_API_KEY with a system prompt that restricts the bot to on-topic
- *      responses. Prompt injection attempts return a safe generic reply.
- *   3. Log the full conversation turn to the Supabase `chat_logs` table.
- *
- * Environment variables required (real implementation):
- *   - CHROMA_URL
- *   - ANTHROPIC_API_KEY  (or OPENAI_API_KEY)
- *   - NEXT_PUBLIC_SUPABASE_URL
- *   - SUPABASE_SERVICE_ROLE_KEY
- */
+const SYSTEM_PROMPT = `You are the AI assistant for DataLife, an AI and data engineering firm founded by Charles Shalua (Ontario, Canada).
 
-interface ChatRequestBody {
-  message: string;
-  sessionId?: string;
-}
+Your job: Help website visitors understand DataLife's services, answer questions about working with Charles, and qualify leads.
+
+## Services & Pricing
+- **Data Analysis & BI Dashboards** — Dashboards (Power BI/Tableau), automated reports, pipelines. Starts at $500.
+- **Augmented Analytics** — AI on top of BI: NL query interfaces, anomaly detection, AI-generated KPI summaries. Starts at $1,500.
+- **ML Applications** — Prediction, classification, recommendation models deployed as APIs. Starts at $2,000.
+- **LLM Bots** — RAG pipelines, custom chatbots, prompt chains, LLM integrations. Starts at $2,000.
+
+## Key Facts
+- 40+ projects across 15+ industries
+- Top Rated on Upwork · Level 2 on Fiverr
+- Centennial College — Applied AI program
+- Fixed-price quotes — no surprises
+- Client owns 100% of code and data on delivery
+- NDAs available
+- Response within 4 hours · Project kickoff within 48 hours of scoping
+
+## How to Get Started
+- Free 30-min discovery call → /book
+- Send a project brief → /contact
+- Browse case studies → /portfolio
+
+## Rules
+- Keep replies concise: 2–4 sentences max
+- Only answer questions about DataLife, Charles's services, or how to get started
+- If the visitor shares their project, identify which service fits and suggest booking a call
+- If asked something off-topic, reply: "I'm here to help with DataLife services. What are you building?"
+- Never invent pricing, timelines, or capabilities not listed above
+- If someone seems ready to proceed, always end with a CTA to /book or /contact`;
 
 const MAX_MESSAGE_LENGTH = 1000;
 
-/** Simple keyword-based stub responses used until the LangChain/RAG pipeline is wired up. */
-function getStubReply(message: string): string {
+/* ─── Rate limiter (per IP, max 20 messages / 10 min) ──────────────────── */
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 20;
+const WINDOW_MS = 10 * 60 * 1000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT) return true;
+  entry.count += 1;
+  return false;
+}
+
+/** Keyword-based fallback used when GROQ_API_KEY is not configured. */
+function getKeywordReply(message: string): string {
   const lower = message.toLowerCase();
-
   if (lower.includes("price") || lower.includes("cost") || lower.includes("budget")) {
-    return (
-      "Great question! Pricing depends on the scope and complexity of your project. " +
-      "Data Analysis projects typically start at $500, ML Applications from $1,500, " +
-      "and LLM Bots from $2,000. I recommend booking a free discovery call so Charles " +
-      "can give you an accurate quote — visit /book to schedule."
-    );
+    return "Pricing depends on scope. Data Analysis starts at $500, ML Applications from $2,000, and LLM Bots from $2,000. Charles always provides a fixed-price quote — book a free discovery call at /book to get an accurate number.";
   }
-
   if (lower.includes("book") || lower.includes("call") || lower.includes("meeting")) {
-    return (
-      "You can book a free 30-minute discovery call directly on the calendar at /book. " +
-      "Charles is available Monday–Friday and will come prepared with ideas for your project."
-    );
+    return "You can book a free 30-minute discovery call at /book. Charles is available Monday–Friday and will come prepared with ideas for your project.";
   }
-
-  if (
-    lower.includes("portfolio") ||
-    lower.includes("work") ||
-    lower.includes("project") ||
-    lower.includes("case study")
-  ) {
-    return (
-      "Charles has delivered projects across Data Analysis, Augmented Analytics, ML Applications, " +
-      "and LLM Bots. Head to /portfolio to browse featured case studies with real client results."
-    );
+  if (lower.includes("portfolio") || lower.includes("work") || lower.includes("case study")) {
+    return "Charles has delivered 40+ projects across Data Analysis, ML Applications, LLM Bots, and Augmented Analytics. Head to /portfolio to browse featured case studies.";
   }
-
-  return (
-    "Hi! I'm Charles's AI assistant. I can help you learn about our services " +
-    "(Data Analysis, Augmented Analytics, ML Applications, LLM Bots), discuss your project, " +
-    "or help you book a call. What are you looking to build?"
-  );
+  return "Hi! I'm Charles's AI assistant. I can help with DataLife's services, pricing, and how to get started. What are you building?";
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   let body: unknown;
-
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON body." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const { message, sessionId } = body as ChatRequestBody;
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: "Too many messages. Please wait a few minutes." }, { status: 429 });
+  }
 
-  // --- Validation ---
+  const { message, sessionId } = body as { message: string; sessionId?: string };
+
   if (!message || typeof message !== "string" || message.trim() === "") {
-    return NextResponse.json(
-      { error: "Field 'message' is required." },
-      { status: 422 }
-    );
+    return NextResponse.json({ error: "Field 'message' is required." }, { status: 422 });
   }
-
   if (message.length > MAX_MESSAGE_LENGTH) {
-    return NextResponse.json(
-      { error: `Message must not exceed ${MAX_MESSAGE_LENGTH} characters.` },
-      { status: 422 }
-    );
+    return NextResponse.json({ error: `Message must not exceed ${MAX_MESSAGE_LENGTH} characters.` }, { status: 422 });
   }
 
-  // Resolve or generate a session ID so the client can maintain conversation context.
   const resolvedSessionId =
     typeof sessionId === "string" && sessionId.trim() !== ""
       ? sessionId.trim()
       : randomUUID();
 
-  console.log("[/api/chat] Message received:", {
-    sessionId: resolvedSessionId,
-    messageLength: message.trim().length,
-    receivedAt: new Date().toISOString(),
-  });
+  const userMessage = message.trim();
+  let reply: string;
 
-  // --- REAL IMPLEMENTATION (TODO) ---
-  // Step 1: Retrieve RAG context from ChromaDB
-  // const chromaClient = new ChromaClient({ path: process.env.CHROMA_URL });
-  // const collection = await chromaClient.getCollection({ name: "knowledge_base" });
-  // const results = await collection.query({ queryTexts: [message], nResults: 4 });
+  // Use Groq + Llama 3.3 if API key is configured, otherwise fall back to keyword stub
+  if (process.env.GROQ_API_KEY) {
+    try {
+      const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
+      const { text } = await generateText({
+        model: groq("llama-3.3-70b-versatile"),
+        system: SYSTEM_PROMPT,
+        prompt: userMessage,
+        maxTokens: 300,
+      });
+      reply = text.trim();
+    } catch (err) {
+      console.error("[/api/chat] Groq error:", err);
+      reply = getKeywordReply(userMessage);
+    }
+  } else {
+    reply = getKeywordReply(userMessage);
+  }
 
-  // Step 2: Stream response via Vercel AI SDK
-  // const { stream } = await streamText({
-  //   model: anthropic("claude-3-5-sonnet-20241022"),
-  //   system: SYSTEM_PROMPT,
-  //   messages: [{ role: "user", content: message }],
-  //   context: results.documents,
-  // });
-  // return stream.toDataStreamResponse();
+  // Log conversation turn to Supabase (fire-and-forget)
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    supabaseAdmin.from("chat_logs").insert([
+      { session_id: resolvedSessionId, role: "user", content: userMessage },
+      { session_id: resolvedSessionId, role: "assistant", content: reply },
+    ]).then(({ error }) => {
+      if (error) console.error("[/api/chat] Supabase log error:", error.message);
+    });
+  }
 
-  // Step 3: Log conversation turn to Supabase `chat_logs`
-  // await supabase.from("chat_logs").insert({ session_id: resolvedSessionId, role: "user", content: message });
-
-  // --- STUB: keyword-matched response ---
-  const reply = getStubReply(message.trim());
-
-  return NextResponse.json(
-    { reply, sessionId: resolvedSessionId },
-    { status: 200 }
-  );
+  return NextResponse.json({ reply, sessionId: resolvedSessionId }, { status: 200 });
 }
