@@ -9,9 +9,21 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.58",
+    "@ai-sdk/openai": "^3.0.41",
+    "@calcom/embed-react": "^1.5.3",
+    "@langchain/community": "^1.1.23",
+    "@langchain/openai": "^1.2.13",
+    "@react-email/components": "^1.0.9",
+    "@supabase/supabase-js": "^2.99.1",
+    "ai": "^6.0.116",
+    "chromadb": "^3.3.3",
+    "framer-motion": "^12.36.0",
+    "langchain": "^1.2.32",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "resend": "^6.9.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
