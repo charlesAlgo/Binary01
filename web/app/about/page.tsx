@@ -5,9 +5,9 @@ import SectionHeader from "@/components/SectionHeader";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "About Charles Shalua",
+  title: "About — Charles Shalua, Founder & Co-Engineer",
   description:
-    "Builder, analyst, and AI engineer. Charles Shalua helps businesses turn data and AI into real competitive advantages — not slide decks.",
+    "Charles Shalua is the Founder & Co-Engineer of DataLife. Builder, analyst, and AI engineer helping businesses turn data into real competitive advantages.",
 };
 
 const STACK = [
@@ -65,15 +65,16 @@ export default function AboutPage() {
 
           {/* Label pill */}
           <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(62,189,122,0.35)", backgroundColor: "rgba(62,189,122,0.08)", marginBottom: "1.25rem" }}>
-            <span style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>About Charles</span>
+            <span style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>DataLife · Founder &amp; Co-Engineer</span>
           </div>
 
-          <h1 style={{ color: "#fff", marginBottom: "1.25rem", lineHeight: 1.08, maxWidth: "18ch" }}>
-            Builder. Analyst. AI Engineer.
+          <h1 style={{ color: "#fff", marginBottom: "1.25rem", lineHeight: 1.08, maxWidth: "20ch" }}>
+            Founder &amp; Co-Engineer,{" "}
+            <span style={{ background: "linear-gradient(135deg, #3EBD7A 0%, #14B8A6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>DataLife</span>
           </h1>
 
           <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "1.0625rem", maxWidth: "48ch", lineHeight: 1.75, fontFamily: "var(--font-body)", marginBottom: "2rem" }}>
-            I help businesses turn data and AI into real competitive advantages — not slide decks.
+            Charles Shalua founded DataLife in 2023 to help businesses turn data and AI into real competitive advantages — not slide decks.
           </p>
 
           {/* Inline badges */}
@@ -125,7 +126,7 @@ export default function AboutPage() {
 
               <div>
                 <p style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 700, color: "#fff", margin: "0 0 4px", letterSpacing: "-0.02em" }}>Charles Shalua</p>
-                <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-body)", margin: 0 }}>AI & Data Engineer</p>
+                <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-body)", margin: 0 }}>Founder &amp; Co-Engineer · DataLife</p>
               </div>
 
               {/* Available badge */}
@@ -138,6 +139,7 @@ export default function AboutPage() {
                 {[
                   { label: "Location", value: "Ontario, Canada" },
                   { label: "Education", value: "Centennial College" },
+                  { label: "Firm",       value: "DataLife · Est. 2023" },
                   { label: "Experience", value: "40+ Projects" },
                 ].map((item) => (
                   <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>

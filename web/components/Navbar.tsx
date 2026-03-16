@@ -47,18 +47,10 @@ export default function Navbar() {
       <div className="section-wrapper" style={{ display: "flex", height: "68px", alignItems: "center", justifyContent: "space-between" }}>
 
         {/* Logo */}
-        <Link
-          href="/"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1.25rem",
-            fontWeight: 700,
-            color: "#fff",
-            textDecoration: "none",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Charles<span style={{ color: "var(--color-accent)" }}>.</span>
+        <Link href="/" style={{ textDecoration: "none" }}>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.03em" }}>
+            Data<span style={{ color: "var(--color-accent)" }}>Life</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}

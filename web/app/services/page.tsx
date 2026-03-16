@@ -5,7 +5,7 @@ import CTAButton from "@/components/CTAButton";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots — AI-powered services tailored to your business by Charles Shalua.",
+    "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots — AI-powered services from DataLife. Real results, not slide decks.",
 };
 
 const SERVICES = [

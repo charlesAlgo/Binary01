@@ -40,11 +40,16 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <Link href="/" className="inline-block text-xl font-bold tracking-tight text-white no-underline hover:text-[var(--color-accent)] transition-colors" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.02em" }}>
-              Charles<span className="text-[var(--color-accent)]">.</span>
+            <Link href="/" className="inline-block no-underline" style={{ lineHeight: 1.2 }}>
+              <span className="block text-xl font-extrabold text-white" style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.03em" }}>
+                Data<span className="text-[var(--color-accent)]">Life</span>
+              </span>
+              <span className="block text-[0.6rem] font-medium text-[rgba(255,255,255,0.38)] uppercase tracking-widest mt-0.5" style={{ fontFamily: "var(--font-body)" }}>
+                by Charles Shalua · Founder &amp; Co-Engineer
+              </span>
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-[rgba(255,255,255,0.55)] max-w-[22ch]" style={{ fontFamily: "var(--font-body)" }}>
-              AI-powered data &amp; ML solutions. Real results, not slide decks.
+            <p className="mt-4 text-sm leading-relaxed text-[rgba(255,255,255,0.50)] max-w-[26ch]" style={{ fontFamily: "var(--font-body)" }}>
+              AI-powered data &amp; ML solutions — real results, not slide decks. Est. 2023.
             </p>
             <div className="mt-5 flex gap-2.5">
               {SOCIALS.map((s) => (
@@ -123,7 +128,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-[rgba(255,255,255,0.08)] pt-6">
           <p className="text-xs text-[rgba(255,255,255,0.3)] m-0" style={{ fontFamily: "var(--font-body)" }}>
-            © {new Date().getFullYear()} Charles Shalua. All rights reserved.
+            © {new Date().getFullYear()} DataLife · Charles Shalua, Founder &amp; Co-Engineer. All rights reserved.
           </p>
           <p className="text-xs text-[rgba(255,255,255,0.3)] m-0" style={{ fontFamily: "var(--font-body)" }}>
             Built with Next.js · Deployed on Vercel

@@ -81,7 +81,7 @@ export default function Hero() {
             </motion.h1>
 
             <motion.p variants={item} style={{ color: "rgba(255,255,255,0.62)", fontSize: "1.125rem", maxWidth: "44ch", lineHeight: 1.78, fontFamily: "var(--font-body)", marginBottom: "2.25rem" }}>
-              From messy spreadsheets to production ML pipelines — Charles delivers full-stack AI solutions so your team ships results, not slide decks.
+              From messy spreadsheets to production ML pipelines — DataLife delivers full-stack AI solutions so your team ships results, not slide decks.
             </motion.p>
 
             {/* CTAs */}
@@ -106,8 +106,8 @@ export default function Hero() {
             {/* Trust micro-row */}
             <motion.div variants={item} style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", alignItems: "center" }}>
               {[
-                { badge: "⭐ Top Rated", sub: "Upwork" },
-                { badge: "🎯 Level 2",  sub: "Fiverr" },
+                { badge: "Upwork Partner",          sub: "Verified" },
+                { badge: "Fiverr Partner",           sub: "Verified" },
                 { badge: "📚 Applied AI", sub: "Centennial College" },
               ].map((b) => (
                 <div key={b.badge} style={{ display: "flex", alignItems: "center", gap: "6px" }}>

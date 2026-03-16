@@ -103,6 +103,17 @@ code, kbd, pre {
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Aurora background keyframes (used in IntroScreen)
+───────────────────────────────────────────────────────────── */
+@keyframes aurora-move {
+  0%   { background-position: 0%   50%, 100% 50%, 50% 0%,   50% 100%; }
+  25%  { background-position: 50%  0%,  50%  100%, 100% 50%, 0%  50%; }
+  50%  { background-position: 100% 50%, 0%   50%,  50% 100%, 50% 0%;  }
+  75%  { background-position: 50%  100%, 50% 0%,   0%  50%,  100% 50%; }
+  100% { background-position: 0%   50%, 100% 50%, 50% 0%,   50% 100%; }
+}
+
+/* ─────────────────────────────────────────────────────────────
    Reduced Motion
 ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

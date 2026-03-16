@@ -47,15 +47,39 @@ const inputBaseStyle: React.CSSProperties = {
 export default function ContactForm() {
   const [form, setForm] = useState<FormState>(initialState);
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [focused, setFocused] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setError("Network error — please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function getBorderStyle(field: string): React.CSSProperties {
@@ -222,26 +246,35 @@ export default function ContactForm() {
         </div>
       </div>
 
+      {/* Error message */}
+      {error && (
+        <div style={{ padding: "10px 14px", borderRadius: "10px", backgroundColor: "#FEF2F2", border: "1px solid #FECACA", color: "#B91C1C", fontSize: "0.875rem", fontFamily: "var(--font-body)" }}>
+          {error}
+        </div>
+      )}
+
       {/* Submit */}
       <button
         type="submit"
+        disabled={loading}
         style={{
           width: "100%",
           padding: "13px 24px",
           borderRadius: "10px",
           border: "none",
-          backgroundColor: "var(--color-accent)",
+          backgroundColor: loading ? "var(--color-accent-hover)" : "var(--color-accent)",
           color: "#fff",
           fontSize: "1rem",
           fontWeight: 600,
           fontFamily: "var(--font-body)",
-          cursor: "pointer",
+          cursor: loading ? "not-allowed" : "pointer",
+          opacity: loading ? 0.8 : 1,
           transition: "background-color 0.2s, transform 0.15s",
           marginTop: "0.25rem",
         }}
-        className="hover:bg-[var(--color-accent-hover)] hover:-translate-y-px"
+        className={loading ? "" : "hover:bg-[var(--color-accent-hover)] hover:-translate-y-px"}
       >
-        Send My Brief
+        {loading ? "Sending…" : "Send My Brief"}
       </button>
 
       <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, textAlign: "center" }}>

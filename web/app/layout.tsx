@@ -13,24 +13,26 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Charles Shalua — AI-Powered Freelancing",
-    template: "%s | Charles Shalua",
+    default: "DataLife — AI & Data Solutions by Charles Shalua",
+    template: "%s | DataLife",
   },
   description:
-    "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots. Hire Charles Shalua for your next data or AI project.",
+    "DataLife delivers Data Analysis, Augmented Analytics, ML Applications, and LLM Bots. Founded by Charles Shalua — Founder & Co-Engineer. Est. 2023.",
   keywords: [
+    "DataLife",
     "data analysis",
     "machine learning",
     "LLM bots",
     "augmented analytics",
-    "AI freelancer",
+    "AI firm",
     "Charles Shalua",
+    "AI engineer",
   ],
   authors: [{ name: "Charles Shalua" }],
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Charles Shalua",
+    siteName: "DataLife",
   },
 };
 
