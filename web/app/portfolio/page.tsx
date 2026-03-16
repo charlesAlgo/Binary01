@@ -66,7 +66,7 @@ const PROJECTS: Project[] = [
 ];
 
 const STATS = [
-  { number: "18+", label: "Projects delivered" },
+  { number: "40+", label: "Projects delivered" },
   { number: "100%", label: "On-time delivery" },
   { number: "4.9★", label: "Average client rating" },
 ];

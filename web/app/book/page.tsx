@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CalEmbed from "@/components/CalEmbed";
 
 export const metadata: Metadata = {
   title: "Book a Discovery Call",
@@ -140,61 +141,20 @@ export default function BookPage() {
               </div>
             </div>
 
-            {/* Right — Cal.com embed placeholder */}
+            {/* Right — Cal.com embed */}
             <div
               style={{
                 borderRadius: "20px",
-                backgroundColor: "var(--color-hero)",
-                padding: "3rem 2rem",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                gap: "1.25rem",
-                minHeight: "480px",
+                overflow: "hidden",
                 boxShadow: "0 8px 40px rgba(24,61,48,0.20)",
                 position: "sticky",
                 top: "6rem",
+                minHeight: "480px",
               }}
             >
-              {/* Decorative rings */}
-              <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "300px", height: "300px", borderRadius: "50%", border: "1px solid rgba(62,189,122,0.08)", pointerEvents: "none" }} />
-              <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "200px", height: "200px", borderRadius: "50%", border: "1px solid rgba(62,189,122,0.12)", pointerEvents: "none" }} />
-
-              <div style={{ position: "relative" }}>
-                <div style={{ fontSize: "3rem", marginBottom: "0.25rem" }}>📅</div>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.375rem", fontWeight: 700, color: "#fff", margin: "0 0 0.625rem", letterSpacing: "-0.02em" }}>
-                  Calendar embed loads here
-                </h3>
-                <p style={{ fontSize: "0.9375rem", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-body)", margin: "0 auto 2rem", maxWidth: "32ch", lineHeight: 1.6 }}>
-                  Powered by Cal.com — coming in Phase 9
-                </p>
-
-                <a
-                  href="mailto:hello@charlesshalua.com"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    padding: "11px 24px",
-                    borderRadius: "10px",
-                    border: "2px solid rgba(255,255,255,0.25)",
-                    backgroundColor: "rgba(255,255,255,0.07)",
-                    color: "#fff",
-                    fontSize: "0.9375rem",
-                    fontWeight: 600,
-                    fontFamily: "var(--font-body)",
-                    textDecoration: "none",
-                    transition: "all 0.2s",
-                  }}
-                  className="hover:border-[var(--color-accent)] hover:bg-[rgba(62,189,122,0.12)] hover:text-[var(--color-accent)]"
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  Book via Email
-                </a>
-              </div>
+              <CalEmbed
+                calLink={process.env.NEXT_PUBLIC_CALCOM_LINK ?? "charlesshalua/discovery-call"}
+              />
             </div>
           </div>
         </div>
