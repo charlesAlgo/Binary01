@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import CTAButton from "@/components/CTAButton";
-import Link from "next/link";
+import { SparklesCore } from "@/components/ui/sparkles";
+import ButtonWithIcon from "@/components/ui/button-with-icon";
 
 const STATS = [
   { number: "40+",  label: "Projects Delivered" },
@@ -25,52 +25,10 @@ const container = {
 };
 const item = {
   hidden: { opacity: 0, y: 22 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as any } },
 };
 
 export default function Hero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let raf: number;
-    let t = 0;
-
-    const resize = () => {
-      canvas.width  = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const cols = Math.ceil(canvas.width  / 36);
-      const rows = Math.ceil(canvas.height / 36);
-      for (let r = 0; r <= rows; r++) {
-        for (let c = 0; c <= cols; c++) {
-          const wave = Math.sin(t * 0.4 + c * 0.5 + r * 0.5) * 0.5 + 0.5;
-          ctx.beginPath();
-          ctx.arc(c * 36, r * 36, 1, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255,255,255,${0.03 + wave * 0.05})`;
-          ctx.fill();
-        }
-      }
-      t += 0.015;
-      raf = requestAnimationFrame(draw);
-    };
-    draw();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("resize", resize);
-    };
-  }, []);
-
   return (
     <section
       style={{
@@ -81,9 +39,16 @@ export default function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Animated dot grid */}
-      <canvas ref={canvasRef} aria-hidden="true"
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
+      {/* Sparkles background */}
+      <SparklesCore
+        id="hero-sparkles"
+        background="transparent"
+        minSize={0.4}
+        maxSize={1.2}
+        particleDensity={80}
+        particleColor="#3EBD7A"
+        speed={1.2}
+        className="absolute inset-0 w-full h-full pointer-events-none"
       />
 
       {/* Radial glows */}
@@ -120,9 +85,22 @@ export default function Hero() {
             </motion.p>
 
             {/* CTAs */}
-            <motion.div variants={item} style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "2.75rem" }}>
+            <motion.div variants={item} style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "1.25rem" }}>
               <CTAButton label="Get a Free Quote"      href="/contact"   variant="filled" size="lg" />
               <CTAButton label="View Portfolio"        href="/portfolio" variant="white"  size="lg" />
+            </motion.div>
+
+            {/* FOMO + Let's Collaborate button */}
+            <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap", marginBottom: "2.75rem" }}>
+              <ButtonWithIcon label="Let's Collaborate" href="/contact" />
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#3EBD7A", display: "inline-block", boxShadow: "0 0 0 3px rgba(62,189,122,0.25)", animation: "pulse 2s infinite" }} />
+                <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.65)", fontFamily: "var(--font-body)", fontWeight: 500 }}>
+                  Open to new projects —{" "}
+                  <span style={{ color: "#3EBD7A", fontWeight: 700 }}>only 2 spots left</span>
+                  {" "}this month
+                </span>
+              </div>
             </motion.div>
 
             {/* Trust micro-row */}
