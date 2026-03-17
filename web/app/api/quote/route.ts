@@ -131,7 +131,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     resend.emails.send({
-      from: "Charles Shalua <no-reply@datalife.dev>",
+      from: "Charles Shalua <no-reply@data-life.tech>",
       to: lead.email,
       subject: "Got your quote request — I'll respond within 24 hours",
       react: QuoteConfirmationEmail({ name: lead.name, service: lead.service }),

@@ -37,7 +37,7 @@ export default function QuoteConfirmationEmail({ name, service }: QuoteConfirmat
             </Text>
 
             <Section style={ctaSection}>
-              <Link href="https://datalife.dev/portfolio" style={ctaButton}>
+              <Link href="https://data-life.tech/portfolio" style={ctaButton}>
                 View Portfolio →
               </Link>
             </Section>
@@ -50,7 +50,7 @@ export default function QuoteConfirmationEmail({ name, service }: QuoteConfirmat
             </Text>
 
             <Section style={ctaSection}>
-              <Link href="https://datalife.dev/book" style={ctaButtonOutline}>
+              <Link href="https://data-life.tech/book" style={ctaButtonOutline}>
                 Book a Discovery Call
               </Link>
             </Section>
@@ -68,7 +68,7 @@ export default function QuoteConfirmationEmail({ name, service }: QuoteConfirmat
               </Link>
             </Text>
             <Text style={footerMuted}>
-              You received this because you submitted a quote request on datalife.dev.
+              You received this because you submitted a quote request on data-life.tech.
             </Text>
           </Section>
 

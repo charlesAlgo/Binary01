@@ -73,7 +73,7 @@ export default function BookingConfirmationEmail({ payload }: BookingConfirmatio
             </Text>
 
             <Section style={ctaSection}>
-              <Link href="https://datalife.dev/portfolio" style={ctaButton}>
+              <Link href="https://data-life.tech/portfolio" style={ctaButton}>
                 Browse Case Studies Before the Call →
               </Link>
             </Section>
@@ -91,7 +91,7 @@ export default function BookingConfirmationEmail({ payload }: BookingConfirmatio
               </Link>
             </Text>
             <Text style={footerMuted}>
-              You received this because you booked a call at datalife.dev/book.
+              You received this because you booked a call at data-life.tech/book.
             </Text>
           </Section>
 
