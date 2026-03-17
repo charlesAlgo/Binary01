@@ -10,7 +10,7 @@ create table if not exists leads (
   created_at   timestamptz not null default now(),
   source       text not null check (source in ('quote_form', 'chatbot')),
   name         text not null,
-  email        text not null,
+  email        text,                  -- nullable: chatbot leads may not provide email
   company      text,
   service      text not null,
   description  text,
@@ -28,11 +28,14 @@ create table if not exists leads (
 alter table leads enable row level security;
 
 -- Service role key (server-side) can insert; no public read/write
-create policy "service role insert" on leads
-  for insert to service_role with check (true);
-
-create policy "service role select" on leads
-  for select to service_role using (true);
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'leads' and policyname = 'service role insert') then
+    create policy "service role insert" on leads for insert to service_role with check (true);
+  end if;
+  if not exists (select 1 from pg_policies where tablename = 'leads' and policyname = 'service role select') then
+    create policy "service role select" on leads for select to service_role using (true);
+  end if;
+end $$;
 
 
 -- ── bookings ────────────────────────────────────────────────
@@ -50,11 +53,14 @@ create table if not exists bookings (
 
 alter table bookings enable row level security;
 
-create policy "service role insert" on bookings
-  for insert to service_role with check (true);
-
-create policy "service role select" on bookings
-  for select to service_role using (true);
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'bookings' and policyname = 'service role insert') then
+    create policy "service role insert" on bookings for insert to service_role with check (true);
+  end if;
+  if not exists (select 1 from pg_policies where tablename = 'bookings' and policyname = 'service role select') then
+    create policy "service role select" on bookings for select to service_role using (true);
+  end if;
+end $$;
 
 
 -- ── chat_logs ───────────────────────────────────────────────
@@ -69,8 +75,11 @@ create table if not exists chat_logs (
 
 alter table chat_logs enable row level security;
 
-create policy "service role insert" on chat_logs
-  for insert to service_role with check (true);
-
-create policy "service role select" on chat_logs
-  for select to service_role using (true);
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'chat_logs' and policyname = 'service role insert') then
+    create policy "service role insert" on chat_logs for insert to service_role with check (true);
+  end if;
+  if not exists (select 1 from pg_policies where tablename = 'chat_logs' and policyname = 'service role select') then
+    create policy "service role select" on chat_logs for select to service_role using (true);
+  end if;
+end $$;
