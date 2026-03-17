@@ -3,26 +3,20 @@ import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabase";
 import { Resend } from "resend";
 import BookingConfirmationEmail from "@/components/emails/BookingConfirmationEmail";
-
-interface CalcomAttendee {
-  name: string;
-  email: string;
-}
-
-interface CalcomPayload {
-  uid: string;
-  title: string;
-  startTime: string;
-  endTime: string;
-  attendees: CalcomAttendee[];
-}
-
-interface CalcomWebhookBody {
-  triggerEvent: string;
-  payload: CalcomPayload;
-}
+import type { CalcomPayload, CalcomWebhookBody } from "@/types/calcom";
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  // Hard guard — refuse to operate without the secret configured
+  if (!process.env.CALCOM_WEBHOOK_SECRET) {
+    console.error("[/api/webhooks/calcom] CALCOM_WEBHOOK_SECRET not configured");
+    return NextResponse.json({ error: "Server misconfiguration." }, { status: 500 });
+  }
+
+  const contentType = request.headers.get("content-type") ?? "";
+  if (!contentType.includes("application/json")) {
+    return NextResponse.json({ error: "Unsupported media type." }, { status: 415 });
+  }
+
   const signature = request.headers.get("x-cal-signature-256");
   if (!signature) {
     return NextResponse.json(
@@ -34,22 +28,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // Read raw body for HMAC verification
   const rawBody = await request.text();
 
-  // Verify HMAC-SHA256 signature
-  if (process.env.CALCOM_WEBHOOK_SECRET) {
-    const expectedSig = crypto
-      .createHmac("sha256", process.env.CALCOM_WEBHOOK_SECRET)
-      .update(rawBody)
-      .digest("hex");
+  // Verify HMAC-SHA256 signature — always required
+  const expectedSig = crypto
+    .createHmac("sha256", process.env.CALCOM_WEBHOOK_SECRET)
+    .update(rawBody)
+    .digest("hex");
 
-    const sigBuffer = Buffer.from(signature);
-    const expectedBuffer = Buffer.from(expectedSig);
+  const sigBuffer = Buffer.from(signature);
+  const expectedBuffer = Buffer.from(expectedSig);
 
-    if (
-      sigBuffer.length !== expectedBuffer.length ||
-      !crypto.timingSafeEqual(sigBuffer, expectedBuffer)
-    ) {
-      return NextResponse.json({ error: "Invalid signature." }, { status: 401 });
-    }
+  if (
+    sigBuffer.length !== expectedBuffer.length ||
+    !crypto.timingSafeEqual(sigBuffer, expectedBuffer)
+  ) {
+    return NextResponse.json({ error: "Invalid signature." }, { status: 401 });
   }
 
   let body: unknown;
@@ -66,6 +58,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ received: true }, { status: 200 });
   }
 
+  // Validate required payload fields before attempting DB insert
+  if (!payload?.uid || !payload?.title || !payload?.startTime || !payload?.endTime) {
+    console.error("[/api/webhooks/calcom] Malformed payload — missing required fields:", payload);
+    return NextResponse.json({ error: "Malformed payload." }, { status: 400 });
+  }
+
   const attendee = payload?.attendees?.[0];
 
   // Step 1: Insert into Supabase `bookings` table
@@ -79,7 +77,12 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   });
 
   if (dbError) {
-    console.error("[/api/webhooks/calcom] Supabase insert error:", dbError.message);
+    if (dbError.code !== "23505") {
+      // 23505 = unique_violation (Cal.com retry of already-recorded booking — safe to ignore)
+      console.error("[/api/webhooks/calcom] Supabase insert error:", dbError.message);
+      return NextResponse.json({ error: "Database error." }, { status: 500 });
+    }
+    console.warn("[/api/webhooks/calcom] Duplicate booking uid — ignoring:", dbError.message);
   }
 
   // Step 2: Slack notification (fire-and-forget)

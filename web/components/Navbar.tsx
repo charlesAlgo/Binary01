@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const SERVICE_DESCRIPTIONS: Record<string, string> = {
+  "Data Analysis":       "Dashboards, pipelines & automated reports",
+  "Augmented Analytics": "AI-powered insights on top of your BI",
+  "ML Applications":     "Prediction & classification models, deployed",
+  "LLM Bots":            "RAG pipelines, chatbots & LLM integrations",
+};
 
 const NAV_LINKS = [
   {
@@ -20,15 +27,25 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled]       = useState(false);
-  const [menuOpen, setMenuOpen]       = useState(false);
+  const [scrolled, setScrolled]         = useState(false);
+  const [menuOpen, setMenuOpen]         = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const closeTimeout                    = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  function handleServicesEnter() {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    setServicesOpen(true);
+  }
+
+  function handleServicesLeave() {
+    closeTimeout.current = setTimeout(() => setServicesOpen(false), 150);
+  }
 
   return (
     <header
@@ -57,10 +74,14 @@ export default function Navbar() {
         <nav style={{ display: "flex", alignItems: "center", gap: "0.25rem" }} className="hidden md:flex">
           {NAV_LINKS.map((link) =>
             link.children ? (
-              <div key={link.label} style={{ position: "relative" }}>
+              /* Whole wrapper handles hover — no gap-triggered close */
+              <div
+                key={link.label}
+                style={{ position: "relative" }}
+                onMouseEnter={handleServicesEnter}
+                onMouseLeave={handleServicesLeave}
+              >
                 <button
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -68,7 +89,7 @@ export default function Navbar() {
                     padding: "8px 14px",
                     fontSize: "0.875rem",
                     fontWeight: 500,
-                    color: "var(--color-text-hero-muted)",
+                    color: servicesOpen ? "#fff" : "var(--color-text-hero-muted)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
@@ -76,60 +97,83 @@ export default function Navbar() {
                     fontFamily: "var(--font-body)",
                     transition: "color 0.2s",
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.color = "#fff")}
-                  onMouseOut={(e) => !servicesOpen && (e.currentTarget.style.color = "var(--color-text-hero-muted)")}
                 >
                   {link.label}
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                  <svg
+                    width="11"
+                    height="11"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    style={{ transition: "transform 0.2s", transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                  >
                     <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
 
-                {servicesOpen && (
-                  <div
-                    onMouseEnter={() => setServicesOpen(true)}
-                    onMouseLeave={() => setServicesOpen(false)}
-                    style={{
-                      position: "absolute",
-                      top: "100%",
-                      left: 0,
-                      marginTop: "6px",
-                      width: "220px",
-                      borderRadius: "12px",
-                      border: "1px solid var(--color-border)",
-                      backgroundColor: "#fff",
-                      padding: "6px",
-                      boxShadow: "var(--shadow-card-hover)",
-                    }}
-                  >
-                    {link.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
+                {/* Dropdown — always in DOM, toggled via opacity + pointer-events */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 8px)",
+                    left: 0,
+                    width: "280px",
+                    borderRadius: "14px",
+                    border: "1px solid rgba(62,189,122,0.20)",
+                    backgroundColor: "#183D30",
+                    padding: "8px",
+                    boxShadow: "0 16px 48px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.2)",
+                    opacity: servicesOpen ? 1 : 0,
+                    transform: servicesOpen ? "translateY(0)" : "translateY(-8px)",
+                    pointerEvents: servicesOpen ? "auto" : "none",
+                    transition: "opacity 0.18s ease, transform 0.18s ease",
+                  }}
+                >
+                  {link.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "12px",
+                        padding: "10px 12px",
+                        borderRadius: "10px",
+                        textDecoration: "none",
+                        transition: "background 0.15s",
+                      }}
+                      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "rgba(62,189,122,0.10)")}
+                      onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                    >
+                      {/* Icon dot */}
+                      <div
                         style={{
-                          display: "block",
-                          padding: "9px 12px",
-                          fontSize: "0.875rem",
-                          color: "var(--color-text-secondary)",
-                          textDecoration: "none",
-                          borderRadius: "8px",
-                          fontFamily: "var(--font-body)",
-                          transition: "background 0.15s, color 0.15s",
-                        }}
-                        onMouseOver={(e) => {
-                          e.currentTarget.style.backgroundColor = "var(--color-bg-tag)";
-                          e.currentTarget.style.color = "var(--color-text-primary)";
-                        }}
-                        onMouseOut={(e) => {
-                          e.currentTarget.style.backgroundColor = "transparent";
-                          e.currentTarget.style.color = "var(--color-text-secondary)";
+                          width: "28px",
+                          height: "28px",
+                          borderRadius: "7px",
+                          backgroundColor: "rgba(62,189,122,0.15)",
+                          border: "1px solid rgba(62,189,122,0.25)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexShrink: 0,
+                          marginTop: "1px",
                         }}
                       >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                        <div style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "#3EBD7A" }} />
+                      </div>
+
+                      {/* Text */}
+                      <div>
+                        <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "#fff", fontFamily: "var(--font-body)", lineHeight: 1.3 }}>
+                          {child.label}
+                        </p>
+                        <p style={{ margin: "2px 0 0", fontSize: "0.775rem", color: "rgba(255,255,255,0.45)", fontFamily: "var(--font-body)", lineHeight: 1.4 }}>
+                          {SERVICE_DESCRIPTIONS[child.label]}
+                        </p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             ) : (
               <Link

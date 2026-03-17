@@ -117,7 +117,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
               DL
             </div>
             <span style={{ color: "rgba(15,40,25,0.5)", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.12em" }}>
-              DataLife · ESC 2023
+              DataLife · Est. 2023
             </span>
           </motion.div>
 
@@ -152,7 +152,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                       style={{ backgroundColor: "#3EBD7A", boxShadow: "0 0 8px #3EBD7A", animation: "pulse 2s infinite" }}
                     />
                     <span style={{ color: "#2a9e62", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase" }}>
-                      AI &amp; Data Services · Est. 2026
+                      AI &amp; Data Services · Est. 2023
                     </span>
                   </div>
 
@@ -292,7 +292,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                               fontFamily: "var(--font-display)",
                             }}
                           >
-                            <span style={{ color: "rgba(255,255,255,0.88)" }}>We are </span>
+                            <span style={{ color: "#0f172a" }}>We are </span>
                             <span
                               style={{
                                 background: "linear-gradient(135deg, #3EBD7A 0%, #14B8A6 100%)",
@@ -314,10 +314,9 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                               letterSpacing: "-0.02em",
                               lineHeight: 1.35,
                               fontFamily: "var(--font-display)",
-                              color: "rgba(255,255,255,0.7)",
                             }}
                           >
-                            We live with{" "}
+                            <span style={{ color: "#0f172a" }}>We live with</span>{" "}
                             <span
                               style={{
                                 color: "#3EBD7A",
@@ -327,7 +326,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                             >
                               data
                             </span>{" "}
-                            every day.
+                            <span style={{ color: "#0f172a", fontWeight: 300 }}>every day.</span>
                           </p>
                         )}
 
@@ -338,7 +337,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                                 fontSize: "clamp(5rem, 15vw, 11rem)",
                                 fontWeight: 900,
                                 letterSpacing: "-0.055em",
-                                color: "#ffffff",
+                                color: "#0f172a",
                                 lineHeight: 0.88,
                                 fontFamily: "var(--font-display)",
                                 filter: "drop-shadow(0 0 60px rgba(62,189,122,0.25))",
