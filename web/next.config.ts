@@ -1,31 +1,34 @@
 import type { NextConfig } from "next";
 
 const securityHeaders = [
+  // Prevent DNS prefetch leaking request origins
+  { key: "X-DNS-Prefetch-Control", value: "on" },
   // Prevent clickjacking
   { key: "X-Frame-Options", value: "SAMEORIGIN" },
   // Prevent MIME-type sniffing
   { key: "X-Content-Type-Options", value: "nosniff" },
-  // Force HTTPS for 1 year (Vercel enforces HTTPS; this makes browsers remember)
-  { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+  // Force HTTPS for 2 years + preload list eligibility
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
   // Control referrer info sent to external sites
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   // Lock down unused browser features
-  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
-  // Basic CSP — tighten once Cal.com + Supabase origins are confirmed in production
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+  // CSP — scoped to known origins
   {
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      // Next.js inline scripts + Framer Motion need unsafe-inline for now
+      // Next.js inline scripts + Framer Motion require unsafe-inline; unsafe-eval for tsparticles
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cal.com",
       "style-src 'self' 'unsafe-inline' https://api.fontshare.com",
-      "font-src 'self' https://api.fontshare.com",
+      "font-src 'self' data: https://api.fontshare.com",
       "img-src 'self' data: blob: https:",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.resend.com",
-      "frame-src https://cal.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.resend.com https://api.groq.com",
+      "frame-src https://cal.com https://app.cal.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
+      "upgrade-insecure-requests",
     ].join("; "),
   },
 ];
