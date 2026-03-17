@@ -130,6 +130,14 @@ All `CREATE POLICY` statements must be wrapped in a `DO $$ IF NOT EXISTS $$` blo
 ### 11. Security headers are non-negotiable
 `web/next.config.ts` defines CSP, HSTS (2yr + preload), X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy for all routes. Never remove or downgrade these.
 
+### 12. NEVER put real secrets in .env.example — ever
+`.env.example` is committed to the public repo. It must contain ONLY placeholder values like `your-key-here`.
+Real keys live exclusively in `web/.env.local` (gitignored) and in the Vercel dashboard environment variables.
+
+**Hard rule:** Before touching `.env.example`, check every line. If a value looks like a real key (starts with `re_`, `gsk_`, `xai-`, `sb_secret_`, `sb_publishable_`, `https://hooks.slack.com/`, etc.) — replace it with a placeholder immediately. Do not commit, do not stage.
+
+Violation consequence: GitHub secret scanning will block the push, keys must be rotated across all services, and a full security incident cycle is triggered.
+
 ---
 
 ## Design System

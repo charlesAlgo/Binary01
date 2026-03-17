@@ -5,6 +5,9 @@ import { Resend } from "resend";
 import BookingConfirmationEmail from "@/components/emails/BookingConfirmationEmail";
 import type { CalcomPayload, CalcomWebhookBody } from "@/types/calcom";
 
+// Prevent Next.js from statically analysing / pre-rendering this route at build time.
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
   // Hard guard — refuse to operate without the secret configured
   if (!process.env.CALCOM_WEBHOOK_SECRET) {
@@ -106,7 +109,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (process.env.RESEND_API_KEY && attendee?.email) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     resend.emails.send({
-      from: "Charles Shalua <no-reply@datalife.dev>",
+      from: "Charles Shalua <no-reply@data-life.tech>",
       to: attendee.email,
       subject: `Confirmed: ${payload.title}`,
       react: BookingConfirmationEmail({ payload }),
