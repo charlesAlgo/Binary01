@@ -134,7 +134,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         model: groq("llama-3.3-70b-versatile"),
         system: SYSTEM_PROMPT,
         prompt: userMessage,
-        maxTokens: 300,
+        maxOutputTokens: 300,
       });
       reply = text.trim();
     } catch (err) {

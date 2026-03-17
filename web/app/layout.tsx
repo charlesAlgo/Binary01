@@ -1,9 +1,23 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains",
@@ -33,17 +47,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "DataLife",
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev"}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: "DataLife — AI & Data Solutions by Charles Shalua",
-      },
-    ],
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev"),
 };
 
 export default function RootLayout({
@@ -52,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jetbrainsMono.variable}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="antialiased">
         <Navbar />
         <div className="pt-16">{children}</div>
