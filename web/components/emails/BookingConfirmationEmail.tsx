@@ -2,16 +2,10 @@ import {
   Body, Container, Head, Heading, Hr, Html,
   Link, Preview, Section, Text,
 } from "@react-email/components";
-
-interface BookingPayload {
-  title: string;
-  startTime: string;
-  endTime: string;
-  attendees: { name: string; email: string }[];
-}
+import type { CalcomPayload } from "@/types/calcom";
 
 interface BookingConfirmationEmailProps {
-  payload: BookingPayload;
+  payload: CalcomPayload;
 }
 
 function formatDate(iso: string) {

@@ -38,6 +38,23 @@ Your job: Help website visitors understand DataLife's services, answer questions
 
 const MAX_MESSAGE_LENGTH = 1000;
 
+/* ─── Prompt injection detection ───────────────────────────────────────── */
+const INJECTION_PATTERNS = [
+  /ignore (all |previous |above |prior )?(instructions|prompts|rules|context)/i,
+  /you are now|pretend (you are|to be)|act as (if|though|a )/i,
+  /\bsystem prompt\b/i,
+  /\bjailbreak\b/i,
+  /forget (everything|all|what)/i,
+  /new (role|persona|instructions|directive)/i,
+  /\[system\]|\[assistant\]|\[user\]/i,
+  /print (your|the) (instructions|prompt|system)/i,
+  /disregard (all |previous |above )?(instructions|context|rules)/i,
+];
+
+function containsPromptInjection(message: string): boolean {
+  return INJECTION_PATTERNS.some((pattern) => pattern.test(message));
+}
+
 /* ─── Rate limiter (per IP, max 20 messages / 10 min) ──────────────────── */
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 20;
@@ -97,7 +114,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       ? sessionId.trim()
       : randomUUID();
 
-  const userMessage = message.trim();
+  const userMessage = message.replace(/\x00/g, "").trim();
+
+  // Return a safe generic reply for prompt injection attempts — no 4xx to avoid fingerprinting
+  if (containsPromptInjection(userMessage)) {
+    return NextResponse.json(
+      { reply: "I'm here to help with DataLife services. What are you building?", sessionId: resolvedSessionId },
+      { status: 200 }
+    );
+  }
+
   let reply: string;
 
   // Use Groq + Llama 3.3 if API key is configured, otherwise fall back to keyword stub
