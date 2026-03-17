@@ -44,13 +44,7 @@ export default function FounderSection() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: "clamp(2.5rem, 6vw, 6rem)",
-            alignItems: "center",
-          }}
-          className="founder-grid"
+          className="founder-grid grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-[clamp(2.5rem,6vw,6rem)] items-center"
         >
           {/* ── Left: Profile card ── */}
           <motion.div variants={fadeUp}>
@@ -186,11 +180,10 @@ export default function FounderSection() {
               Today I run <strong style={{ color: "var(--color-text-primary)" }}>DataLife</strong> — delivering full-stack AI &amp; data solutions directly to founders and product teams. No account managers. No hand-offs. You talk to the person who writes the code.
             </motion.p>
 
-            {/* Stats grid */}
+            {/* Stats grid — 2×2 on mobile, 4 columns from sm up */}
             <motion.div
               variants={fadeUp}
-              style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.75rem", marginBottom: "2rem" }}
-              className="founder-stats"
+              className="founder-stats grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8"
             >
               {STATS.map((s) => (
                 <div
