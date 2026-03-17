@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import CalEmbed from "@/components/CalEmbed";
+import { CalendarWidget } from "@/components/ui/calendar";
 
 export const metadata: Metadata = {
   title: "Book a Discovery Call",
@@ -141,18 +141,9 @@ export default function BookPage() {
               </div>
             </div>
 
-            {/* Right — Cal.com embed */}
-            <div
-              style={{
-                borderRadius: "20px",
-                overflow: "hidden",
-                boxShadow: "0 8px 40px rgba(24,61,48,0.20)",
-                position: "sticky",
-                top: "6rem",
-                minHeight: "480px",
-              }}
-            >
-              <CalEmbed
+            {/* Right — Calendar widget */}
+            <div style={{ position: "sticky", top: "6rem" }}>
+              <CalendarWidget
                 calLink={process.env.NEXT_PUBLIC_CALCOM_LINK ?? "charlesshalua/discovery-call"}
               />
             </div>

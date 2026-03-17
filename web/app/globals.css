@@ -1,9 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
-   Fonts  — Satoshi & General Sans via Fontshare CDN
-   (swap for self-hosted /public/fonts before deploy)
+   Fonts — Plus Jakarta Sans (display) + Inter (body) via next/font/google
+   Variables injected into <html> by layout.tsx
 ───────────────────────────────────────────────────────────── */
-@import "https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap";
-@import "https://api.fontshare.com/v2/css?f[]=general-sans@600,500,400&display=swap";
 
 /* ─────────────────────────────────────────────────────────────
    Tailwind v4
@@ -37,8 +35,8 @@
   --color-border-hero:     rgba(255,255,255,0.10);
 
   /* ── Fonts ── */
-  --font-display: "Satoshi", ui-sans-serif, system-ui, sans-serif;
-  --font-body:    "General Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-plus-jakarta), "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-body:    var(--font-inter), "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono:    var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
 
   /* ── Radius ── */

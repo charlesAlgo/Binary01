@@ -19,7 +19,7 @@ const STACK = [
 
 const CREDENTIALS = [
   { icon: "🎓", title: "Applied AI", subtitle: "Centennial College, Ontario" },
-  { icon: "⭐", title: "Top Rated", subtitle: "Upwork Freelancer Platform" },
+  { icon: "⭐", title: "Top Rated", subtitle: "Cross-industry experience" },
   { icon: "💻", title: "40+ Projects", subtitle: "Across 15+ Industries" },
   { icon: "🌍", title: "Global Clients", subtitle: "US, UK, Africa, Canada" },
 ];
@@ -162,7 +162,7 @@ export default function AboutPage() {
                   I got into data out of frustration. Early in my career I kept watching teams make expensive decisions based on gut feel while sitting on gigabytes of untouched data. I taught myself Python and SQL on weekends, built a few internal dashboards, and never looked back. That was the moment I realised clarity is a competitive advantage — and most organisations are a few good pipelines away from it.
                 </p>
                 <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, maxWidth: "62ch" }}>
-                  Over the following years I expanded from data analysis into machine learning, shipping production models for clients across retail, finance, healthcare, and logistics. Now I&apos;m finishing the Applied AI program at Centennial College in Ontario, where I&apos;m deepening my work in large language models and agentic systems. I&apos;m proud to hold Upwork&apos;s Top Rated badge and to have delivered 40+ projects across 15+ industries — but what I care about most is whether the work actually gets used.
+                  Over the following years I expanded from data analysis into machine learning, shipping production models for clients across retail, finance, healthcare, and logistics. Now I&apos;m finishing the Applied AI program at Centennial College in Ontario, where I&apos;m deepening my work in large language models and agentic systems. Proud of working with people in different industries that broaden my way of problem solving — but what I care about most is whether the work actually gets used.
                 </p>
                 <p style={{ fontSize: "1rem", lineHeight: 1.8, color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, maxWidth: "62ch" }}>
                   Today I run a one-person AI and data firm. I work directly with founders, product managers, and analytics leads to build full-stack solutions — from raw ETL pipelines to deployed LLM bots. No account managers. No hand-offs. You talk to the person who writes the code.
