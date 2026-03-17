@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://datalife.dev";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://data-life.tech";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

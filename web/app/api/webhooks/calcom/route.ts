@@ -106,7 +106,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (process.env.RESEND_API_KEY && attendee?.email) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     resend.emails.send({
-      from: "Charles Shalua <no-reply@datalife.dev>",
+      from: "Charles Shalua <no-reply@data-life.tech>",
       to: attendee.email,
       subject: `Confirmed: ${payload.title}`,
       react: BookingConfirmationEmail({ payload }),
