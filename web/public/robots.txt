@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://datalife.dev/sitemap.xml
+Sitemap: https://data-life.tech/sitemap.xml

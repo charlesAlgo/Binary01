@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 
+// Prevent Next.js from statically analysing / pre-rendering this route at build time.
+// Without this, the build traces the module and can execute module-level code before
+// runtime env vars are available, causing a crash on Vercel.
+export const dynamic = "force-dynamic";
+
 /* ─── Rate limiter (per IP, max 5 submissions / 10 min) ────────────────── */
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 5;

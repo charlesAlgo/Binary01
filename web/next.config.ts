@@ -20,8 +20,8 @@ const securityHeaders = [
       "default-src 'self'",
       // Next.js inline scripts + Framer Motion require unsafe-inline; unsafe-eval for tsparticles
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cal.com",
-      "style-src 'self' 'unsafe-inline' https://api.fontshare.com",
-      "font-src 'self' data: https://api.fontshare.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.resend.com https://api.groq.com",
       "frame-src https://cal.com https://app.cal.com",
