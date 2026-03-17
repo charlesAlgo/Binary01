@@ -116,7 +116,7 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
 
       {/* Name + Email row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="name" style={labelStyle}>Name <span style={{ color: "var(--color-accent)" }}>*</span></label>
           <input
@@ -205,7 +205,7 @@ export default function ContactForm() {
       </div>
 
       {/* Budget + Timeline row */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="budget" style={labelStyle}>Budget range <span style={{ color: "var(--color-accent)" }}>*</span></label>
           <select

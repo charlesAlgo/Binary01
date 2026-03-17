@@ -31,7 +31,7 @@ export default function HowWeWork() {
   return (
     <section style={{ backgroundColor: "var(--color-bg-cream)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
       <div className="section-wrapper">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(2.5rem, 6vw, 5rem)", alignItems: "start" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(2.5rem,6vw,5rem)] items-start">
 
           {/* Left — visual */}
           <div>

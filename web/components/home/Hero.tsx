@@ -60,8 +60,7 @@ export default function Hero() {
           variants={container}
           initial="hidden"
           animate="show"
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(2rem, 5vw, 5rem)", alignItems: "center" }}
-          className="grid-cols-1 lg:grid-cols-2"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(2rem,5vw,5rem)] items-center"
         >
           {/* ── Left: copy ── */}
           <div>
@@ -144,8 +143,8 @@ export default function Hero() {
               ))}
             </div>
 
-            {/* Stats row */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.625rem" }}>
+            {/* Stats row — 2×2 on mobile, 4 columns from sm up */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               {STATS.map((s, i) => (
                 <motion.div
                   key={s.label}

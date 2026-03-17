@@ -95,7 +95,8 @@ export default function BookPage() {
       {/* ── 2. Two-column ── */}
       <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
         <div className="section-wrapper">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "clamp(2rem, 6vw, 5rem)", alignItems: "start" }}>
+          {/* Stacks to single column on mobile, side-by-side from lg up */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-[clamp(2rem,6vw,5rem)] items-start">
 
             {/* Left — what to expect */}
             <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
@@ -141,8 +142,8 @@ export default function BookPage() {
               </div>
             </div>
 
-            {/* Right — Calendar widget */}
-            <div style={{ position: "sticky", top: "6rem" }}>
+            {/* Right — Calendar widget (sticky only on desktop where there's room) */}
+            <div className="lg:sticky lg:top-24">
               <CalendarWidget />
             </div>
           </div>
