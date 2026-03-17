@@ -4,6 +4,9 @@ import { generateText } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { supabaseAdmin } from "@/lib/supabase";
 
+// Prevent Next.js from statically analysing / pre-rendering this route at build time.
+export const dynamic = "force-dynamic";
+
 const SYSTEM_PROMPT = `You are the AI assistant for DataLife, an AI and data engineering firm founded by Charles Shalua (Ontario, Canada).
 
 Your job: Help website visitors understand DataLife's services, answer questions about working with Charles, and qualify leads.
