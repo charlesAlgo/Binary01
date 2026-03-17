@@ -76,7 +76,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     start_time: payload.startTime,
     end_time: payload.endTime,
     attendee_name: attendee?.name ?? null,
-    attendee_email: attendee?.email ?? null,
+    attendee_email: attendee?.email ? attendee.email.toLowerCase() : null,
   });
 
   if (dbError) {

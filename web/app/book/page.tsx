@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarWidget } from "@/components/ui/calendar";
+import BookingGate from "@/components/BookingGate";
 
 export const metadata: Metadata = {
   title: "Book a Discovery Call",
@@ -144,7 +144,7 @@ export default function BookPage() {
 
             {/* Right — Calendar widget (sticky only on desktop where there's room) */}
             <div className="lg:sticky lg:top-24">
-              <CalendarWidget />
+              <BookingGate calLink={process.env.NEXT_PUBLIC_CALCOM_LINK ?? "charles-shalua/discovery-call"} />
             </div>
           </div>
         </div>
