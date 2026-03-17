@@ -3,6 +3,9 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { Resend } from "resend";
 import QuoteConfirmationEmail from "@/components/emails/QuoteConfirmationEmail";
 
+// Prevent Next.js from statically analysing / pre-rendering this route at build time.
+export const dynamic = "force-dynamic";
+
 /* ─── Simple in-memory rate limiter (per IP, max 3 requests / 10 min) ──── */
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 3;
