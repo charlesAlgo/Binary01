@@ -90,16 +90,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   // Step 2: Slack notification (fire-and-forget)
   if (process.env.SLACK_WEBHOOK_URL) {
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     fetch(process.env.SLACK_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         text: [
           `*New booking!* 📅`,
-          `*Event:* ${payload.title}`,
-          `*With:* ${attendee?.name ?? "Unknown"} (${attendee?.email ?? "—"})`,
-          `*Starts:* ${payload.startTime}`,
-          `*Ends:* ${payload.endTime}`,
+          `*Event:* ${esc(payload.title)}`,
+          `*With:* ${esc(attendee?.name ?? "Unknown")} (${esc(attendee?.email ?? "—")})`,
+          `*Starts:* ${esc(payload.startTime)}`,
+          `*Ends:* ${esc(payload.endTime)}`,
         ].join("\n"),
       }),
     }).catch((err) => console.error("[/api/webhooks/calcom] Slack error:", err));
