@@ -143,9 +143,7 @@ export default function BookPage() {
 
             {/* Right — Calendar widget */}
             <div style={{ position: "sticky", top: "6rem" }}>
-              <CalendarWidget
-                calLink={process.env.NEXT_PUBLIC_CALCOM_LINK ?? "charlesshalua/discovery-call"}
-              />
+              <CalendarWidget />
             </div>
           </div>
         </div>

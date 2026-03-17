@@ -37,19 +37,13 @@ const CalendarDay: React.FC<{
   );
 };
 
-interface CalendarWidgetProps {
-  calLink?: string;
-}
-
-export function CalendarWidget({ calLink = "charlesshalua/discovery-call" }: CalendarWidgetProps) {
+export function CalendarWidget() {
   const now          = new Date();
   const currentMonth = now.toLocaleString("default", { month: "long" });
   const currentYear  = now.getFullYear();
   const today        = now.getDate();
   const firstDayOfWeek = new Date(currentYear, now.getMonth(), 1).getDay();
   const daysInMonth    = new Date(currentYear, now.getMonth() + 1, 0).getDate();
-
-  const bookingLink = `https://cal.com/${calLink}`;
 
   const renderDays = () => {
     const cells: React.ReactNode[] = [
@@ -78,7 +72,7 @@ export function CalendarWidget({ calLink = "charlesshalua/discovery-call" }: Cal
   };
 
   return (
-    <BentoCard linkTo={bookingLink}>
+    <BentoCard linkTo="/book">
       <div className="grid h-full gap-5">
         {/* Text + CTA */}
         <div>
