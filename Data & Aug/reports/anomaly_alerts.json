@@ -1,0 +1,291 @@
+[
+  {
+    "rule_id": "RULE_1",
+    "severity": "HIGH",
+    "title": "High Return Rate: Ann Taylor",
+    "description": "Ann Taylor return rate is 19.8%, which is 1.35\u00d7 the store average of 14.7%. Top return reasons: Changed Mind, Wrong Item, Size Issue.",
+    "affected_count": 51,
+    "data": {
+      "brand": "Ann Taylor",
+      "return_rate": 19.8,
+      "store_average": 14.7,
+      "multiplier": 1.35,
+      "top_reasons": [
+        "Changed Mind",
+        "Wrong Item",
+        "Size Issue"
+      ]
+    },
+    "recommendation": "Review Ann Taylor product quality, sizing consistency, and supplier descriptions. Consider a quality audit of the top return-reason SKUs."
+  },
+  {
+    "rule_id": "RULE_3",
+    "severity": "MEDIUM",
+    "title": "Low Customer Rating: Mango",
+    "description": "Mango average rating is 2.78/5.0, below the 2.8 threshold. Lowest-rated categories: Outerwear (2.41), Accessories (2.51), Bottoms (2.81). Based on 240 rated products.",
+    "affected_count": 240,
+    "data": {
+      "brand": "Mango",
+      "avg_rating": 2.78,
+      "threshold": 2.8,
+      "worst_categories": [
+        "Outerwear (2.41)",
+        "Accessories (2.51)",
+        "Bottoms (2.81)"
+      ],
+      "rated_count": 240
+    },
+    "recommendation": "Conduct a customer feedback review for Mango. Consider requesting product quality improvements from the supplier or reducing {brand} SKU count in underperforming categories."
+  },
+  {
+    "rule_id": "RULE_4",
+    "severity": "HIGH",
+    "title": "Dead Inventory: 118 Items Identified",
+    "description": "118 items identified as potential dead inventory (markdown > 30% + rating < 2.5). Top categories: Accessories (26), Bottoms (25), Shoes (23). Estimated revenue tied up: $5,762.58.",
+    "affected_count": 118,
+    "data": {
+      "count": 118,
+      "top_categories": [
+        "Accessories (26)",
+        "Bottoms (25)",
+        "Shoes (23)"
+      ],
+      "revenue_tied_up": 5762.58,
+      "product_ids": [
+        "FB000027",
+        "FB000048",
+        "FB000053",
+        "FB000090",
+        "FB000093",
+        "FB000114",
+        "FB000145",
+        "FB000180",
+        "FB000205",
+        "FB000207",
+        "FB000245",
+        "FB000305",
+        "FB000314",
+        "FB000328",
+        "FB000332",
+        "FB000338",
+        "FB000341",
+        "FB000369",
+        "FB000395",
+        "FB000396"
+      ]
+    },
+    "recommendation": "Consider liquidating or discontinuing these items. Run a flash sale at 50\u201370% off to clear stock, or remove from catalogue to protect brand perception. Review supplier contracts for quality issues."
+  },
+  {
+    "rule_id": "RULE_5",
+    "severity": "MEDIUM",
+    "title": "Overstock with Heavy Discounting: 159 Items",
+    "description": "159 items have high stock (>35 units) despite heavy discounting (>25.0%). These products are not moving even at a discount. Top categories: Accessories (36), Dresses (27), Bottoms (26).",
+    "affected_count": 159,
+    "data": {
+      "count": 159,
+      "stock_threshold": 35,
+      "markdown_threshold": 25.0,
+      "top_categories": [
+        "Accessories (36)",
+        "Dresses (27)",
+        "Bottoms (26)"
+      ]
+    },
+    "recommendation": "Consider aggressive clearance pricing, bundling with higher-performing items, or returning stock to supplier if contract allows. Review initial purchasing decisions for these SKUs."
+  },
+  {
+    "rule_id": "RULE_6",
+    "severity": "LOW",
+    "title": "Out of Stock: 43 Items",
+    "description": "43 items are currently out of stock. By category: Bottoms: 10, Shoes: 10, Accessories: 8, Dresses: 8, Tops: 4, Outerwear: 3.",
+    "affected_count": 43,
+    "data": {
+      "count": 43,
+      "by_category": {
+        "Bottoms": 10,
+        "Shoes": 10,
+        "Accessories": 8,
+        "Dresses": 8,
+        "Tops": 4,
+        "Outerwear": 3
+      },
+      "product_ids": [
+        "FB000227",
+        "FB000270",
+        "FB000274",
+        "FB000288",
+        "FB000339",
+        "FB000347",
+        "FB000397",
+        "FB000407",
+        "FB000418",
+        "FB000464",
+        "FB000527",
+        "FB000716",
+        "FB000781",
+        "FB000805",
+        "FB000814",
+        "FB000831",
+        "FB000885",
+        "FB000949",
+        "FB000973",
+        "FB001129",
+        "FB001134",
+        "FB001179",
+        "FB001212",
+        "FB001227",
+        "FB001445",
+        "FB001497",
+        "FB001534",
+        "FB001573",
+        "FB001640",
+        "FB001668",
+        "FB001771",
+        "FB001832",
+        "FB001862",
+        "FB001867",
+        "FB001893",
+        "FB001902",
+        "FB001934",
+        "FB001948",
+        "FB002043",
+        "FB002044",
+        "FB002072",
+        "FB002116",
+        "FB002136"
+      ]
+    },
+    "recommendation": "Review reorder priority, especially for top-revenue categories (Outerwear, Shoes). Cross-reference with sales velocity before reordering low-rated SKUs."
+  },
+  {
+    "rule_id": "RULE_7",
+    "severity": "HIGH",
+    "title": "Revenue Drop: 2024-10 vs 2024-09",
+    "description": "Revenue in 2024-10 dropped 26.2% vs 2024-09 ($3,779.94 vs $5,123.10). Based on 46 transactions in 2024-10.",
+    "affected_count": 46,
+    "data": {
+      "month": "2024-10",
+      "prev_month": "2024-09",
+      "revenue": 3779.94,
+      "prev_revenue": 5123.1,
+      "drop_pct": 26.2
+    },
+    "recommendation": "Investigate external factors (seasonality, supply issues, competitor activity) driving the revenue drop in 2024-10. Cross-reference with return rates and stock levels for that period."
+  },
+  {
+    "rule_id": "RULE_7",
+    "severity": "HIGH",
+    "title": "Revenue Drop: 2025-05 vs 2025-04",
+    "description": "Revenue in 2025-05 dropped 32.6% vs 2025-04 ($3,785.73 vs $5,616.70). Based on 48 transactions in 2025-05.",
+    "affected_count": 48,
+    "data": {
+      "month": "2025-05",
+      "prev_month": "2025-04",
+      "revenue": 3785.73,
+      "prev_revenue": 5616.7,
+      "drop_pct": 32.6
+    },
+    "recommendation": "Investigate external factors (seasonality, supply issues, competitor activity) driving the revenue drop in 2025-05. Cross-reference with return rates and stock levels for that period."
+  },
+  {
+    "rule_id": "RULE_7",
+    "severity": "HIGH",
+    "title": "Revenue Drop: 2025-06 vs 2025-05",
+    "description": "Revenue in 2025-06 dropped 24.5% vs 2025-05 ($2,859.20 vs $3,785.73). Based on 32 transactions in 2025-06.",
+    "affected_count": 32,
+    "data": {
+      "month": "2025-06",
+      "prev_month": "2025-05",
+      "revenue": 2859.2,
+      "prev_revenue": 3785.73,
+      "drop_pct": 24.5
+    },
+    "recommendation": "Investigate external factors (seasonality, supply issues, competitor activity) driving the revenue drop in 2025-06. Cross-reference with return rates and stock levels for that period."
+  },
+  {
+    "rule_id": "RULE_10",
+    "severity": "HIGH",
+    "title": "Luxury Items with Critical Ratings: 70 Products",
+    "description": "70 luxury-priced items (>$150) have ratings below 2.0. These represent a brand perception risk for the boutique.",
+    "affected_count": 70,
+    "data": {
+      "count": 70,
+      "price_threshold": 150.0,
+      "rating_threshold": 2.0,
+      "worst_products": [
+        {
+          "product_id": "FB000636",
+          "brand": "Ann Taylor",
+          "category": "Outerwear",
+          "original_price": 205.77,
+          "customer_rating": 1.0
+        },
+        {
+          "product_id": "FB001125",
+          "brand": "Banana Republic",
+          "category": "Shoes",
+          "original_price": 167.89,
+          "customer_rating": 1.0
+        },
+        {
+          "product_id": "FB001143",
+          "brand": "Mango",
+          "category": "Dresses",
+          "original_price": 157.69,
+          "customer_rating": 1.0
+        },
+        {
+          "product_id": "FB001127",
+          "brand": "Gap",
+          "category": "Dresses",
+          "original_price": 162.42,
+          "customer_rating": 1.0
+        },
+        {
+          "product_id": "FB001787",
+          "brand": "Banana Republic",
+          "category": "Outerwear",
+          "original_price": 168.8,
+          "customer_rating": 1.0
+        },
+        {
+          "product_id": "FB001750",
+          "brand": "Mango",
+          "category": "Outerwear",
+          "original_price": 186.66,
+          "customer_rating": 1.0
+        },
+        {
+          "product_id": "FB000935",
+          "brand": "Mango",
+          "category": "Outerwear",
+          "original_price": 216.26,
+          "customer_rating": 1.1
+        },
+        {
+          "product_id": "FB001396",
+          "brand": "Gap",
+          "category": "Shoes",
+          "original_price": 159.62,
+          "customer_rating": 1.1
+        },
+        {
+          "product_id": "FB001562",
+          "brand": "Gap",
+          "category": "Shoes",
+          "original_price": 190.52,
+          "customer_rating": 1.1
+        },
+        {
+          "product_id": "FB001523",
+          "brand": "Banana Republic",
+          "category": "Outerwear",
+          "original_price": 177.82,
+          "customer_rating": 1.1
+        }
+      ]
+    },
+    "recommendation": "Urgently review luxury items with sub-2.0 ratings. Consider removing them from the catalogue or addressing quality issues with the supplier. Poor luxury ratings disproportionately damage brand trust."
+  }
+]

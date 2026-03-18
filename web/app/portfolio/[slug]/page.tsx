@@ -29,6 +29,7 @@ interface CaseStudy {
   testimonialName: string;
   testimonialRole: string;
   testimonialInitials: string;
+  demoHref?: string;
 }
 
 const CASE_STUDIES: CaseStudy[] = [
@@ -218,6 +219,7 @@ const CASE_STUDIES: CaseStudy[] = [
     testimonialName: "Store Manager",
     testimonialRole: "Luxe & Thread Boutique",
     testimonialInitials: "LT",
+    demoHref: "/demo/fashion-boutique",
   },
   {
     slug: "nl-analytics-assistant",
@@ -244,6 +246,7 @@ const CASE_STUDIES: CaseStudy[] = [
     testimonialName: "Operations Lead",
     testimonialRole: "Luxe & Thread Boutique",
     testimonialInitials: "LT",
+    demoHref: "/demo/nl-assistant",
   },
   {
     slug: "document-bot",
@@ -494,41 +497,70 @@ export default async function CaseStudyPage({
             ))}
           </div>
 
-          {/* Big metric */}
-          <div
-            style={{
-              display: "inline-block",
-              padding: "1rem 1.75rem",
-              borderRadius: "12px",
-              border: "1px solid rgba(62,189,122,0.30)",
-              backgroundColor: "rgba(62,189,122,0.08)",
-            }}
-          >
-            <p
+          {/* Big metric + optional demo button */}
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+            <div
               style={{
-                fontSize: "0.75rem",
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.07em",
-                color: "var(--color-accent)",
-                fontFamily: "var(--font-body)",
-                marginBottom: "4px",
+                display: "inline-block",
+                padding: "1rem 1.75rem",
+                borderRadius: "12px",
+                border: "1px solid rgba(62,189,122,0.30)",
+                backgroundColor: "rgba(62,189,122,0.08)",
               }}
             >
-              Key Result
-            </p>
-            <p
-              style={{
-                fontSize: "clamp(1.125rem, 2.5vw, 1.375rem)",
-                fontWeight: 700,
-                color: "#fff",
-                fontFamily: "var(--font-display)",
-                margin: 0,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              {cs.heroMetric}
-            </p>
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.07em",
+                  color: "var(--color-accent)",
+                  fontFamily: "var(--font-body)",
+                  marginBottom: "4px",
+                }}
+              >
+                Key Result
+              </p>
+              <p
+                style={{
+                  fontSize: "clamp(1.125rem, 2.5vw, 1.375rem)",
+                  fontWeight: 700,
+                  color: "#fff",
+                  fontFamily: "var(--font-display)",
+                  margin: 0,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                {cs.heroMetric}
+              </p>
+            </div>
+
+            {cs.demoHref && (
+              <Link
+                href={cs.demoHref}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "7px",
+                  padding: "0.875rem 1.5rem",
+                  borderRadius: "10px",
+                  backgroundColor: "var(--color-accent)",
+                  color: "#fff",
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.9375rem",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  transition: "background-color 0.2s",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8C3 5.24 5.24 3 8 3s5 2.24 5 5-2.24 5-5 5-5-2.24-5-5z" stroke="currentColor" strokeWidth="1.4"/>
+                  <path d="M6.5 6.5l3 1.5-3 1.5V6.5z" fill="currentColor"/>
+                </svg>
+                Try Live Demo
+              </Link>
+            )}
           </div>
         </div>
 
