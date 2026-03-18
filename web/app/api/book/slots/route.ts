@@ -46,22 +46,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const dayStart = rawStart && isValidISO(rawStart) ? rawStart : `${date}T00:00:00.000Z`;
   const dayEnd   = rawEnd   && isValidISO(rawEnd)   ? rawEnd   : `${date}T23:59:59.999Z`;
 
-  let data, error;
-  try {
-    ({ data, error } = await supabaseAdmin
-      .from("bookings")
-      .select("start_time, end_time")
-      .gte("start_time", dayStart)
-      .lte("start_time", dayEnd));
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error("[/api/book/slots] Supabase threw:", msg);
-    return NextResponse.json({ error: "Server error.", detail: msg }, { status: 500 });
-  }
+  const { data, error } = await supabaseAdmin
+    .from("bookings")
+    .select("start_time, end_time")
+    .gte("start_time", dayStart)
+    .lte("start_time", dayEnd);
 
   if (error) {
     console.error("[/api/book/slots] Supabase error:", error.message);
-    return NextResponse.json({ error: "Server error.", detail: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Server error." }, { status: 500 });
   }
 
   const bookedSlots = (data ?? []).map((b) => ({
