@@ -6,10 +6,10 @@ import QuoteConfirmationEmail from "@/components/emails/QuoteConfirmationEmail";
 // Prevent Next.js from statically analysing / pre-rendering this route at build time.
 export const dynamic = "force-dynamic";
 
-/* ─── Simple in-memory rate limiter (per IP, max 3 requests / 10 min) ──── */
+/* ─── IP rate limiter — generous limit, bot/flood protection only ──────── */
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 3;
-const WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT = 20;
+const WINDOW_MS  = 10 * 60 * 1000;
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -21,6 +21,19 @@ function isRateLimited(ip: string): boolean {
   if (entry.count >= RATE_LIMIT) return true;
   entry.count += 1;
   return false;
+}
+
+/* ─── Email-based brief limit — max 5 submissions per email ────────────── */
+const BRIEF_LIMIT = 5;
+
+async function hasExceededBriefLimit(email: string): Promise<boolean> {
+  const { count, error } = await supabaseAdmin
+    .from("leads")
+    .select("id", { count: "exact", head: true })
+    .eq("email", email.toLowerCase())
+    .eq("source", "quote_form");
+  if (error) return false; // fail open — don't block on DB error
+  return (count ?? 0) >= BRIEF_LIMIT;
 }
 
 interface QuoteRequestBody {
@@ -80,6 +93,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
   if (email.length > 254) {
     return NextResponse.json({ success: false, error: "Email must not exceed 254 characters." }, { status: 422 });
+  }
+
+  if (await hasExceededBriefLimit(email.trim())) {
+    return NextResponse.json(
+      { success: false, error: "You've already submitted 5 project briefs. Please wait for a response or contact us directly." },
+      { status: 429 }
+    );
   }
 
   if (!service || typeof service !== "string" || !ALLOWED_SERVICES.includes(service.trim())) {

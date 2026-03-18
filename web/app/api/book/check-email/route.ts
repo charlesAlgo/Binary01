@@ -19,7 +19,7 @@ function isRateLimited(ip: string, limit: number, windowMs: number): boolean {
 export async function POST(request: NextRequest): Promise<NextResponse> {
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (isRateLimited(ip, 5, 10 * 60 * 1000)) {
+  if (isRateLimited(ip, 20, 10 * 60 * 1000)) {
     return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
 
