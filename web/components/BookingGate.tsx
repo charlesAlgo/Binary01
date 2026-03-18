@@ -118,7 +118,7 @@ export default function BookingGate({ calLink }: { calLink: string }) {
             </p>
           </div>
         )}
-        <CalEmbed calLink={calLink} prefillEmail={step === "ready" ? email : undefined} />
+        <CalEmbed calLink={calLink} />
       </div>
     </div>
   );
