@@ -3,13 +3,21 @@
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { useEffect } from "react";
 
+interface CalEmbedProps {
+  calLink: string;
+  prefillEmail?: string;
+  prefillName?: string;
+  prefillNotes?: string;
+  prefillDate?: string; // "YYYY-MM-DD"
+}
+
 export default function CalEmbed({
   calLink,
   prefillEmail,
-}: {
-  calLink: string;
-  prefillEmail?: string;
-}) {
+  prefillName,
+  prefillNotes,
+  prefillDate,
+}: CalEmbedProps) {
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({});
@@ -33,6 +41,9 @@ export default function CalEmbed({
       config={{
         layout: "month_view",
         ...(prefillEmail ? { email: prefillEmail } : {}),
+        ...(prefillName ? { name: prefillName } : {}),
+        ...(prefillNotes ? { notes: prefillNotes } : {}),
+        ...(prefillDate ? { date: prefillDate } : {}),
       }}
     />
   );
