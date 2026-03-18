@@ -88,58 +88,69 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.warn("[/api/webhooks/calcom] Duplicate booking uid — ignoring:", dbError.message);
   }
 
-  // Step 2: Slack notification (fire-and-forget)
+  const esc = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const notifications: Promise<unknown>[] = [];
+
+  // Step 2: Slack notification
   if (process.env.SLACK_WEBHOOK_URL) {
-    const esc = (s: string) =>
-      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    fetch(process.env.SLACK_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: [
-          `*New booking!* 📅`,
-          `*Event:* ${esc(payload.title)}`,
-          `*With:* ${esc(attendee?.name ?? "Unknown")} (${esc(attendee?.email ?? "—")})`,
-          `*Starts:* ${esc(payload.startTime)}`,
-          `*Ends:* ${esc(payload.endTime)}`,
-        ].join("\n"),
-      }),
-    }).catch((err) => console.error("[/api/webhooks/calcom] Slack error:", err));
+    notifications.push(
+      fetch(process.env.SLACK_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: [
+            `*New booking!* 📅`,
+            `*Event:* ${esc(payload.title)}`,
+            `*With:* ${esc(attendee?.name ?? "Unknown")} (${esc(attendee?.email ?? "—")})`,
+            `*Starts:* ${esc(payload.startTime)}`,
+            `*Ends:* ${esc(payload.endTime)}`,
+          ].join("\n"),
+        }),
+      }).catch((err) => console.error("[/api/webhooks/calcom] Slack error:", err))
+    );
   }
 
-  // Step 3: Send emails via Resend (fire-and-forget)
+  // Step 3: Send emails via Resend
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // 3a. Confirmation to the attendee
     if (attendee?.email) {
-      resend.emails.send({
-        from: "Charles Shalua <no-reply@data-life.tech>",
-        to: attendee.email,
-        subject: `Confirmed: ${payload.title}`,
-        react: BookingConfirmationEmail({ payload }),
-      }).catch((err) => console.error("[/api/webhooks/calcom] Resend client email error:", err));
+      notifications.push(
+        resend.emails.send({
+          from: "Charles Shalua <no-reply@data-life.tech>",
+          to: attendee.email,
+          subject: `Confirmed: ${payload.title}`,
+          react: BookingConfirmationEmail({ payload }),
+        }).catch((err) => console.error("[/api/webhooks/calcom] Resend client email error:", err))
+      );
     }
 
     // 3b. Admin notification to Charles
     const adminEmail = process.env.ADMIN_EMAIL ?? process.env.RESEND_FROM_EMAIL;
     if (adminEmail) {
-      resend.emails.send({
-        from: "DataLife Notifications <no-reply@data-life.tech>",
-        to: adminEmail,
-        subject: `New booking: ${payload.title}`,
-        text: [
-          `New booking received via Cal.com`,
-          ``,
-          `Event:   ${payload.title}`,
-          `Name:    ${attendee?.name ?? "—"}`,
-          `Email:   ${attendee?.email ?? "—"}`,
-          `Start:   ${payload.startTime}`,
-          `End:     ${payload.endTime}`,
-        ].join("\n"),
-      }).catch((err) => console.error("[/api/webhooks/calcom] Resend admin email error:", err));
+      notifications.push(
+        resend.emails.send({
+          from: "DataLife Notifications <no-reply@data-life.tech>",
+          to: adminEmail,
+          subject: `New booking: ${payload.title}`,
+          text: [
+            `New booking received via Cal.com`,
+            ``,
+            `Event:   ${payload.title}`,
+            `Name:    ${attendee?.name ?? "—"}`,
+            `Email:   ${attendee?.email ?? "—"}`,
+            `Start:   ${payload.startTime}`,
+            `End:     ${payload.endTime}`,
+          ].join("\n"),
+        }).catch((err) => console.error("[/api/webhooks/calcom] Resend admin email error:", err))
+      );
     }
   }
+
+  await Promise.all(notifications);
 
   return NextResponse.json({ received: true }, { status: 200 });
 }
