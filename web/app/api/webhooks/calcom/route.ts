@@ -107,15 +107,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     }).catch((err) => console.error("[/api/webhooks/calcom] Slack error:", err));
   }
 
-  // Step 3: Send confirmation email via Resend (fire-and-forget)
-  if (process.env.RESEND_API_KEY && attendee?.email) {
+  // Step 3: Send emails via Resend (fire-and-forget)
+  if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    resend.emails.send({
-      from: "Charles Shalua <no-reply@data-life.tech>",
-      to: attendee.email,
-      subject: `Confirmed: ${payload.title}`,
-      react: BookingConfirmationEmail({ payload }),
-    }).catch((err) => console.error("[/api/webhooks/calcom] Resend error:", err));
+
+    // 3a. Confirmation to the attendee
+    if (attendee?.email) {
+      resend.emails.send({
+        from: "Charles Shalua <no-reply@data-life.tech>",
+        to: attendee.email,
+        subject: `Confirmed: ${payload.title}`,
+        react: BookingConfirmationEmail({ payload }),
+      }).catch((err) => console.error("[/api/webhooks/calcom] Resend client email error:", err));
+    }
+
+    // 3b. Admin notification to Charles
+    const adminEmail = process.env.ADMIN_EMAIL ?? process.env.RESEND_FROM_EMAIL;
+    if (adminEmail) {
+      resend.emails.send({
+        from: "DataLife Notifications <no-reply@data-life.tech>",
+        to: adminEmail,
+        subject: `New booking: ${payload.title}`,
+        text: [
+          `New booking received via Cal.com`,
+          ``,
+          `Event:   ${payload.title}`,
+          `Name:    ${attendee?.name ?? "—"}`,
+          `Email:   ${attendee?.email ?? "—"}`,
+          `Start:   ${payload.startTime}`,
+          `End:     ${payload.endTime}`,
+        ].join("\n"),
+      }).catch((err) => console.error("[/api/webhooks/calcom] Resend admin email error:", err));
+    }
   }
 
   return NextResponse.json({ received: true }, { status: 200 });
