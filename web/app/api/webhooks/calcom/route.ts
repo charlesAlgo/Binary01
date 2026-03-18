@@ -56,8 +56,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const { triggerEvent, payload } = body as CalcomWebhookBody;
 
+  console.log("[/api/webhooks/calcom] triggerEvent:", triggerEvent);
+  console.log("[/api/webhooks/calcom] payload keys:", Object.keys(payload ?? {}));
+  console.log("[/api/webhooks/calcom] uid:", payload?.uid, "title:", payload?.title);
+
   // Acknowledge all non-BOOKING_CREATED events silently
   if (triggerEvent !== "BOOKING_CREATED") {
+    console.log("[/api/webhooks/calcom] Ignoring event:", triggerEvent);
     return NextResponse.json({ received: true }, { status: 200 });
   }
 
