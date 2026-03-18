@@ -150,15 +150,40 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Step 2: Send confirmation email via Resend (fire-and-forget)
+  // Step 2: Send emails via Resend (fire-and-forget)
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
+
+    // 2a. Confirmation to the client
     resend.emails.send({
       from: "Charles Shalua <no-reply@data-life.tech>",
       to: lead.email,
       subject: "Got your quote request — I'll respond within 24 hours",
       react: QuoteConfirmationEmail({ name: lead.name, service: lead.service }),
-    }).catch((err) => console.error("[/api/quote] Resend error:", err));
+    }).catch((err) => console.error("[/api/quote] Resend client email error:", err));
+
+    // 2b. Admin notification to Charles
+    const adminEmail = process.env.ADMIN_EMAIL ?? process.env.RESEND_FROM_EMAIL;
+    if (adminEmail) {
+      resend.emails.send({
+        from: "DataLife Notifications <no-reply@data-life.tech>",
+        to: adminEmail,
+        subject: `New quote request from ${lead.name}`,
+        text: [
+          `New quote request received on data-life.tech`,
+          ``,
+          `Name:        ${lead.name}`,
+          `Email:       ${lead.email}`,
+          `Company:     ${lead.company ?? "—"}`,
+          `Service:     ${lead.service}`,
+          `Budget:      ${lead.budget ?? "—"}`,
+          `Timeline:    ${lead.timeline ?? "—"}`,
+          ``,
+          `Description:`,
+          lead.description,
+        ].join("\n"),
+      }).catch((err) => console.error("[/api/quote] Resend admin email error:", err));
+    }
   }
 
   // Step 3: Slack notification (fire-and-forget — don't block the response)
