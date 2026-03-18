@@ -110,7 +110,7 @@ export default function BookingGate({ calLink }: { calLink: string }) {
   // Fetch booked slots for the chosen date; generate the full grid client-side.
   // We pass the local-timezone UTC boundaries so the server queries the right range.
   const fetchSlots = useCallback(async (d: string) => {
-    if (!d) return;
+    if (!d || isWeekend(d)) return;
     setSlotsState("loading");
     setBookedSlots([]);
     setSelectedSlot("");
