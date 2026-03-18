@@ -107,18 +107,6 @@ export default function ContactPage() {
                   </div>
                 </div>
               ))}
-
-              {/* Direct email nudge */}
-              <div style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-bg-tag)", padding: "1.25rem 1.5rem", marginTop: "0.25rem" }}>
-                <p style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 600, color: "var(--color-hero)", margin: "0 0 4px" }}>Prefer email?</p>
-                <a
-                  href="mailto:hello@charlesshalua.com"
-                  style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", color: "var(--color-accent)", textDecoration: "none" }}
-                  className="hover:underline"
-                >
-                  hello@charlesshalua.com
-                </a>
-              </div>
             </div>
           </div>
         </div>
