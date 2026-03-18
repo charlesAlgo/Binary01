@@ -181,9 +181,9 @@ export default function ContactForm() {
           <option value="">Select a service…</option>
           <option value="data-analysis">Data Analysis</option>
           <option value="augmented-analytics">Augmented Analytics</option>
-          <option value="ml-application">ML Application</option>
-          <option value="llm-bot">LLM Bot</option>
-          <option value="not-sure">Not sure</option>
+          <option value="ml-applications">ML Application</option>
+          <option value="llm-bots">LLM Bot</option>
+          <option value="other">Not sure</option>
         </select>
       </div>
 

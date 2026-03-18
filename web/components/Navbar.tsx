@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 const SERVICE_DESCRIPTIONS: Record<string, string> = {
   "Data Analysis":       "Dashboards, pipelines & automated reports",
@@ -21,9 +22,8 @@ const NAV_LINKS = [
       { label: "LLM Bots",             href: "/services/llm-bots" },
     ],
   },
-  { label: "Portfolio",   href: "/portfolio" },
-  { label: "About",       href: "/about" },
-  { label: "Book a Call", href: "/book" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "About",     href: "/about" },
 ];
 
 export default function Navbar() {
@@ -61,20 +61,25 @@ export default function Navbar() {
         transition: "all 0.3s ease",
       }}
     >
-      <div className="section-wrapper" style={{ display: "flex", height: "68px", alignItems: "center", justifyContent: "space-between" }}>
+      <div
+        className="section-wrapper"
+        style={{ display: "flex", height: "68px", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}
+      >
 
-        {/* Logo */}
-        <Link href="/" style={{ textDecoration: "none" }}>
+        {/* ── Logo ── */}
+        <Link href="/" style={{ textDecoration: "none", flexShrink: 0 }}>
           <span style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.03em" }}>
             Data<span style={{ color: "var(--color-accent)" }}>Life</span>
           </span>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav style={{ display: "flex", alignItems: "center", gap: "0.25rem" }} className="hidden md:flex">
+        {/* ── Desktop Nav (centre) — NO inline display, Tailwind controls visibility ── */}
+        <nav
+          className="hidden lg:flex items-center"
+          style={{ gap: "0.25rem", flex: 1, justifyContent: "center" }}
+        >
           {NAV_LINKS.map((link) =>
             link.children ? (
-              /* Whole wrapper handles hover — no gap-triggered close */
               <div
                 key={link.label}
                 style={{ position: "relative" }}
@@ -86,44 +91,42 @@ export default function Navbar() {
                     display: "flex",
                     alignItems: "center",
                     gap: "4px",
-                    padding: "8px 14px",
+                    padding: "8px 16px",
                     fontSize: "0.875rem",
                     fontWeight: 500,
-                    color: servicesOpen ? "#fff" : "var(--color-text-hero-muted)",
+                    color: servicesOpen ? "#fff" : "rgba(255,255,255,0.70)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
                     borderRadius: "8px",
                     fontFamily: "var(--font-body)",
                     transition: "color 0.2s",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {link.label}
                   <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    style={{ transition: "transform 0.2s", transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+                    width="11" height="11" viewBox="0 0 12 12" fill="none"
+                    style={{ transition: "transform 0.2s", transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0 }}
                   >
                     <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
 
-                {/* Dropdown — always in DOM, toggled via opacity + pointer-events */}
+                {/* Dropdown */}
                 <div
                   style={{
                     position: "absolute",
                     top: "calc(100% + 8px)",
-                    left: 0,
-                    width: "280px",
+                    left: "50%",
+                    transform: servicesOpen ? "translateX(-50%) translateY(0)" : "translateX(-50%) translateY(-8px)",
+                    width: "290px",
                     borderRadius: "14px",
                     border: "1px solid rgba(62,189,122,0.20)",
                     backgroundColor: "#183D30",
                     padding: "8px",
                     boxShadow: "0 16px 48px rgba(0,0,0,0.35), 0 4px 16px rgba(0,0,0,0.2)",
                     opacity: servicesOpen ? 1 : 0,
-                    transform: servicesOpen ? "translateY(0)" : "translateY(-8px)",
                     pointerEvents: servicesOpen ? "auto" : "none",
                     transition: "opacity 0.18s ease, transform 0.18s ease",
                   }}
@@ -143,26 +146,19 @@ export default function Navbar() {
                       }}
                       onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "rgba(62,189,122,0.10)")}
                       onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                      onClick={() => setServicesOpen(false)}
                     >
-                      {/* Icon dot */}
                       <div
                         style={{
-                          width: "28px",
-                          height: "28px",
-                          borderRadius: "7px",
+                          width: "28px", height: "28px", borderRadius: "7px",
                           backgroundColor: "rgba(62,189,122,0.15)",
                           border: "1px solid rgba(62,189,122,0.25)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          marginTop: "1px",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          flexShrink: 0, marginTop: "1px",
                         }}
                       >
                         <div style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "#3EBD7A" }} />
                       </div>
-
-                      {/* Text */}
                       <div>
                         <p style={{ margin: 0, fontSize: "0.875rem", fontWeight: 600, color: "#fff", fontFamily: "var(--font-body)", lineHeight: 1.3 }}>
                           {child.label}
@@ -180,17 +176,18 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 style={{
-                  padding: "8px 14px",
+                  padding: "8px 16px",
                   fontSize: "0.875rem",
                   fontWeight: 500,
-                  color: "var(--color-text-hero-muted)",
+                  color: "rgba(255,255,255,0.70)",
                   textDecoration: "none",
                   borderRadius: "8px",
                   fontFamily: "var(--font-body)",
                   transition: "color 0.2s",
+                  whiteSpace: "nowrap",
                 }}
                 onMouseOver={(e) => (e.currentTarget.style.color = "#fff")}
-                onMouseOut={(e) => (e.currentTarget.style.color = "var(--color-text-hero-muted)")}
+                onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.70)")}
               >
                 {link.label}
               </Link>
@@ -198,15 +195,56 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* CTA */}
-        <div className="hidden md:block">
+        {/* ── Desktop CTAs — NO inline display, Tailwind controls visibility ── */}
+        <div
+          className="hidden lg:flex items-center"
+          style={{ gap: "10px", flexShrink: 0 }}
+        >
+          {/* Ghost — Book a Call */}
+          <Link
+            href="/book"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              padding: "8px 18px",
+              fontSize: "0.875rem",
+              fontWeight: 500,
+              color: "rgba(255,255,255,0.85)",
+              backgroundColor: "transparent",
+              border: "1px solid rgba(255,255,255,0.28)",
+              borderRadius: "8px",
+              textDecoration: "none",
+              fontFamily: "var(--font-body)",
+              transition: "border-color 0.2s, color 0.2s, background-color 0.2s",
+              whiteSpace: "nowrap",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.borderColor = "rgba(62,189,122,0.65)";
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.backgroundColor = "rgba(62,189,122,0.08)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
+              e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+              e.currentTarget.style.backgroundColor = "transparent";
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+              <rect x="1.5" y="3" width="13" height="11.5" rx="2" stroke="currentColor" strokeWidth="1.4"/>
+              <path d="M1.5 6.5h13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+              <path d="M5 1.5v3M11 1.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+            </svg>
+            Book a Call
+          </Link>
+
+          {/* Filled — Get a Quote */}
           <Link
             href="/contact"
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "6px",
-              padding: "9px 20px",
+              padding: "8px 20px",
               fontSize: "0.875rem",
               fontWeight: 600,
               color: "#fff",
@@ -214,7 +252,8 @@ export default function Navbar() {
               borderRadius: "8px",
               textDecoration: "none",
               fontFamily: "var(--font-body)",
-              transition: "background-color 0.2s, transform 0.2s",
+              transition: "background-color 0.2s, transform 0.15s",
+              whiteSpace: "nowrap",
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.backgroundColor = "var(--color-accent-hover)";
@@ -229,62 +268,143 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Hamburger */}
+        {/* ── Hamburger — shows on everything below lg ── */}
         <button
-          className="md:hidden"
+          className="lg:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
-          style={{ display: "flex", flexDirection: "column", gap: "5px", padding: "8px", background: "none", border: "none", cursor: "pointer" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "8px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "#fff",
+            flexShrink: 0,
+          }}
         >
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              style={{
-                display: "block",
-                height: "2px",
-                width: "22px",
-                backgroundColor: "#fff",
-                borderRadius: "2px",
-                transition: "all 0.2s",
-                transform:
-                  i === 0 && menuOpen ? "translateY(7px) rotate(45deg)"
-                  : i === 2 && menuOpen ? "translateY(-7px) rotate(-45deg)"
-                  : "none",
-                opacity: i === 1 && menuOpen ? 0 : 1,
-              }}
-            />
-          ))}
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* ── Mobile / Tablet Menu ── */}
       {menuOpen && (
-        <div style={{ borderTop: "1px solid var(--color-border-hero)", backgroundColor: "var(--color-hero)", padding: "12px 20px 20px" }}>
-          {NAV_LINKS.map((link) =>
-            link.children ? (
-              <div key={link.label}>
-                <p style={{ padding: "10px 8px 4px", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-hero-muted)", fontFamily: "var(--font-body)" }}>
-                  {link.label}
-                </p>
-                {link.children.map((child) => (
-                  <Link key={child.href} href={child.href} onClick={() => setMenuOpen(false)}
-                    style={{ display: "block", padding: "9px 12px", fontSize: "0.875rem", color: "rgba(255,255,255,0.75)", textDecoration: "none", borderRadius: "8px", fontFamily: "var(--font-body)" }}
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <Link key={link.href} href={link.href} onClick={() => setMenuOpen(false)}
-                style={{ display: "block", padding: "10px 12px", fontSize: "0.875rem", fontWeight: 500, color: "rgba(255,255,255,0.75)", textDecoration: "none", borderRadius: "8px", fontFamily: "var(--font-body)" }}
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.10)",
+            backgroundColor: "rgba(18,50,38,0.98)",
+            backdropFilter: "blur(16px)",
+            padding: "16px 20px 28px",
+          }}
+        >
+          {/* Services group */}
+          <div style={{ marginBottom: "4px" }}>
+            <p style={{
+              padding: "8px 10px 6px",
+              margin: 0,
+              fontSize: "0.68rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+              color: "rgba(255,255,255,0.35)",
+              fontFamily: "var(--font-body)",
+            }}>
+              Services
+            </p>
+            {NAV_LINKS[0].children!.map((child) => (
+              <Link
+                key={child.href}
+                href={child.href}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "10px 10px",
+                  fontSize: "0.9rem",
+                  color: "rgba(255,255,255,0.80)",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  fontFamily: "var(--font-body)",
+                  transition: "background 0.15s",
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "rgba(62,189,122,0.08)")}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+              >
+                <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "#3EBD7A", flexShrink: 0 }} />
+                {child.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Portfolio + About */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "8px", marginBottom: "4px" }}>
+            {NAV_LINKS.slice(1).map((link) => (
+              <Link
+                key={link.href}
+                href={link.href!}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "block",
+                  padding: "10px 10px",
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                  color: "rgba(255,255,255,0.80)",
+                  textDecoration: "none",
+                  borderRadius: "8px",
+                  fontFamily: "var(--font-body)",
+                }}
               >
                 {link.label}
               </Link>
-            )
-          )}
-          <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid var(--color-border-hero)" }}>
-            <Link href="/contact" onClick={() => setMenuOpen(false)}
-              style={{ display: "block", textAlign: "center", padding: "11px", fontSize: "0.875rem", fontWeight: 600, color: "#fff", backgroundColor: "var(--color-accent)", borderRadius: "8px", textDecoration: "none", fontFamily: "var(--font-body)" }}
+            ))}
+          </div>
+
+          {/* CTAs */}
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "16px", display: "flex", flexDirection: "column", gap: "10px" }}>
+            <Link
+              href="/book"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                padding: "13px",
+                fontSize: "0.9rem",
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.85)",
+                backgroundColor: "transparent",
+                border: "1px solid rgba(255,255,255,0.25)",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontFamily: "var(--font-body)",
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <rect x="1.5" y="3" width="13" height="11.5" rx="2" stroke="currentColor" strokeWidth="1.4"/>
+                <path d="M1.5 6.5h13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+                <path d="M5 1.5v3M11 1.5v3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+              </svg>
+              Book a Call
+            </Link>
+            <Link
+              href="/contact"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                display: "block",
+                textAlign: "center",
+                padding: "13px",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                color: "#fff",
+                backgroundColor: "var(--color-accent)",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontFamily: "var(--font-body)",
+              }}
             >
               Get a Quote
             </Link>

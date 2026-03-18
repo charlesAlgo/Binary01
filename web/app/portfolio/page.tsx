@@ -63,6 +63,24 @@ const PROJECTS: Project[] = [
     accent: "#3B82F6",
     bg: "#eff6ff",
   },
+  {
+    slug: "fashion-boutique-dashboard",
+    tag: "Data Analysis",
+    title: "Fashion Boutique Retail Dashboard",
+    client: "Luxe & Thread Boutique",
+    metric: "118 dead inventory SKUs surfaced — $5,762 recovered",
+    accent: "#3EBD7A",
+    bg: "#f0faf5",
+  },
+  {
+    slug: "nl-analytics-assistant",
+    tag: "Augmented Analytics",
+    title: "AI Natural Language Analytics Assistant",
+    client: "Luxe & Thread Boutique",
+    metric: "Plain-English → chart in under 3 seconds",
+    accent: "#F59E0B",
+    bg: "#fffbeb",
+  },
 ];
 
 const STATS = [
