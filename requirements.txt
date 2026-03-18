@@ -1,0 +1,6 @@
+pandas
+numpy
+pyarrow
+streamlit
+plotly==5.22.0
+groq
