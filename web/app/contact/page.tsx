@@ -81,7 +81,7 @@ export default function ContactPage() {
       {/* ── 2. Form + Info ── */}
       <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
         <div className="section-wrapper">
-          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "clamp(2rem, 6vw, 5rem)", alignItems: "start" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr]" style={{ gap: "clamp(2rem, 6vw, 5rem)", alignItems: "start" }}>
 
             {/* Left — form */}
             <div>
@@ -93,7 +93,7 @@ export default function ContactPage() {
             </div>
 
             {/* Right — info cards */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", position: "sticky", top: "6rem" }}>
+            <div className="lg:sticky lg:top-24" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", marginBottom: "0.25rem" }}>Good to know</p>
               {INFO_CARDS.map((card) => (
                 <div

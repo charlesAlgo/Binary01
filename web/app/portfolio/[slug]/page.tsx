@@ -194,6 +194,58 @@ const CASE_STUDIES: CaseStudy[] = [
     testimonialInitials: "PN",
   },
   {
+    slug: "fashion-boutique-dashboard",
+    tag: "Data Analysis",
+    tagAccent: "#3EBD7A",
+    title: "Fashion Boutique Retail Analytics Dashboard",
+    client: "Luxe & Thread Boutique",
+    industry: "Retail & Fashion",
+    duration: "2 weeks",
+    heroMetric: "118 dead inventory SKUs surfaced — $5,762 in capital recovered",
+    challenge:
+      "A mid-market fashion boutique was making inventory and pricing decisions based on intuition. Managers had no visibility into which brands were driving returns, which product categories were underperforming, or how much revenue was being lost to markdowns. Without a structured view of their 2,176-record transaction dataset, dead inventory accumulated and pricing decisions were reactive rather than strategic.",
+    solution:
+      "I built an ETL pipeline (Python + pandas) that cleaned the raw CSV, engineered 8 derived KPIs (revenue_lost, price_band, rating_band, is_dead_inventory, etc.), and exported to Parquet for fast loading. On top of the clean data I delivered a 6-page Streamlit dashboard — Executive Summary, Category Deep Dive, Brand Performance, Markdown & Pricing, Returns Analysis, and Inventory Status — each page answering a specific decision managers actually face. A reusable Plotly/Streamlit design system ensures visual consistency across all chart types.",
+    results: [
+      { number: "118", label: "Dead inventory SKUs identified (>30% markdown + low rating)" },
+      { number: "$5,762", label: "Capital tied up in dead stock — surfaced for clearance" },
+      { number: "$25,460", label: "Revenue lost to markdowns quantified across catalogue" },
+      { number: "<2s", label: "Dashboard load time on cleaned Parquet file" },
+    ],
+    tech: ["Python", "pandas", "Streamlit", "Plotly", "Parquet", "pytest", "numpy"],
+    testimonialQuote:
+      "We finally have a single place to see what's moving, what's dying, and where our markdowns are eating into margin. The dead inventory view alone paid for the project in the first week.",
+    testimonialName: "Store Manager",
+    testimonialRole: "Luxe & Thread Boutique",
+    testimonialInitials: "LT",
+  },
+  {
+    slug: "nl-analytics-assistant",
+    tag: "Augmented Analytics",
+    tagAccent: "#F59E0B",
+    title: "AI Natural Language Analytics Assistant",
+    client: "Luxe & Thread Boutique",
+    industry: "Retail & Fashion",
+    duration: "2 weeks",
+    heroMetric: "Plain-English → chart in under 3 seconds",
+    challenge:
+      "Even with a dashboard (Project 1), store managers couldn't get answers to ad-hoc questions without developer help. 'Which Zara products had the highest markdown loss in Fall?' requires writing a pandas query — something non-technical managers can't do. Additionally, no automated system existed to proactively surface anomalies or compile weekly KPIs, meaning issues like rising return rates went unnoticed for weeks.",
+    solution:
+      "I built a conversational AI assistant powered by Llama 3.3 70B (Groq). The NL query engine converts plain-English questions into pandas code via structured JSON output, then executes the code inside a RestrictedPython sandbox — only pandas and numpy are accessible; file system, network, and eval are fully blocked. A 10-rule anomaly detection engine runs automatically and surfaces HIGH/MEDIUM/LOW severity alerts live in the chat sidebar. A KPI generator computes ~20 metrics and produces formatted weekly Markdown reports for store managers.",
+    results: [
+      { number: "<3s", label: "Plain-English question → Plotly chart" },
+      { number: "10", label: "Automated anomaly rules (returns, ratings, inventory, revenue)" },
+      { number: "9", label: "HIGH-severity anomalies detected automatically on first run" },
+      { number: "100%", label: "LLM-generated code sandboxed — zero filesystem/network access" },
+    ],
+    tech: ["Llama 3.3 70B", "Groq API", "RestrictedPython", "Streamlit", "Plotly", "pandas", "Python"],
+    testimonialQuote:
+      "I can just ask it 'which brands had returns above 15% last month' and it shows me a chart instantly. I don't need to wait for a developer anymore — the data answers me directly.",
+    testimonialName: "Operations Lead",
+    testimonialRole: "Luxe & Thread Boutique",
+    testimonialInitials: "LT",
+  },
+  {
     slug: "document-bot",
     tag: "LLM Bot",
     tagAccent: "#3B82F6",

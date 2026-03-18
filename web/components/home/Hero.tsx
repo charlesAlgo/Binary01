@@ -90,9 +90,9 @@ export default function Hero() {
             </motion.div>
 
             {/* FOMO + Let's Collaborate button */}
-            <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap", marginBottom: "2.75rem" }}>
+            <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap", marginBottom: "2.75rem", rowGap: "0.625rem" }}>
               <ButtonWithIcon label="Let's Collaborate" href="/contact" />
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0, minWidth: 0 }}>
                 <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#3EBD7A", display: "inline-block", boxShadow: "0 0 0 3px rgba(62,189,122,0.25)", animation: "pulse 2s infinite" }} />
                 <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.65)", fontFamily: "var(--font-body)", fontWeight: 500 }}>
                   Open to new projects —{" "}
