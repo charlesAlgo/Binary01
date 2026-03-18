@@ -104,14 +104,10 @@ export default function BookingGate({ calLink }: { calLink: string }) {
         </div>
       )}
 
-      {/* ─── Cal.com embed ──────────────────────────────────────── */}
-      {step === "ready" && (
-        <CalEmbed calLink={calLink} prefillEmail={email} />
-      )}
-
-      {/* ─── Blurred preview (before email verified) ────────────── */}
-      {step !== "ready" && (
-        <div style={{ position: "relative" }}>
+      {/* ─── Cal.com embed (always mounted so it pre-loads) ────── */}
+      <div style={{ position: "relative" }}>
+        {/* Blur overlay — hidden once email is verified */}
+        {step !== "ready" && (
           <div
             aria-hidden="true"
             style={{ position: "absolute", inset: 0, zIndex: 10, borderRadius: "14px", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)", backgroundColor: "rgba(255,255,255,0.55)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "0.5rem", cursor: "not-allowed", pointerEvents: "all" }}
@@ -121,11 +117,9 @@ export default function BookingGate({ calLink }: { calLink: string }) {
               Enter your email above to unlock the calendar
             </p>
           </div>
-          <div inert aria-hidden="true">
-            <CalEmbed calLink={calLink} />
-          </div>
-        </div>
-      )}
+        )}
+        <CalEmbed calLink={calLink} prefillEmail={step === "ready" ? email : undefined} />
+      </div>
     </div>
   );
 }
