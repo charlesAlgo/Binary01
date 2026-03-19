@@ -631,7 +631,7 @@ export default async function CaseStudyPage({
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
               gap: "clamp(2rem, 5vw, 4rem)",
             }}
           >
@@ -753,7 +753,7 @@ export default async function CaseStudyPage({
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))",
               gap: "1.25rem",
             }}
           >

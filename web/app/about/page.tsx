@@ -101,7 +101,7 @@ export default function AboutPage() {
       {/* ── 2. Story ── */}
       <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
         <div className="section-wrapper">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: "clamp(2rem, 6vw, 5rem)", alignItems: "start" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr]" style={{ gap: "clamp(2rem, 6vw, 5rem)", alignItems: "start" }}>
 
             {/* Left — profile card */}
             <div
@@ -190,7 +190,7 @@ export default function AboutPage() {
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "1.25rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 240px), 1fr))", gap: "1.25rem" }}>
             {CREDENTIALS.map((c) => (
               <div
                 key={c.title}
@@ -218,7 +218,7 @@ export default function AboutPage() {
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "1.25rem" }}>
             {VALUES.map((v, i) => (
               <div
                 key={v.title}
@@ -252,7 +252,7 @@ export default function AboutPage() {
             />
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: "1.5rem" }}>
             {STACK.map((group) => (
               <div key={group.category} style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
                 <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-hero)", fontFamily: "var(--font-body)", marginBottom: "1rem" }}>

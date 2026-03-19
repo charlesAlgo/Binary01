@@ -160,7 +160,7 @@ export default function BookPage() {
             </h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem", maxWidth: "880px", marginInline: "auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "1.25rem", maxWidth: "880px", marginInline: "auto" }}>
             {FAQS.map((faq) => (
               <div
                 key={faq.q}
