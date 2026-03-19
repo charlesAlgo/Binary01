@@ -41,7 +41,7 @@ inject_css()
 # ─── Premium white-base CSS ────────────────────────────────────────────────────
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ── Pure white base ────────────────────────────────────────────────────────── */
 .stApp,
@@ -55,6 +55,120 @@ section.main > div.block-container {
     padding-top: 1.5rem !important;
     padding-bottom: 4rem !important;
     max-width: 960px !important;
+}
+
+/* ── Global font reset for main area ────────────────────────────────────────── */
+.main, .main * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* ── Main area prose text ───────────────────────────────────────────────────── */
+.main .stMarkdown p,
+.main .stMarkdown li,
+.main p {
+    color: #27272A !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.72 !important;
+    font-weight: 400 !important;
+}
+
+/* ── Chat message typography ────────────────────────────────────────────────── */
+[data-testid="stChatMessage"] p,
+[data-testid="stChatMessage"] .stMarkdown p {
+    color: #18181B !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.75 !important;
+    font-weight: 400 !important;
+    margin-bottom: 0.6rem !important;
+}
+[data-testid="stChatMessage"] strong,
+[data-testid="stChatMessage"] b {
+    color: #18181B !important;
+    font-weight: 700 !important;
+}
+[data-testid="stChatMessage"] em,
+[data-testid="stChatMessage"] i {
+    color: #3F3F46 !important;
+    font-style: italic !important;
+}
+[data-testid="stChatMessage"] ul,
+[data-testid="stChatMessage"] ol {
+    padding-left: 1.35rem !important;
+    margin: 6px 0 10px !important;
+}
+[data-testid="stChatMessage"] li {
+    color: #18181B !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.7 !important;
+    margin-bottom: 5px !important;
+}
+[data-testid="stChatMessage"] li::marker {
+    color: #7C3AED !important;
+}
+[data-testid="stChatMessage"] h1,
+[data-testid="stChatMessage"] h2,
+[data-testid="stChatMessage"] h3 {
+    color: #18181B !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    margin: 14px 0 6px !important;
+    line-height: 1.3 !important;
+}
+[data-testid="stChatMessage"] h1 { font-size: 1.15rem !important; }
+[data-testid="stChatMessage"] h2 { font-size: 1.05rem !important; }
+[data-testid="stChatMessage"] h3 { font-size: 0.975rem !important; }
+[data-testid="stChatMessage"] code {
+    background: #F5F3FF !important;
+    color: #5B21B6 !important;
+    border-radius: 5px !important;
+    padding: 2px 7px !important;
+    font-size: 0.825em !important;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+    font-weight: 500 !important;
+}
+[data-testid="stChatMessage"] pre {
+    background: #1E1B4B !important;
+    border-radius: 10px !important;
+    padding: 14px 18px !important;
+    margin: 10px 0 !important;
+    overflow-x: auto !important;
+}
+[data-testid="stChatMessage"] pre code {
+    background: transparent !important;
+    color: #C4B5FD !important;
+    padding: 0 !important;
+    font-size: 0.84rem !important;
+}
+[data-testid="stChatMessage"] blockquote {
+    border-left: 3px solid #7C3AED !important;
+    margin: 8px 0 !important;
+    padding: 4px 14px !important;
+    background: #F5F3FF !important;
+    border-radius: 0 8px 8px 0 !important;
+}
+[data-testid="stChatMessage"] blockquote p {
+    color: #4C1D95 !important;
+    font-style: italic !important;
+    margin: 0 !important;
+}
+[data-testid="stChatMessage"] hr {
+    border-color: #F0F0F0 !important;
+    margin: 12px 0 !important;
+}
+
+/* ── User bubble text ───────────────────────────────────────────────────────── */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) p,
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) .stMarkdown p {
+    color: #3B0764 !important;
+    font-weight: 500 !important;
+}
+
+/* ── Streaming text ─────────────────────────────────────────────────────────── */
+[data-testid="stChatMessage"] [data-testid="stText"],
+[data-testid="stChatMessage"] [data-testid="stMarkdownContainer"] {
+    color: #18181B !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.75 !important;
 }
 
 /* ── Welcome hero (light) ───────────────────────────────────────────────────── */
