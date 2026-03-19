@@ -5,18 +5,18 @@ Translates natural-language questions into Pandas operations via Groq
 (Llama 3.3 70B), executes the generated code safely with RestrictedPython,
 and returns structured results with optional Plotly charts.
 
-Usage:
-    from nl_assistant.query_engine import run_query
-
-    result = run_query("What were our top 5 selling brands?")
-    print(result["explanation"])
-    if result["chart"]:
-        result["chart"].show()
+Improvements over v1:
+  • Multi-turn conversation history (last 4 Q&A pairs passed to LLM)
+  • Auto-retry with LLM error-correction loop (up to 3 attempts)
+  • AST-based static code validator — catches bad code before execution
+  • In-memory query cache — identical questions skip the API call
 """
 
 from __future__ import annotations
 
+import ast
 import csv
+import hashlib
 import json
 import os
 import re
@@ -56,7 +56,6 @@ df = _load_dataframe()
 # ─── System prompt ─────────────────────────────────────────────────────────────
 
 def _load_system_prompt() -> str:
-    """Read system_prompt.md and extract the first fenced code block."""
     text = _PROMPT_PATH.read_text(encoding="utf-8")
     match = re.search(r"```\n(.*?)```", text, re.DOTALL)
     return match.group(1).strip() if match else text
@@ -72,6 +71,57 @@ class QueryResult(TypedDict):
     chart: go.Figure | None
     error: str | None
 
+# ─── In-memory cache ───────────────────────────────────────────────────────────
+
+_CACHE: dict[str, QueryResult] = {}
+
+
+def _cache_key(question: str, history: list[dict]) -> str:
+    """MD5 key over the question + last 4 turns of history."""
+    history_str = "|".join(
+        f"{m['role']}:{m['content'][:80]}" for m in history
+    )
+    raw = f"{question.strip().lower()}||{history_str}"
+    return hashlib.md5(raw.encode()).hexdigest()
+
+# ─── Static code validator ─────────────────────────────────────────────────────
+
+_BANNED_NAMES = {
+    "os", "sys", "open", "eval", "exec", "__import__",
+    "requests", "urllib", "subprocess", "importlib", "socket",
+    "builtins", "globals", "locals", "vars", "dir",
+}
+
+
+def _validate_code(code: str) -> str | None:
+    """
+    AST-based static analysis of LLM-generated code.
+    Returns an error string if the code is unsafe or malformed, else None.
+    """
+    try:
+        tree = ast.parse(code)
+    except SyntaxError as e:
+        return f"Syntax error: {e}"
+
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and node.id in _BANNED_NAMES:
+            return f"Unsafe identifier: `{node.id}`"
+        if isinstance(node, ast.Attribute) and node.attr in _BANNED_NAMES:
+            return f"Unsafe attribute: `{node.attr}`"
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            return "Import statements are not permitted in generated code"
+
+    # Must assign to `result`
+    assigned = {
+        n.targets[0].id
+        for n in ast.walk(tree)
+        if isinstance(n, ast.Assign) and isinstance(n.targets[0], ast.Name)
+    }
+    if "result" not in assigned:
+        return "Code must assign a value to a variable named `result`"
+
+    return None
+
 # ─── Logging ───────────────────────────────────────────────────────────────────
 
 def _log_query(
@@ -79,18 +129,20 @@ def _log_query(
     question: str,
     success: bool,
     error: str | None,
+    attempts: int = 1,
 ) -> None:
     _LOG_DIR.mkdir(parents=True, exist_ok=True)
     write_header = not _LOG_PATH.exists()
     with _LOG_PATH.open("a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         if write_header:
-            writer.writerow(["timestamp", "session_id", "question", "success", "error"])
+            writer.writerow(["timestamp", "session_id", "question", "success", "attempts", "error"])
         writer.writerow([
             datetime.now().isoformat(),
             session_id,
             question,
             success,
+            attempts,
             error or "",
         ])
 
@@ -107,12 +159,10 @@ _ALLOWED_BUILTINS: dict[str, Any] = {
 
 
 def _execute_code(code: str) -> tuple[Any, str | None]:
-    """Execute LLM-generated pandas code in a restricted namespace.
-
-    Returns (result_value, error_message). result_value is whatever value
-    the code stores in a variable named ``result``.
     """
-    # Attempt RestrictedPython first; fall back to plain exec with tight globals.
+    Execute LLM-generated pandas code in a restricted namespace.
+    Returns (result_value, error_message).
+    """
     try:
         from RestrictedPython import compile_restricted, safe_globals  # type: ignore
         from RestrictedPython.Guards import safe_builtins  # type: ignore
@@ -140,7 +190,6 @@ def _execute_code(code: str) -> tuple[Any, str | None]:
             return None, str(e)
 
     except ImportError:
-        # RestrictedPython not available — fall back to plain exec with limited globals
         namespace = {**_ALLOWED_BUILTINS, "pd": pd, "np": np, "df": df, "__builtins__": {}}
         try:
             exec(code, namespace)  # noqa: S102
@@ -151,23 +200,12 @@ def _execute_code(code: str) -> tuple[Any, str | None]:
 # ─── Chart builder ─────────────────────────────────────────────────────────────
 
 _COLORS = [
-    "#7C3AED",  # violet  (primary)
-    "#EC4899",  # rose
-    "#14B8A6",  # teal
-    "#F59E0B",  # amber
-    "#3B82F6",  # blue
-    "#10B981",  # emerald
-    "#EF4444",  # red
-    "#8B5CF6",  # lavender
+    "#7C3AED", "#EC4899", "#14B8A6", "#F59E0B",
+    "#3B82F6", "#10B981", "#EF4444", "#8B5CF6",
 ]
 
 
-def _build_chart(
-    result: pd.DataFrame,
-    chart_type: str,
-    chart_config: dict,
-) -> go.Figure | None:
-    """Build a Plotly figure from a DataFrame result and chart metadata."""
+def _build_chart(result: pd.DataFrame, chart_type: str, chart_config: dict) -> go.Figure | None:
     if chart_type in ("none", "table", ""):
         return None
 
@@ -177,168 +215,198 @@ def _build_chart(
 
     try:
         if chart_type == "bar":
-            fig = px.bar(result, x=x, y=y, title=title,
-                         color_discrete_sequence=_COLORS)
+            fig = px.bar(result, x=x, y=y, title=title, color_discrete_sequence=_COLORS)
         elif chart_type == "line":
-            fig = px.line(result, x=x, y=y, title=title,
-                          color_discrete_sequence=_COLORS)
+            fig = px.line(result, x=x, y=y, title=title, color_discrete_sequence=_COLORS)
         elif chart_type == "pie":
-            fig = px.pie(result, names=x, values=y, title=title,
-                         color_discrete_sequence=_COLORS)
+            fig = px.pie(result, names=x, values=y, title=title, color_discrete_sequence=_COLORS)
         elif chart_type == "scatter":
-            fig = px.scatter(result, x=x, y=y, title=title,
-                             color_discrete_sequence=_COLORS)
+            fig = px.scatter(result, x=x, y=y, title=title, color_discrete_sequence=_COLORS)
         else:
             return None
 
         fig.update_layout(
-            paper_bgcolor="#FFFFFF",
-            plot_bgcolor="#FAFAFA",
+            paper_bgcolor="#FFFFFF", plot_bgcolor="#FAFAFA",
             font=dict(family="Inter, sans-serif", color="#3F3F46", size=12),
             title_font=dict(family="Inter, sans-serif", color="#18181B", size=14),
-            margin=dict(l=44, r=28, t=60, b=44),
-            bargap=0.28,
-            xaxis=dict(
-                gridcolor="#F4F4F5", linecolor="#E4E4E7", zeroline=False,
-                tickfont=dict(color="#71717A", size=11),
-                title_font=dict(color="#71717A", size=12),
-            ),
-            yaxis=dict(
-                gridcolor="#F4F4F5", linecolor="rgba(0,0,0,0)", zeroline=False,
-                tickfont=dict(color="#71717A", size=11),
-                title_font=dict(color="#71717A", size=12),
-            ),
-            hoverlabel=dict(
-                bgcolor="#FFFFFF", bordercolor="#E4E4E7",
-                font=dict(family="Inter", size=12, color="#18181B"),
-            ),
+            margin=dict(l=44, r=28, t=60, b=44), bargap=0.28,
+            xaxis=dict(gridcolor="#F4F4F5", linecolor="#E4E4E7", zeroline=False,
+                       tickfont=dict(color="#71717A", size=11),
+                       title_font=dict(color="#71717A", size=12)),
+            yaxis=dict(gridcolor="#F4F4F5", linecolor="rgba(0,0,0,0)", zeroline=False,
+                       tickfont=dict(color="#71717A", size=11),
+                       title_font=dict(color="#71717A", size=12)),
+            hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E4E4E7",
+                            font=dict(family="Inter", size=12, color="#18181B")),
         )
-        fig.update_traces(
-            selector=dict(type="bar"),
-            marker_line_width=0,
-            marker_cornerradius=4,
-        )
+        fig.update_traces(selector=dict(type="bar"), marker_line_width=0, marker_cornerradius=4)
         return fig
     except Exception:
         return None
 
+# ─── Groq call helper ──────────────────────────────────────────────────────────
+
+def _groq_call(client: Any, messages: list[dict], max_tokens: int = 1024) -> dict:
+    """Single Groq call → parsed JSON dict. Raises on any failure."""
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=messages,
+        max_tokens=max_tokens,
+        temperature=0.1,
+        response_format={"type": "json_object"},
+    )
+    return json.loads(response.choices[0].message.content)
+
 # ─── Main public function ──────────────────────────────────────────────────────
 
-def run_query(question: str, session_id: str | None = None) -> QueryResult:
+def run_query(
+    question: str,
+    session_id: str | None = None,
+    conversation_history: list[dict] | None = None,
+) -> QueryResult:
     """
     Translate a natural-language question into pandas code, execute it safely,
     and return a structured result with an optional Plotly chart.
 
     Parameters
     ----------
-    question   : Natural-language analytics question in plain English.
-    session_id : Optional ID for grouping queries in the log CSV.
-
-    Returns
-    -------
-    QueryResult with keys:
-        explanation : str   — What the analysis found (or a clarifying question).
-        result      : DataFrame | str | None — The computed answer.
-        chart       : Figure | None          — Plotly chart if appropriate.
-        error       : str | None             — Error message if something went wrong.
+    question             : Natural-language analytics question.
+    session_id           : Optional ID for grouping queries in the log CSV.
+    conversation_history : List of {"role": ..., "content": ...} dicts from
+                           previous turns. Last 8 items (4 Q&A pairs) are used.
     """
     if session_id is None:
         session_id = str(uuid.uuid4())
+
+    history = (conversation_history or [])[-8:]
+
+    # ── Cache check ──────────────────────────────────────────────────────────
+    cache_k = _cache_key(question, history)
+    if cache_k in _CACHE:
+        return _CACHE[cache_k]
 
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
         _log_query(session_id, question, False, "GROQ_API_KEY not set")
         return QueryResult(
             explanation="The analytics engine is not configured (missing GROQ_API_KEY).",
-            result=None,
-            chart=None,
-            error="GROQ_API_KEY not set",
+            result=None, chart=None, error="GROQ_API_KEY not set",
         )
 
-    # ── Call Groq ────────────────────────────────────────────────────────────
+    # ── Build messages with conversation history ─────────────────────────────
+    messages: list[dict] = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        *history,
+        {"role": "user", "content": question},
+    ]
+
+    # ── Initial Groq call ────────────────────────────────────────────────────
     try:
         from groq import Groq  # type: ignore
         client = Groq(api_key=api_key)
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user",   "content": question},
-            ],
-            max_tokens=1024,
-            temperature=0.1,
-            response_format={"type": "json_object"},
-        )
-        raw = response.choices[0].message.content
+        parsed = _groq_call(client, messages)
     except Exception as e:
         err = f"LLM call failed: {e}"
         _log_query(session_id, question, False, err)
         return QueryResult(
             explanation="Could not reach the AI service. Please try again in a moment.",
-            result=None,
-            chart=None,
-            error=err,
+            result=None, chart=None, error=err,
         )
 
-    # ── Parse JSON response ──────────────────────────────────────────────────
-    try:
-        parsed = json.loads(raw)
-    except json.JSONDecodeError as e:
-        err = f"JSON parse error: {e}"
-        _log_query(session_id, question, False, err)
-        return QueryResult(
-            explanation="The AI returned an unexpected response format. Please rephrase.",
-            result=None,
-            chart=None,
-            error=err,
-        )
-
-    # Clarification request
+    # ── Clarification request ────────────────────────────────────────────────
     if "clarification" in parsed:
         _log_query(session_id, question, True, None)
         return QueryResult(
             explanation=parsed["clarification"],
-            result=None,
-            chart=None,
-            error=None,
+            result=None, chart=None, error=None,
         )
 
-    code         = parsed.get("code", "")
-    explanation  = parsed.get("explanation", "")
-    chart_type   = parsed.get("chart_type", "none")
-    chart_config = parsed.get("chart_config", {})
+    code        = parsed.get("code", "")
+    explanation = parsed.get("explanation", "")
+    chart_type  = parsed.get("chart_type", "none")
+    chart_cfg   = parsed.get("chart_config", {})
 
     if not code:
         err = "LLM returned empty code block"
         _log_query(session_id, question, False, err)
         return QueryResult(
             explanation=explanation or "The AI could not generate code for this question.",
-            result=None,
-            chart=None,
-            error=err,
+            result=None, chart=None, error=err,
         )
 
-    # ── Execute ──────────────────────────────────────────────────────────────
-    result_val, exec_error = _execute_code(code)
+    # ── Static validation ────────────────────────────────────────────────────
+    validation_err = _validate_code(code)
+    if validation_err:
+        # Ask LLM to fix invalid code before even trying to execute
+        try:
+            fix_msgs = messages + [
+                {"role": "assistant", "content": json.dumps(parsed)},
+                {"role": "user", "content":
+                    f"Your code failed static validation: {validation_err}\n"
+                    "Fix it and return corrected JSON only."},
+            ]
+            parsed = _groq_call(client, fix_msgs)
+            code        = parsed.get("code", code)
+            explanation = parsed.get("explanation", explanation)
+            chart_type  = parsed.get("chart_type", chart_type)
+            chart_cfg   = parsed.get("chart_config", chart_cfg)
+        except Exception:
+            pass  # fall through to execution; RestrictedPython will catch it
+
+    # ── Execute with auto-retry loop (up to 3 attempts) ──────────────────────
+    result_val  = None
+    exec_error  = None
+    attempts    = 0
+
+    for attempt in range(3):
+        attempts = attempt + 1
+        result_val, exec_error = _execute_code(code)
+
+        if not exec_error:
+            break
+
+        if attempt < 2:
+            # Send the runtime error back to the LLM for correction
+            try:
+                fix_msgs = messages + [
+                    {"role": "assistant", "content": json.dumps(parsed)},
+                    {"role": "user", "content":
+                        f"Attempt {attempt + 1} failed with this runtime error:\n"
+                        f"  {exec_error}\n\n"
+                        "Fix the code. Return only a corrected JSON object."},
+                ]
+                fixed = _groq_call(client, fix_msgs, max_tokens=1024)
+                new_code = fixed.get("code", "")
+                if new_code and new_code != code:
+                    code        = new_code
+                    explanation = fixed.get("explanation", explanation)
+                    chart_type  = fixed.get("chart_type", chart_type)
+                    chart_cfg   = fixed.get("chart_config", chart_cfg)
+                    parsed      = fixed
+                else:
+                    break  # LLM returned same code — no point retrying
+            except Exception:
+                break
 
     if exec_error:
-        _log_query(session_id, question, False, exec_error)
+        _log_query(session_id, question, False, exec_error, attempts)
         return QueryResult(
             explanation=explanation,
-            result=None,
-            chart=None,
-            error=exec_error,
+            result=None, chart=None, error=exec_error,
         )
 
     # ── Build chart ──────────────────────────────────────────────────────────
     chart = None
     if isinstance(result_val, pd.DataFrame) and chart_type not in ("none", "table", ""):
-        chart = _build_chart(result_val, chart_type, chart_config)
+        chart = _build_chart(result_val, chart_type, chart_cfg)
 
-    _log_query(session_id, question, True, None)
-    return QueryResult(
+    qr = QueryResult(
         explanation=explanation,
         result=result_val,
         chart=chart,
         error=None,
     )
+
+    _log_query(session_id, question, True, None, attempts)
+    _CACHE[cache_k] = qr
+    return qr
