@@ -81,6 +81,15 @@ const PROJECTS: Project[] = [
     accent: "#F59E0B",
     bg: "#fffbeb",
   },
+  {
+    slug: "ecommerce-spending-predictor",
+    tag: "ML Application",
+    title: "E-Commerce Customer Spending Predictor",
+    client: "NovaBuy E-Commerce",
+    metric: "R²=97.8% · predicts within $10.48 of actual spend",
+    accent: "#8B5CF6",
+    bg: "#f5f3ff",
+  },
 ];
 
 const STATS = [
