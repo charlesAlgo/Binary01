@@ -5,9 +5,31 @@ import SectionHeader from "@/components/SectionHeader";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "About — Charles Shalua, Founder & Co-Engineer",
+  title: "About Charles Shalua — Freelance AI & Data Engineer",
   description:
-    "Charles Shalua is the Founder & Co-Engineer of DataLife. Builder, analyst, and AI engineer helping businesses turn data into real competitive advantages.",
+    "Charles Shalua is a Top-Rated Upwork freelancer and Founder of DataLife. AI engineer, data analyst, and ML developer based in Ontario, Canada. 40+ projects delivered.",
+  keywords: [
+    "Charles Shalua",
+    "DataLife founder",
+    "freelance AI engineer Canada",
+    "data analyst Ontario",
+    "machine learning freelancer",
+    "Top Rated Upwork data analyst",
+    "AI engineer for hire",
+  ],
+  openGraph: {
+    title: "About Charles Shalua — Freelance AI & Data Engineer | DataLife",
+    description:
+      "Top-Rated Upwork freelancer, AI engineer, and founder of DataLife. 40+ projects delivered across data analysis, ML, and LLM bots.",
+    url: "https://data-life.tech/about",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Charles Shalua — Freelance AI & Data Engineer | DataLife",
+    description:
+      "Top-Rated Upwork freelancer and founder of DataLife. AI engineer based in Ontario, Canada.",
+  },
+  alternates: { canonical: "https://data-life.tech/about" },
 };
 
 const STACK = [

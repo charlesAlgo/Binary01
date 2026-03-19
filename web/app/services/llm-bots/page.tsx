@@ -6,9 +6,33 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "LLM Bots Services",
+  title: "Freelance LLM Bot & AI Chatbot Developer",
   description:
-    "Custom AI assistants built on your data — RAG pipelines, lead qualification bots, CRM integrations, and guardrails for safe, on-brand conversations.",
+    "Custom AI chatbots built on your data — RAG pipelines, lead qualification bots, CRM integrations. Freelance LLM developer. Fixed-price, production-ready.",
+  keywords: [
+    "freelance LLM developer",
+    "AI chatbot developer freelance",
+    "RAG pipeline development",
+    "custom AI assistant",
+    "LLM bot for hire",
+    "chatbot development service",
+    "GPT chatbot freelance",
+    "conversational AI developer",
+    "lead qualification bot",
+  ],
+  openGraph: {
+    title: "Freelance LLM Bot & AI Chatbot Developer | DataLife",
+    description:
+      "Custom RAG pipelines, lead qualification bots, and AI assistants. Freelance LLM developer, fixed-price.",
+    url: "https://data-life.tech/services/llm-bots",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance LLM Bot & AI Chatbot Developer | DataLife",
+    description:
+      "Custom RAG pipelines, AI assistants, and chatbots. Freelance LLM developer.",
+  },
+  alternates: { canonical: "https://data-life.tech/services/llm-bots" },
 };
 
 const FEATURES = [

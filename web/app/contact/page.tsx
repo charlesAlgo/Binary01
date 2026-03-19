@@ -3,9 +3,30 @@ import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact — Get a Free Quote",
+  title: "Hire a Freelance AI Engineer — Get a Free Quote",
   description:
-    "Tell me about your project and I'll send a fixed-price quote within 24 hours. Data analysis, ML applications, LLM bots, and augmented analytics.",
+    "Tell Charles about your project and get a fixed-price quote within 24 hours. Data analysis, ML applications, LLM bots, and augmented analytics. No obligation.",
+  keywords: [
+    "hire freelance data analyst",
+    "hire ML developer",
+    "AI engineer for hire",
+    "get data analysis quote",
+    "freelance AI project quote",
+    "hire LLM developer",
+  ],
+  openGraph: {
+    title: "Hire a Freelance AI Engineer — Get a Free Quote | DataLife",
+    description:
+      "Get a fixed-price quote within 24 hours for data analysis, ML, LLM bots, or analytics projects. No obligation.",
+    url: "https://data-life.tech/contact",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hire a Freelance AI Engineer — Get a Free Quote | DataLife",
+    description:
+      "Fixed-price quote within 24 hours for your data or AI project. No obligation.",
+  },
+  alternates: { canonical: "https://data-life.tech/contact" },
 };
 
 const INFO_CARDS = [

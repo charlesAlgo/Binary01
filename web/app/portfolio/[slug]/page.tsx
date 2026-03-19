@@ -338,9 +338,33 @@ export async function generateMetadata({
   const { slug } = await params;
   const cs = CASE_STUDIES.find((c) => c.slug === slug);
   if (!cs) return { title: "Not Found" };
+
+  const description = `${cs.heroMetric} — A ${cs.tag} case study for ${cs.client} in the ${cs.industry} industry. By Charles Shalua, DataLife.`;
+  const url = `https://data-life.tech/portfolio/${cs.slug}`;
+
   return {
     title: cs.title,
-    description: `${cs.heroMetric} — A ${cs.tag} case study for ${cs.client} in ${cs.industry}.`,
+    description,
+    keywords: [
+      cs.tag,
+      cs.industry,
+      "case study",
+      "freelance AI project",
+      "DataLife",
+      "Charles Shalua",
+    ],
+    openGraph: {
+      title: `${cs.title} | DataLife Case Study`,
+      description,
+      url,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${cs.title} | DataLife Case Study`,
+      description,
+    },
+    alternates: { canonical: url },
   };
 }
 

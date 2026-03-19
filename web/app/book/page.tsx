@@ -3,9 +3,30 @@ import Link from "next/link";
 import BookingGate from "@/components/BookingGate";
 
 export const metadata: Metadata = {
-  title: "Book a Discovery Call",
+  title: "Book a Free Discovery Call — Charles Shalua",
   description:
-    "Book a free 30-minute discovery call with Charles Shalua. We'll talk through your project, data, and goals. No pitch, no pressure.",
+    "Book a free 30-min call with Charles Shalua, Top-Rated Upwork AI & data engineer. Discuss your project, data, and goals. No pitch, no pressure. Ontario, Canada.",
+  keywords: [
+    "book freelance data analyst",
+    "schedule AI consultation",
+    "free discovery call data engineer",
+    "hire Charles Shalua",
+    "DataLife consultation",
+    "book ML developer call",
+  ],
+  openGraph: {
+    title: "Book a Free Discovery Call — Charles Shalua | DataLife",
+    description:
+      "Free 30-min call with a Top-Rated Upwork AI & data engineer. Discuss your project with no pitch, no pressure.",
+    url: "https://data-life.tech/book",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Book a Free Discovery Call — Charles Shalua | DataLife",
+    description:
+      "Free 30-min call with a Top-Rated Upwork AI & data engineer. No pitch, no pressure.",
+  },
+  alternates: { canonical: "https://data-life.tech/book" },
 };
 
 const WHAT_WE_COVER = [

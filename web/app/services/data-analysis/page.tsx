@@ -6,9 +6,32 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "Data Analysis Services",
+  title: "Freelance Data Analysis & BI Dashboards",
   description:
-    "Custom dashboards, automated reporting, SQL optimization, and stakeholder-ready exports. Turn your raw data into clear business decisions.",
+    "Hire a freelance data analyst for custom Power BI / Tableau dashboards, automated reporting, and SQL pipelines. Fixed price, delivered in weeks. Ontario, Canada.",
+  keywords: [
+    "freelance data analyst",
+    "data analysis services",
+    "custom BI dashboard",
+    "Power BI developer freelance",
+    "Tableau dashboard freelance",
+    "SQL data pipeline",
+    "automated reporting freelance",
+    "business intelligence freelancer",
+  ],
+  openGraph: {
+    title: "Freelance Data Analysis & BI Dashboards | DataLife",
+    description:
+      "Custom Power BI / Tableau dashboards, automated reporting, and SQL pipelines. Fixed-price, delivered in weeks.",
+    url: "https://data-life.tech/services/data-analysis",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance Data Analysis & BI Dashboards | DataLife",
+    description:
+      "Custom dashboards, automated reporting, and SQL pipelines. Fixed-price freelance data analyst.",
+  },
+  alternates: { canonical: "https://data-life.tech/services/data-analysis" },
 };
 
 const FEATURES = [
