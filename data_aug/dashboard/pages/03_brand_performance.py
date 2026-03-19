@@ -110,7 +110,7 @@ def style_brand_table(df_t: pd.DataFrame, worst_brand: str) -> pd.io.formats.sty
         .apply(row_highlight, axis=1)
         .format({"Revenue": "${:,.2f}", "Return Rate (%)": "{:.1f}%", "Avg Rating": "{:.2f}", "Avg Markdown (%)": "{:.1f}%"})
         .set_table_styles([
-            {"selector": "thead th", "props": [("background-color", "#2563EB"), ("color", "white"), ("font-weight", "600")]},
+            {"selector": "thead th", "props": [("background-color", "#7C3AED"), ("color", "white"), ("font-weight", "600")]},
         ])
     )
     return styled
@@ -206,7 +206,7 @@ if not returns.empty:
         z=pivot.values,
         x=pivot.columns.tolist(),
         y=pivot.index.tolist(),
-        colorscale=[[0, "#F0F7FF"], [1, "#2563EB"]],
+        colorscale=[[0, "#F5F3FF"], [1, "#7C3AED"]],
         text=pivot.values.astype(int),
         texttemplate="%{text}",
         hovertemplate="Brand: %{y}<br>Reason: %{x}<br>Returns: %{z}<extra></extra>",

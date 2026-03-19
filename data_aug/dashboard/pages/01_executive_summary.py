@@ -11,7 +11,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from utils.charts import apply_datalife_theme, inject_css, kpi_card, DATALIFE_COLORS, page_header, insight_box, section_intro
+from utils.charts import apply_datalife_theme, inject_css, kpi_card_html, kpi_row, DATALIFE_COLORS, page_header, insight_box, section_intro
 
 st.set_page_config(page_title="Executive Summary — DataLife", layout="wide", page_icon="📈")
 inject_css()
@@ -73,19 +73,26 @@ revenue_lost  = filtered["revenue_lost"].sum()
 return_rate   = filtered["is_returned"].mean() * 100
 rated         = filtered[filtered["has_rating"]]
 avg_rating    = rated["customer_rating"].mean() if len(rated) > 0 else 0.0
-markdown_pct  = filtered["is_marked_down"].mean() * 100
+markdown_pct = filtered["is_marked_down"].mean() * 100
 
 section_intro("Key Metrics", "These four numbers tell the headline story. Revenue is what you earned; markdown losses is what you gave away. A return rate above 14.7% is the watch threshold.")
 
-k1, k2, k3, k4 = st.columns(4)
-with k1:
-    st.metric(**kpi_card("Total Revenue", f"${total_revenue:,.2f}", help="Sum of current_price for filtered transactions"))
-with k2:
-    st.metric(**kpi_card("Lost to Markdowns", f"${revenue_lost:,.2f}", help="Revenue gap between original and final price"))
-with k3:
-    st.metric(**kpi_card("Return Rate", f"{return_rate:.1f}%", help="Items returned as % of total. Benchmark: 14.7%"))
-with k4:
-    st.metric(**kpi_card(f"Avg Rating (n={len(rated):,})", f"{avg_rating:.2f} / 5.0", help="Only rated items counted. 16.6% have no rating."))
+kpi_row(
+    kpi_card_html("Total Revenue", f"${total_revenue:,.2f}", icon="💰",
+        sub="Sum of current_price · filtered view",
+        accent="#7C3AED", icon_bg="#EDE9FE"),
+    kpi_card_html("Lost to Markdowns", f"${revenue_lost:,.2f}", icon="📉",
+        sub="Original vs final price gap",
+        accent="#EF4444", icon_bg="#FEF2F2"),
+    kpi_card_html("Return Rate", f"{return_rate:.1f}%", icon="🔄",
+        sub="Benchmark: 14.7% store average",
+        delta=f"{return_rate - 14.7:+.1f}% vs avg",
+        delta_type="neg" if return_rate > 14.7 else "pos",
+        accent="#F59E0B", icon_bg="#FFFBEB"),
+    kpi_card_html(f"Avg Rating · {len(rated):,} items", f"{avg_rating:.2f} / 5.0", icon="⭐",
+        sub="16.6% of items have no rating",
+        accent="#14B8A6", icon_bg="#F0FDFA"),
+)
 
 st.divider()
 
