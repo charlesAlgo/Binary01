@@ -31,27 +31,28 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "DataLife — Freelance AI & Data Engineer | Charles Shalua",
+    default: "AI & Data Freelancer for Hire — Charles Shalua | DataLife",
     template: "%s | DataLife",
   },
   description:
-    "Hire Charles Shalua — Top-Rated Upwork freelancer for Data Analysis, ML Applications, LLM Bots & Augmented Analytics. Fixed-price quotes, 40+ projects delivered. Ontario, Canada.",
+    "DataLife delivers data analysis, ML apps, and LLM bots for growth-minded businesses. Ontario-based, available worldwide. Book a free strategy call today.",
 
   keywords: [
-    "freelance data analyst",
+    "hire freelance data analyst",
     "freelance machine learning developer",
-    "LLM bot developer",
-    "augmented analytics freelancer",
-    "data analysis freelancer Canada",
-    "AI engineer freelancer",
-    "custom dashboard development",
-    "ML application developer",
-    "Upwork data scientist",
+    "AI chatbot developer for hire",
+    "augmented analytics consultant",
+    "data analysis consultant Canada",
+    "freelance AI engineer Ontario",
+    "ML application developer for hire",
+    "RAG pipeline developer freelance",
+    "freelance data analyst Toronto",
+    "LangChain developer for hire Canada",
     "DataLife",
     "Charles Shalua",
     "freelance AI developer Ontario",
-    "chatbot development freelance",
-    "predictive analytics developer",
+    "machine learning consultant Canada",
+    "PIPEDA-compliant data analyst freelance",
   ],
 
   authors: [{ name: "Charles Shalua", url: BASE_URL }],
@@ -75,9 +76,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: BASE_URL,
     siteName: "DataLife",
-    title: "DataLife — Freelance AI & Data Engineer | Charles Shalua",
+    title: "AI & Data Freelancer for Hire — Charles Shalua | DataLife",
     description:
-      "Top-Rated Upwork freelancer for Data Analysis, ML Applications, LLM Bots & Augmented Analytics. Fixed-price quotes, 40+ projects delivered.",
+      "DataLife delivers data analysis, ML apps, and LLM bots for growth-minded businesses. Ontario-based, available worldwide.",
     images: [
       {
         url: "/og-image.png",
@@ -90,9 +91,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "DataLife — Freelance AI & Data Engineer | Charles Shalua",
+    title: "AI & Data Freelancer for Hire — Charles Shalua | DataLife",
     description:
-      "Top-Rated Upwork freelancer for Data Analysis, ML Applications, LLM Bots & Augmented Analytics. Fixed-price quotes, 40+ projects delivered.",
+      "DataLife delivers data analysis, ML apps, and LLM bots for growth-minded businesses. Ontario-based, available worldwide.",
     images: ["/og-image.png"],
     creator: "@charlesshalua",
   },

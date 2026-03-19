@@ -6,9 +6,9 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "Freelance ML Application Developer — Custom ML Models",
+  title: "ML Application Developer for Hire | DataLife",
   description:
-    "Hire a freelance ML developer for custom classification, regression, fraud detection, and forecasting models deployed as production REST APIs. Fixed-price.",
+    "From prediction models to full ML-powered apps — Charles Shalua builds production-ready machine learning solutions for startups and businesses. Request a quote.",
   keywords: [
     "freelance machine learning developer",
     "ML application developer",
