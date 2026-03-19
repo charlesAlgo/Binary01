@@ -1,0 +1,27 @@
+{
+  "model_type": "OLS",
+  "model_version": "1.0.0",
+  "best_params": {},
+  "train_date": "2026-03-18",
+  "train_size": 400,
+  "test_size": 100,
+  "random_state": 42,
+  "test_r2": 0.977813,
+  "test_rmse": 10.4816,
+  "test_mae": 8.5584,
+  "test_mape": 1.7913,
+  "feature_names": [
+    "avg_session_length",
+    "time_on_app",
+    "time_on_website",
+    "length_of_membership"
+  ],
+  "feature_names_raw": [
+    "Avg. Session Length",
+    "Time on App",
+    "Time on Website",
+    "Length of Membership"
+  ],
+  "retrain_source": "C:\\Users\\SCORPIO\\OneDrive\\Desktop\\PORTFOLIO_PROJECT\\ML_PROJECT\\data\\raw\\Ecommerce_Customers.csv",
+  "retrain_timestamp": "20260318_223058"
+}
