@@ -16,7 +16,7 @@ st.set_page_config(
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from utils.charts import inject_css, kpi_card, insight_box, page_header
+from utils.charts import inject_css, kpi_card_html, kpi_row, insight_box, page_header
 
 inject_css()
 
@@ -77,27 +77,20 @@ rated           = df[df["has_rating"]]
 avg_rating      = rated["customer_rating"].mean() if len(rated) > 0 else 0.0
 dead_inv        = df["is_dead_inventory"].sum()
 
-k1, k2, k3, k4 = st.columns(4)
-with k1:
-    st.metric(**kpi_card(
-        "Total Revenue", f"${total_revenue:,.2f}",
-        help="Sum of current_price (after markdown) for all 2,176 transactions"
-    ))
-with k2:
-    st.metric(**kpi_card(
-        "Lost to Markdowns", f"${markdown_losses:,.2f}",
-        help="Revenue given away through discounts — original_price minus current_price"
-    ))
-with k3:
-    st.metric(**kpi_card(
-        "Return Rate", f"{return_rate:.1f}%",
-        help="14.7% of items were returned. Store average used as benchmark across all views."
-    ))
-with k4:
-    st.metric(**kpi_card(
-        "Avg Customer Rating", f"{avg_rating:.2f} / 5.0",
-        help=f"Based on {len(rated):,} rated items. {len(df)-len(rated):,} items have no rating."
-    ))
+kpi_row(
+    kpi_card_html("Total Revenue", f"${total_revenue:,.2f}", icon="💰",
+        sub="Sum of current_price after markdowns",
+        accent="#7C3AED", icon_bg="#EDE9FE"),
+    kpi_card_html("Lost to Markdowns", f"${markdown_losses:,.2f}", icon="📉",
+        sub="Revenue surrendered through discounts",
+        accent="#EF4444", icon_bg="#FEF2F2"),
+    kpi_card_html("Return Rate", f"{return_rate:.1f}%", icon="🔄",
+        sub="Store benchmark: 14.7%",
+        accent="#F59E0B", icon_bg="#FFFBEB"),
+    kpi_card_html("Avg Customer Rating", f"{avg_rating:.2f} / 5.0", icon="⭐",
+        sub=f"Based on {len(rated):,} rated items",
+        accent="#14B8A6", icon_bg="#F0FDFA"),
+)
 
 st.divider()
 
@@ -152,16 +145,24 @@ with col_left:
     st.markdown("### Dataset Overview")
     st.markdown('<p class="dl-section-intro">The raw dataset covers 12 months of product transaction records, cleaned and enriched with 10 derived analytical columns by the DataLife ETL pipeline.</p>', unsafe_allow_html=True)
 
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.metric("Records", f"{len(df):,}")
-        st.metric("Brands", df["brand"].nunique())
-    with c2:
-        st.metric("Categories", df["category"].nunique())
-        st.metric("Marked Down", f"{df['is_marked_down'].sum():,}")
-    with c3:
-        st.metric("Out of Stock", f"{df['is_out_of_stock'].sum()}")
-        st.metric("Dead Inventory", f"{dead_inv}")
+    kpi_row(
+        kpi_card_html("Records", f"{len(df):,}", icon="🗂️",
+            sub="Total transactions", accent="#7C3AED", icon_bg="#EDE9FE"),
+        kpi_card_html("Brands", f"{df['brand'].nunique()}", icon="🏷️",
+            sub="Unique brands tracked", accent="#EC4899", icon_bg="#FDF2F8"),
+        kpi_card_html("Categories", f"{df['category'].nunique()}", icon="📁",
+            sub="Product categories", accent="#14B8A6", icon_bg="#F0FDFA"),
+        cols=4,
+    )
+    kpi_row(
+        kpi_card_html("Marked Down", f"{df['is_marked_down'].sum():,}", icon="🏷️",
+            sub="Items with active discount", accent="#F59E0B", icon_bg="#FFFBEB"),
+        kpi_card_html("Out of Stock", f"{df['is_out_of_stock'].sum()}", icon="📦",
+            sub="Items currently OOS", accent="#EF4444", icon_bg="#FEF2F2"),
+        kpi_card_html("Dead Inventory", f"{dead_inv}", icon="⚠️",
+            sub=">30% markdown + rating <2.5", accent="#EF4444", icon_bg="#FEF2F2"),
+        cols=4,
+    )
 
     st.markdown("")
     insight_box(
