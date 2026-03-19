@@ -6,31 +6,31 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "Freelance LLM Bot & AI Chatbot Developer",
+  title: "LLM & AI Chatbot Developer for Hire | DataLife",
   description:
-    "Custom AI chatbots built on your data — RAG pipelines, lead qualification bots, CRM integrations. Freelance LLM developer. Fixed-price, production-ready.",
+    "Custom LLM bots, RAG pipelines, and AI agents built for your business. Charles Shalua specializes in production chatbots using LangChain, Groq, and open-source LLMs.",
   keywords: [
-    "freelance LLM developer",
-    "AI chatbot developer freelance",
+    "hire freelance LLM developer",
+    "AI chatbot developer for hire",
+    "freelance RAG chatbot developer",
     "RAG pipeline development",
-    "custom AI assistant",
+    "LangChain developer for hire Canada",
+    "custom AI agent developer",
+    "build custom AI chatbot for my business",
+    "AI knowledge base bot developer freelance",
     "LLM bot for hire",
-    "chatbot development service",
-    "GPT chatbot freelance",
-    "conversational AI developer",
-    "lead qualification bot",
   ],
   openGraph: {
-    title: "Freelance LLM Bot & AI Chatbot Developer | DataLife",
+    title: "LLM & AI Chatbot Developer for Hire | DataLife",
     description:
-      "Custom RAG pipelines, lead qualification bots, and AI assistants. Freelance LLM developer, fixed-price.",
+      "Custom LLM bots, RAG pipelines, and AI agents using LangChain and Groq. Freelance LLM developer, fixed-price.",
     url: "https://data-life.tech/services/llm-bots",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Freelance LLM Bot & AI Chatbot Developer | DataLife",
+    title: "LLM & AI Chatbot Developer for Hire | DataLife",
     description:
-      "Custom RAG pipelines, AI assistants, and chatbots. Freelance LLM developer.",
+      "Custom RAG pipelines, AI chatbots, and LLM agents using LangChain and Groq. Fixed-price.",
   },
   alternates: { canonical: "https://data-life.tech/services/llm-bots" },
 };

@@ -6,29 +6,30 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "Freelance Augmented Analytics & AI-Powered BI",
+  title: "Augmented Analytics Consultant for Hire | DataLife",
   description:
-    "Natural language query interfaces, anomaly detection, and AI-generated KPI summaries on top of your existing data. Freelance augmented analytics developer.",
+    "AI-powered analytics that surface insights automatically. Smart BI dashboards, automated reports, and NLP-driven analytics for data-driven businesses.",
   keywords: [
-    "augmented analytics freelancer",
-    "AI business intelligence developer",
-    "natural language query interface",
-    "anomaly detection service",
-    "AI KPI dashboard",
-    "predictive analytics developer",
-    "AI-powered reporting",
+    "augmented analytics consultant",
+    "AI business intelligence consultant freelance",
+    "natural language analytics consultant",
+    "automated reporting consultant",
+    "AI-powered dashboard developer",
+    "augmented analytics for small business freelancer",
+    "self-service analytics consultant freelance",
+    "automated business insights consultant Canada",
   ],
   openGraph: {
-    title: "Freelance Augmented Analytics & AI-Powered BI | DataLife",
+    title: "Augmented Analytics Consultant for Hire | DataLife",
     description:
-      "NL query interfaces, anomaly detection, and AI-generated KPI summaries. Freelance augmented analytics developer.",
+      "AI-powered analytics that surface insights automatically. Smart BI dashboards, automated reports, and NLP-driven analytics.",
     url: "https://data-life.tech/services/augmented-analytics",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Freelance Augmented Analytics & AI-Powered BI | DataLife",
+    title: "Augmented Analytics Consultant for Hire | DataLife",
     description:
-      "Natural language queries, anomaly detection, AI-generated summaries. Freelance augmented analytics.",
+      "AI-powered analytics, smart BI dashboards, and automated NLP-driven reporting. Augmented analytics consultant.",
   },
   alternates: { canonical: "https://data-life.tech/services/augmented-analytics" },
 };
