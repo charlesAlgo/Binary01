@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "Interactive 6-page Streamlit analytics dashboard built for Luxe & Thread Boutique. Explore revenue, markdowns, returns, and inventory live.",
 };
 
-const DEMO_URL = process.env.NEXT_PUBLIC_DEMO_FASHION_URL;
+const DEMO_URL = "https://binary01-gzhhs5ykmbvbdbc8qfb5di.streamlit.app";
 
 export default function FashionBoutiqueDemoPage() {
   return (
