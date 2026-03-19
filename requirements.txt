@@ -6,3 +6,7 @@ altair>=5.0.0
 plotly==5.22.0
 groq
 RestrictedPython
+scikit-learn
+joblib
+scipy
+statsmodels
