@@ -151,8 +151,14 @@ def _execute_code(code: str) -> tuple[Any, str | None]:
 # ─── Chart builder ─────────────────────────────────────────────────────────────
 
 _COLORS = [
-    "#2563EB", "#38BDF8", "#14B8A6", "#8B5CF6",
-    "#F59E0B", "#EF4444", "#EC4899", "#6B7280",
+    "#7C3AED",  # violet  (primary)
+    "#EC4899",  # rose
+    "#14B8A6",  # teal
+    "#F59E0B",  # amber
+    "#3B82F6",  # blue
+    "#10B981",  # emerald
+    "#EF4444",  # red
+    "#8B5CF6",  # lavender
 ]
 
 
@@ -187,14 +193,30 @@ def _build_chart(
 
         fig.update_layout(
             paper_bgcolor="#FFFFFF",
-            plot_bgcolor="#FFFFFF",
-            font=dict(family="Inter, sans-serif", color="#0F172A", size=12),
-            title_font=dict(family="Inter, sans-serif", color="#0F172A", size=15),
-            margin=dict(l=40, r=24, t=56, b=40),
-            xaxis=dict(gridcolor="#F1F5F9", linecolor="#E2E8F0",
-                       tickfont=dict(color="#64748B", size=11)),
-            yaxis=dict(gridcolor="#F1F5F9", linecolor="#E2E8F0",
-                       tickfont=dict(color="#64748B", size=11)),
+            plot_bgcolor="#FAFAFA",
+            font=dict(family="Inter, sans-serif", color="#3F3F46", size=12),
+            title_font=dict(family="Inter, sans-serif", color="#18181B", size=14),
+            margin=dict(l=44, r=28, t=60, b=44),
+            bargap=0.28,
+            xaxis=dict(
+                gridcolor="#F4F4F5", linecolor="#E4E4E7", zeroline=False,
+                tickfont=dict(color="#71717A", size=11),
+                title_font=dict(color="#71717A", size=12),
+            ),
+            yaxis=dict(
+                gridcolor="#F4F4F5", linecolor="rgba(0,0,0,0)", zeroline=False,
+                tickfont=dict(color="#71717A", size=11),
+                title_font=dict(color="#71717A", size=12),
+            ),
+            hoverlabel=dict(
+                bgcolor="#FFFFFF", bordercolor="#E4E4E7",
+                font=dict(family="Inter", size=12, color="#18181B"),
+            ),
+        )
+        fig.update_traces(
+            selector=dict(type="bar"),
+            marker_line_width=0,
+            marker_cornerradius=4,
         )
         return fig
     except Exception:
