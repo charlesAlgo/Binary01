@@ -98,7 +98,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   if (process.env.SLACK_WEBHOOK_URL) {
-    fetch(process.env.SLACK_WEBHOOK_URL, {
+    await fetch(process.env.SLACK_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

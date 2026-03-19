@@ -50,8 +50,18 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>("");
   const [nextId, setNextId] = useState(1);
+  const [userMessageCount, setUserMessageCount] = useState(0);
+
+  // Lead capture state
+  const [leadName, setLeadName] = useState("");
+  const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [leadLoading, setLeadLoading] = useState(false);
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const leadInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const showLeadCapture = userMessageCount >= 3 && !leadSubmitted;
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -60,6 +70,11 @@ export default function ChatWidget() {
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 50);
   }, [isOpen]);
+
+  // Focus lead input when it appears
+  useEffect(() => {
+    if (showLeadCapture) setTimeout(() => leadInputRef.current?.focus(), 50);
+  }, [showLeadCapture]);
 
   async function handleSend() {
     const text = input.trim();
@@ -70,6 +85,7 @@ export default function ChatWidget() {
     setInput("");
     setNextId((n) => n + 1);
     setIsLoading(true);
+    setUserMessageCount((c) => c + 1);
 
     try {
       const res = await fetch("/api/chat", {
@@ -98,8 +114,53 @@ export default function ChatWidget() {
     }
   }
 
+  async function handleLeadSubmit() {
+    const name = leadName.trim();
+    if (!name || leadLoading) return;
+
+    setLeadLoading(true);
+
+    // Derive project context from first user message in conversation
+    const firstUserMsg = messages.find((m) => m.role === "user");
+    const projectType = firstUserMsg?.text ?? "Chat conversation";
+
+    const transcript = messages
+      .map((m) => `${m.role === "user" ? "Visitor" : "Assistant"}: ${m.text}`)
+      .join("\n");
+
+    try {
+      await fetch("/api/chat/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          projectType,
+          fullTranscript: transcript,
+        }),
+      });
+    } catch {
+      // Best-effort — don't block the user
+    } finally {
+      setLeadLoading(false);
+      setLeadSubmitted(true);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: nextId,
+          role: "bot",
+          text: `Thanks ${name}! Charles will review your conversation and reach out within 4 hours. You can also book a call directly at /book.`,
+        },
+      ]);
+      setNextId((n) => n + 1);
+    }
+  }
+
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") handleSend();
+  }
+
+  function handleLeadKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") handleLeadSubmit();
   }
 
   return (
@@ -170,6 +231,37 @@ export default function ChatWidget() {
             {isLoading && <TypingIndicator />}
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Lead capture banner — shown after 3 exchanges, before input */}
+          {showLeadCapture && (
+            <div style={{ borderTop: "1px solid var(--color-border)", padding: "10px 12px", backgroundColor: "#F0FDF4", flexShrink: 0 }}>
+              <p style={{ margin: "0 0 8px", fontSize: "12px", fontFamily: "var(--font-body)", color: "var(--color-text-secondary)", fontWeight: 500 }}>
+                Want Charles to follow up personally?
+              </p>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input
+                  ref={leadInputRef}
+                  type="text"
+                  value={leadName}
+                  onChange={(e) => setLeadName(e.target.value)}
+                  onKeyDown={handleLeadKeyDown}
+                  placeholder="Your name"
+                  aria-label="Your name for follow-up"
+                  maxLength={100}
+                  style={{ flex: 1, border: "1px solid var(--color-border)", borderRadius: "8px", padding: "7px 10px", fontSize: "13px", fontFamily: "var(--font-body)", color: "var(--color-text-primary)", backgroundColor: "#fff", outline: "none" }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "var(--color-accent)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "var(--color-border)"; }}
+                />
+                <button
+                  onClick={handleLeadSubmit}
+                  disabled={!leadName.trim() || leadLoading}
+                  style={{ padding: "7px 14px", borderRadius: "8px", border: "none", backgroundColor: leadName.trim() && !leadLoading ? "var(--color-hero)" : "var(--color-border)", color: "#fff", fontSize: "12px", fontWeight: 600, fontFamily: "var(--font-body)", cursor: leadName.trim() && !leadLoading ? "pointer" : "default", flexShrink: 0, transition: "background-color 0.15s" }}
+                >
+                  {leadLoading ? "…" : "Notify Charles"}
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Input */}
           <div style={{ borderTop: "1px solid var(--color-border)", padding: "12px", display: "flex", gap: "8px", backgroundColor: "#fff", flexShrink: 0 }}>

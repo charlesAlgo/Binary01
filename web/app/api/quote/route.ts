@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 /* ─── IP rate limiter — generous limit, bot/flood protection only ──────── */
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 20;
+const RATE_LIMIT = 3;
 const WINDOW_MS  = 10 * 60 * 1000;
 
 function isRateLimited(ip: string): boolean {

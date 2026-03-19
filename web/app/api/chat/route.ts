@@ -90,6 +90,28 @@ function getKeywordReply(message: string): string {
   return "Hi! I'm Charles's AI assistant. I can help with DataLife's services, pricing, and how to get started. What are you building?";
 }
 
+/** Fetch last N conversation turns from chat_logs for multi-turn context. */
+async function fetchHistory(
+  sessionId: string,
+  limit = 8
+): Promise<Array<{ role: "user" | "assistant"; content: string }>> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("chat_logs")
+      .select("role, content")
+      .eq("session_id", sessionId)
+      .order("created_at", { ascending: true })
+      .limit(limit);
+    if (error || !data) return [];
+    return data.map((row) => ({
+      role: row.role as "user" | "assistant",
+      content: row.content as string,
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
   let body: unknown;
   try {
@@ -132,11 +154,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // Use Groq + Llama 3.3 if API key is configured, otherwise fall back to keyword stub
   if (process.env.GROQ_API_KEY) {
     try {
+      // Fetch prior turns for multi-turn context (last 4 exchanges = 8 rows)
+      const history = await fetchHistory(resolvedSessionId, 8);
+
       const groq = createGroq({ apiKey: process.env.GROQ_API_KEY });
       const { text } = await generateText({
         model: groq("llama-3.3-70b-versatile"),
         system: SYSTEM_PROMPT,
-        prompt: userMessage,
+        messages: [...history, { role: "user", content: userMessage }],
         maxOutputTokens: 300,
       });
       reply = text.trim();
@@ -148,14 +173,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     reply = getKeywordReply(userMessage);
   }
 
-  // Log conversation turn to Supabase (fire-and-forget)
+  // Log both turns to Supabase — awaited so Vercel does not kill the promise
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    supabaseAdmin.from("chat_logs").insert([
+    const { error: logError } = await supabaseAdmin.from("chat_logs").insert([
       { session_id: resolvedSessionId, role: "user", content: userMessage },
       { session_id: resolvedSessionId, role: "assistant", content: reply },
-    ]).then(({ error }) => {
-      if (error) console.error("[/api/chat] Supabase log error:", error.message);
-    });
+    ]);
+    if (logError) console.error("[/api/chat] Supabase log error:", logError.message);
   }
 
   return NextResponse.json({ reply, sessionId: resolvedSessionId }, { status: 200 });

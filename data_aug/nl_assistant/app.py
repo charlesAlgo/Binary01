@@ -315,23 +315,69 @@ div[data-testid="stButton"] > button[kind="secondary"] {
     box-shadow: 0 1px 6px rgba(0,0,0,0.05) !important;
 }
 
-/* ── Chat input bar ──────────────────────────────────────────────────────────── */
+/* ── Chat input — sticky bottom container ───────────────────────────────────── */
+[data-testid="stBottom"] {
+    background: linear-gradient(to top, #FFFFFF 60%, rgba(255,255,255,0)) !important;
+    padding: 0 0 8px !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+}
+[data-testid="stBottom"] > div {
+    padding: 8px 0 4px !important;
+    border-top: 1px solid rgba(124,58,237,0.1) !important;
+}
+
+/* ── Input widget card ───────────────────────────────────────────────────────── */
 [data-testid="stChatInput"] {
-    border-radius: 16px !important;
-    border: 2px solid #E4E4E7 !important;
+    border-radius: 18px !important;
+    border: 1.5px solid #DDD6FE !important;
     background: #FFFFFF !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06) !important;
-    transition: border-color 0.2s, box-shadow 0.2s !important;
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,0.04),
+        0 4px 20px rgba(124,58,237,0.08),
+        0 1px 4px rgba(0,0,0,0.05) !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 [data-testid="stChatInput"]:focus-within {
     border-color: #7C3AED !important;
-    box-shadow: 0 2px 20px rgba(124,58,237,0.15) !important;
+    box-shadow:
+        0 0 0 4px rgba(124,58,237,0.12),
+        0 4px 24px rgba(124,58,237,0.18),
+        0 1px 4px rgba(0,0,0,0.06) !important;
 }
-[data-testid="stChatInputTextArea"] {
+
+/* ── Textarea text — explicitly white bg + dark readable text ────────────────── */
+[data-testid="stChatInput"] textarea,
+[data-testid="stChatInput"] > div > textarea,
+[data-testid="stChatInputTextArea"],
+[data-testid="stChatInputTextArea"] textarea {
     color: #18181B !important;
+    background-color: #FFFFFF !important;
     font-size: 0.925rem !important;
+    font-family: 'Inter', sans-serif !important;
+    caret-color: #7C3AED !important;
+    line-height: 1.6 !important;
 }
+[data-testid="stChatInput"] textarea::placeholder,
 [data-testid="stChatInputTextArea"]::placeholder {
+    color: #A1A1AA !important;
+    font-style: italic !important;
+}
+
+/* ── Send button ─────────────────────────────────────────────────────────────── */
+[data-testid="stChatInput"] button {
+    background: linear-gradient(135deg, #7C3AED, #A78BFA) !important;
+    border-radius: 12px !important;
+    border: none !important;
+    color: #FFFFFF !important;
+    transition: opacity 0.15s, transform 0.15s !important;
+}
+[data-testid="stChatInput"] button:hover {
+    opacity: 0.88 !important;
+    transform: scale(0.97) !important;
+}
+[data-testid="stChatInput"] button:disabled {
+    background: #E4E4E7 !important;
     color: #A1A1AA !important;
 }
 
