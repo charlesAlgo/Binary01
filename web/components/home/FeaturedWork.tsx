@@ -1,35 +1,46 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const PROJECTS = [
   {
     tag: "Data Analysis",
-    title: "Real-Time Logistics Dashboard",
-    client: "LogiTrack Ltd",
-    problem: "Manual Excel reports taking 4 hours daily across 3 teams.",
-    result: "Automated dashboard reduced reporting time by 94%. Live in 8 days.",
+    title: "Fashion Boutique Retail Dashboard",
+    client: "Luxe & Thread Boutique",
+    result: "118 dead inventory SKUs surfaced · $5,762 capital recovered",
     accent: "#3EBD7A",
-    bg: "#f0faf5",
-    slug: "logistic-dashboard",
+    image: "/demo-fashion.png",
+    demoHref: "/demo/fashion-boutique",
+    live: true,
+  },
+  {
+    tag: "Augmented Analytics",
+    title: "AI Natural Language Analytics Assistant",
+    client: "Luxe & Thread Boutique",
+    result: "Plain-English → Plotly chart in under 3 seconds",
+    accent: "#F59E0B",
+    image: "/demo-nl.png",
+    demoHref: "/demo/nl-assistant",
+    live: true,
+  },
+  {
+    tag: "ML Application",
+    title: "E-Commerce Spending Predictor",
+    client: "NovaBuy E-Commerce",
+    result: "R²=97.8% · predicts within $10.48 of actual yearly spend",
+    accent: "#8B5CF6",
+    image: "/demo-ml.png",
+    demoHref: "/demo/ml-predictor",
+    live: true,
   },
   {
     tag: "LLM Bot",
     title: "AI Customer Support Bot",
-    client: "NutriFlow App",
-    problem: "Support team overwhelmed — 300+ repetitive queries per week.",
-    result: "Bot handles 70% of queries automatically. CSAT improved by 18pts.",
+    client: "Coming soon",
+    result: "Autonomous support bot · multi-turn memory · RAG-powered",
     accent: "#3B82F6",
-    bg: "#eff6ff",
-    slug: "nutriflow-bot",
-  },
-  {
-    tag: "ML Application",
-    title: "Churn Prediction API",
-    client: "FinBridge Capital",
-    problem: "No early warning system for at-risk customers. Reactive strategy.",
-    result: "87% recall on churn prediction. Deployed as REST API in 2 weeks.",
-    accent: "#8B5CF6",
-    bg: "#f5f3ff",
-    slug: "churn-prediction",
+    image: null,
+    demoHref: null,
+    live: false,
   },
 ];
 
@@ -37,6 +48,7 @@ export default function FeaturedWork() {
   return (
     <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
       <div className="section-wrapper">
+        {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "2.5rem", flexWrap: "wrap", gap: "1rem" }}>
           <div>
             <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", marginBottom: "0.5rem" }}>
@@ -46,59 +58,177 @@ export default function FeaturedWork() {
               Featured projects
             </h2>
           </div>
-          <Link href="/portfolio" className="text-sm font-semibold text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-accent)] transition-colors whitespace-nowrap" style={{ fontFamily: "var(--font-body)" }}>
+          <Link
+            href="/portfolio"
+            className="text-sm font-semibold text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-accent)] transition-colors whitespace-nowrap"
+            style={{ fontFamily: "var(--font-body)" }}
+          >
             View all work →
           </Link>
         </div>
 
+        {/* Grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.25rem" }}>
-          {PROJECTS.map((p) => (
-            <Link
-              key={p.slug}
-              href={`/portfolio/${p.slug}`}
-              className="group no-underline"
-              style={{ display: "flex", flexDirection: "column", borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", overflow: "hidden", boxShadow: "var(--shadow-card)", transition: "all 0.2s" }}
-            >
-              {/* Image placeholder with accent colour */}
-              <div style={{ height: "160px", backgroundColor: p.bg, display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-                <div style={{ width: "72px", height: "72px", borderRadius: "16px", backgroundColor: p.accent, opacity: 0.15 }} />
-                <div style={{ position: "absolute", width: "40px", height: "40px", borderRadius: "10px", backgroundColor: p.accent, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 4-8"/>
-                  </svg>
-                </div>
-                <span style={{ position: "absolute", top: "12px", left: "12px", padding: "3px 10px", borderRadius: "999px", backgroundColor: p.accent, fontSize: "0.7rem", fontWeight: 600, color: "#fff", fontFamily: "var(--font-body)" }}>
-                  {p.tag}
-                </span>
-              </div>
+          {PROJECTS.map((p) => {
+            const card = (
+              <div
+                className="group"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: "14px",
+                  border: "1px solid var(--color-border)",
+                  backgroundColor: "#fff",
+                  overflow: "hidden",
+                  boxShadow: "var(--shadow-card)",
+                  transition: "all 0.22s",
+                  cursor: p.live ? "pointer" : "default",
+                  height: "100%",
+                }}
+              >
+                {/* Screenshot or placeholder */}
+                <div
+                  style={{
+                    height: "200px",
+                    position: "relative",
+                    overflow: "hidden",
+                    backgroundColor: p.live ? "#f8fafc" : "#f1f5f9",
+                    flexShrink: 0,
+                  }}
+                >
+                  {p.image ? (
+                    <Image
+                      src={p.image}
+                      alt={p.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      style={{ objectFit: "cover", objectPosition: "top", transition: "transform 0.35s ease" }}
+                      className="group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    /* LLM Bot coming-soon placeholder */
+                    <div
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "10px",
+                        background: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "48px",
+                          height: "48px",
+                          borderRadius: "14px",
+                          backgroundColor: p.accent,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          opacity: 0.85,
+                        }}
+                      >
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                      </div>
+                      <span style={{ fontSize: "0.78rem", fontWeight: 600, color: p.accent, fontFamily: "var(--font-body)", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                        Coming Soon
+                      </span>
+                    </div>
+                  )}
 
-              {/* Content */}
-              <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem", flex: 1 }}>
-                <div>
-                  <p style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: "0 0 4px" }}>{p.client}</p>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.0625rem", fontWeight: 600, color: "var(--color-text-primary)", margin: 0, letterSpacing: "-0.01em" }}>{p.title}</h3>
+                  {/* Tag badge */}
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "12px",
+                      left: "12px",
+                      padding: "3px 10px",
+                      borderRadius: "999px",
+                      backgroundColor: p.accent,
+                      fontSize: "0.68rem",
+                      fontWeight: 700,
+                      color: "#fff",
+                      fontFamily: "var(--font-body)",
+                      letterSpacing: "0.04em",
+                      zIndex: 1,
+                    }}
+                  >
+                    {p.tag}
+                  </span>
+
+                  {/* Live demo badge */}
+                  {p.live && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "12px",
+                        right: "12px",
+                        padding: "3px 9px",
+                        borderRadius: "999px",
+                        backgroundColor: "rgba(0,0,0,0.55)",
+                        backdropFilter: "blur(6px)",
+                        fontSize: "0.65rem",
+                        fontWeight: 600,
+                        color: "#fff",
+                        fontFamily: "var(--font-body)",
+                        letterSpacing: "0.04em",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "5px",
+                        zIndex: 1,
+                      }}
+                    >
+                      <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#3EBD7A", display: "inline-block" }} />
+                      Live Demo
+                    </span>
+                  )}
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", flexShrink: 0, paddingTop: "1px" }}>Problem</span>
-                    <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.55 }}>{p.problem}</p>
+                {/* Content */}
+                <div style={{ padding: "1.375rem 1.5rem", display: "flex", flexDirection: "column", gap: "0.625rem", flex: 1 }}>
+                  <div>
+                    <p style={{ fontSize: "0.72rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: "0 0 3px", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 500 }}>
+                      {p.client}
+                    </p>
+                    <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 700, color: "var(--color-text-primary)", margin: 0, letterSpacing: "-0.01em", lineHeight: 1.3 }}>
+                      {p.title}
+                    </h3>
                   </div>
-                  <div style={{ display: "flex", gap: "8px" }}>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 600, color: p.accent, fontFamily: "var(--font-body)", flexShrink: 0, paddingTop: "1px" }}>Result</span>
-                    <p style={{ fontSize: "0.8125rem", color: "var(--color-text-primary)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.55, fontWeight: 500 }}>{p.result}</p>
+
+                  <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.55 }}>
+                    {p.result}
+                  </p>
+
+                  <div style={{ marginTop: "auto", paddingTop: "0.5rem", display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8125rem", fontWeight: 600, color: p.live ? p.accent : "var(--color-text-secondary)", fontFamily: "var(--font-body)" }}>
+                    {p.live ? (
+                      <>
+                        Try live demo
+                        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="transition-transform duration-200 group-hover:translate-x-0.5">
+                          <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </>
+                    ) : (
+                      "In development"
+                    )}
                   </div>
                 </div>
-
-                <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8125rem", fontWeight: 600, color: p.accent, fontFamily: "var(--font-body)" }}>
-                  View case study
-                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none" className="transition-transform duration-200 group-hover:translate-x-0.5">
-                    <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
               </div>
-            </Link>
-          ))}
+            );
+
+            return p.live && p.demoHref ? (
+              <Link key={p.title} href={p.demoHref} className="no-underline" style={{ display: "flex", flexDirection: "column" }}>
+                {card}
+              </Link>
+            ) : (
+              <div key={p.title} style={{ display: "flex", flexDirection: "column" }}>
+                {card}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
