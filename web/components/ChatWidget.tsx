@@ -203,7 +203,7 @@ export default function ChatWidget() {
         <div
           role="dialog"
           aria-label="Chat with Charles AI"
-          style={{ position: "fixed", bottom: "24px", right: "24px", width: "clamp(calc(100vw - 32px), 360px, 360px)", height: "clamp(60vh, 520px, 520px)", borderRadius: "16px", boxShadow: "0 24px 64px rgba(17,24,39,0.22), 0 4px 16px rgba(17,24,39,0.12)", display: "flex", flexDirection: "column", overflow: "hidden", zIndex: 100, backgroundColor: "var(--color-bg-primary)" }}
+          style={{ position: "fixed", bottom: "24px", right: "24px", width: "min(calc(100vw - 32px), 360px)", height: "min(60vh, 520px)", borderRadius: "16px", boxShadow: "0 24px 64px rgba(17,24,39,0.22), 0 4px 16px rgba(17,24,39,0.12)", display: "flex", flexDirection: "column", overflow: "hidden", zIndex: 100, backgroundColor: "var(--color-bg-primary)" }}
         >
           {/* Header */}
           <div style={{ backgroundColor: "var(--color-hero)", padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>

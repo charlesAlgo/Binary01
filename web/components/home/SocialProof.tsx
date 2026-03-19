@@ -64,7 +64,7 @@ export default function SocialProof() {
         </div>
 
         {/* Testimonial cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "1.25rem" }}>
           {TESTIMONIALS.map((t) => (
             <div key={t.name} style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.75rem", boxShadow: "var(--shadow-card)", display: "flex", flexDirection: "column", gap: "1rem" }}>
               <Stars n={t.rating} />
