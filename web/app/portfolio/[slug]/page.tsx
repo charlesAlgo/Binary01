@@ -249,6 +249,42 @@ const CASE_STUDIES: CaseStudy[] = [
     demoHref: "/demo/nl-assistant",
   },
   {
+    slug: "ecommerce-spending-predictor",
+    tag: "ML Application",
+    tagAccent: "#8B5CF6",
+    title: "E-Commerce Customer Spending Predictor",
+    client: "NovaBuy E-Commerce",
+    industry: "Retail & E-Commerce",
+    duration: "2 weeks",
+    heroMetric: "R²=97.8% · predicts within $10.48 of actual yearly spend",
+    challenge:
+      "NovaBuy had 500 customers and no way to predict how much any individual would spend in the next year. Marketing budgets were allocated equally across all customers — high-value long-term members received the same spend as brand-new signups. Without a spending model, the team couldn't prioritise retention campaigns, personalise offers, or identify which behavioural signals actually drove revenue.",
+    solution:
+      "I built a full ML pipeline in scikit-learn: four regression models (OLS, Ridge, Lasso, ElasticNet) trained with GridSearchCV hyperparameter tuning and 5-fold cross-validation. A performance threshold gate (R²≥0.95, RMSE≤$15) ensures only production-quality models are deployed. Feature analysis revealed that mobile app engagement and membership length are the dominant revenue drivers — website time adds near-zero predictive value (coefficient $0.31, confirmed by Lasso zeroing it out). The model is served via a FastAPI endpoint and visualised in an interactive Streamlit dashboard with live sliders, batch CSV upload, and a confidence interval on every prediction.",
+    results: [
+      { number: "97.8%", label: "R² score on held-out test set" },
+      { number: "$10.48", label: "RMSE — average prediction error" },
+      { number: "1.79%", label: "MAPE — mean absolute % error" },
+      { number: "4", label: "Models compared, best selected automatically" },
+    ],
+    tech: [
+      "Python",
+      "scikit-learn",
+      "FastAPI",
+      "Streamlit",
+      "pandas",
+      "NumPy",
+      "joblib",
+      "pytest",
+    ],
+    testimonialQuote:
+      "The model immediately showed us what we suspected but couldn't prove — app engagement drives revenue, the website doesn't. We redirected our dev budget to mobile features within a week of seeing the coefficients.",
+    testimonialName: "Growth Lead",
+    testimonialRole: "NovaBuy E-Commerce",
+    testimonialInitials: "NB",
+    demoHref: "/demo/ml-predictor",
+  },
+  {
     slug: "document-bot",
     tag: "LLM Bot",
     tagAccent: "#3B82F6",
