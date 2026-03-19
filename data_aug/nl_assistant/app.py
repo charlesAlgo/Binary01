@@ -11,6 +11,8 @@ import sys
 import uuid
 from pathlib import Path
 
+import time
+
 import pandas as pd
 import streamlit as st
 
@@ -315,6 +317,25 @@ if "messages" not in st.session_state:
 if "pending_query" not in st.session_state:
     st.session_state.pending_query = None
 
+# ─── Helpers ───────────────────────────────────────────────────────────────────
+
+def _build_history() -> list[dict]:
+    """Return last 8 session messages as role/content dicts for multi-turn context."""
+    history = []
+    for msg in st.session_state.messages:
+        if msg["role"] in ("user", "assistant") and msg.get("content"):
+            history.append({"role": msg["role"], "content": msg["content"]})
+    return history[-8:]
+
+
+def _stream_text(text: str):
+    """Word-by-word generator for st.write_stream — gives a typing effect."""
+    words = text.split(" ")
+    for i, word in enumerate(words):
+        yield word + (" " if i < len(words) - 1 else "")
+        time.sleep(0.022)
+
+
 # ─── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("""
@@ -498,6 +519,7 @@ for msg in st.session_state.messages:
 if st.session_state.pending_query:
     prompt = st.session_state.pending_query
     st.session_state.pending_query = None
+    history = _build_history()
     st.session_state.messages.append({
         "role": "user", "content": prompt,
         "result": None, "chart": None, "error": None,
@@ -506,12 +528,13 @@ if st.session_state.pending_query:
         st.markdown(prompt)
     with st.chat_message("assistant"):
         with st.spinner("Analysing your data…"):
-            qr = run_query(prompt, session_id=st.session_state.session_id)
+            qr = run_query(prompt, session_id=st.session_state.session_id,
+                           conversation_history=history)
         explanation = qr["explanation"]
         result      = qr["result"]
         chart       = qr["chart"]
         error       = qr["error"]
-        st.markdown(explanation)
+        st.write_stream(_stream_text(explanation))
         if error:
             insight_box(
                 "<strong>Something went wrong:</strong> I couldn't complete that analysis. "
@@ -532,6 +555,7 @@ if st.session_state.pending_query:
 
 # ─── Chat input ─────────────────────────────────────────────────────────────────
 if prompt := st.chat_input("Ask a question about your sales data…"):
+    history = _build_history()
     st.session_state.messages.append({
         "role": "user", "content": prompt,
         "result": None, "chart": None, "error": None,
@@ -541,14 +565,15 @@ if prompt := st.chat_input("Ask a question about your sales data…"):
 
     with st.chat_message("assistant"):
         with st.spinner("Analysing your data…"):
-            qr = run_query(prompt, session_id=st.session_state.session_id)
+            qr = run_query(prompt, session_id=st.session_state.session_id,
+                           conversation_history=history)
 
         explanation = qr["explanation"]
         result      = qr["result"]
         chart       = qr["chart"]
         error       = qr["error"]
 
-        st.markdown(explanation)
+        st.write_stream(_stream_text(explanation))
 
         if error:
             insight_box(
