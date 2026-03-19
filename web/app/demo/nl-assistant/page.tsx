@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "Ask plain-English questions about retail data and get instant charts powered by Llama 3.3 70B. Built for Luxe & Thread Boutique.",
 };
 
-const DEMO_URL = process.env.NEXT_PUBLIC_DEMO_NL_URL;
+const DEMO_URL = "https://binary01-3fzxd8bzwu7app5keervpor.streamlit.app";
 
 export default function NLAssistantDemoPage() {
   return (
