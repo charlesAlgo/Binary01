@@ -6,9 +6,31 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "Augmented Analytics Services",
+  title: "Freelance Augmented Analytics & AI-Powered BI",
   description:
-    "Natural language queries, anomaly detection, predictive alerts, and AI-driven summaries. Make your data talk back with augmented analytics.",
+    "Natural language query interfaces, anomaly detection, and AI-generated KPI summaries on top of your existing data. Freelance augmented analytics developer.",
+  keywords: [
+    "augmented analytics freelancer",
+    "AI business intelligence developer",
+    "natural language query interface",
+    "anomaly detection service",
+    "AI KPI dashboard",
+    "predictive analytics developer",
+    "AI-powered reporting",
+  ],
+  openGraph: {
+    title: "Freelance Augmented Analytics & AI-Powered BI | DataLife",
+    description:
+      "NL query interfaces, anomaly detection, and AI-generated KPI summaries. Freelance augmented analytics developer.",
+    url: "https://data-life.tech/services/augmented-analytics",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance Augmented Analytics & AI-Powered BI | DataLife",
+    description:
+      "Natural language queries, anomaly detection, AI-generated summaries. Freelance augmented analytics.",
+  },
+  alternates: { canonical: "https://data-life.tech/services/augmented-analytics" },
 };
 
 const FEATURES = [

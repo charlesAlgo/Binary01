@@ -3,9 +3,30 @@ import ServiceCard from "@/components/ServiceCard";
 import CTAButton from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Freelance AI & Data Services — DataLife",
   description:
-    "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots — AI-powered services from DataLife. Real results, not slide decks.",
+    "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots. Freelance AI & data engineering services by Charles Shalua. Fixed-price, production-ready.",
+  keywords: [
+    "freelance AI services",
+    "data engineering services",
+    "machine learning services",
+    "LLM development services",
+    "AI freelancer services",
+    "custom AI solutions",
+  ],
+  openGraph: {
+    title: "Freelance AI & Data Services — DataLife",
+    description:
+      "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots. Fixed-price, production-ready freelance AI services.",
+    url: "https://data-life.tech/services",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance AI & Data Services — DataLife",
+    description:
+      "Data Analysis, Augmented Analytics, ML Applications, LLM Bots. Fixed-price freelance AI services.",
+  },
+  alternates: { canonical: "https://data-life.tech/services" },
 };
 
 const SERVICES = [

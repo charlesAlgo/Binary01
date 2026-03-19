@@ -3,9 +3,30 @@ import CTAButton from "@/components/CTAButton";
 import PortfolioFilter, { Project } from "@/components/PortfolioFilter";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  title: "Portfolio — AI & Data Engineering Case Studies",
   description:
-    "Real results from real clients — case studies across Data Analysis, ML Applications, LLM Bots, and Augmented Analytics.",
+    "Browse 40+ real client projects — data analysis dashboards, ML prediction APIs, LLM chatbots, and augmented analytics. See results, not mockups.",
+  keywords: [
+    "data analysis portfolio",
+    "machine learning case studies",
+    "AI freelancer portfolio",
+    "LLM chatbot projects",
+    "data engineer portfolio",
+    "freelance ML projects",
+  ],
+  openGraph: {
+    title: "Portfolio — AI & Data Engineering Case Studies | DataLife",
+    description:
+      "Real client projects across data analysis, ML applications, LLM bots, and augmented analytics.",
+    url: "https://data-life.tech/portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Portfolio — AI & Data Engineering Case Studies | DataLife",
+    description:
+      "Real client projects across data analysis, ML, LLM bots, and augmented analytics.",
+  },
+  alternates: { canonical: "https://data-life.tech/portfolio" },
 };
 
 const PROJECTS: Project[] = [

@@ -6,9 +6,32 @@ import ProcessStep from "@/components/ProcessStep";
 import TechBadge from "@/components/TechBadge";
 
 export const metadata: Metadata = {
-  title: "ML Applications Services",
+  title: "Freelance ML Application Developer — Custom ML Models",
   description:
-    "Custom machine learning models — classification, regression, fraud detection, demand forecasting — deployed as production REST APIs.",
+    "Hire a freelance ML developer for custom classification, regression, fraud detection, and forecasting models deployed as production REST APIs. Fixed-price.",
+  keywords: [
+    "freelance machine learning developer",
+    "ML application developer",
+    "custom ML model",
+    "classification model freelance",
+    "fraud detection ML",
+    "demand forecasting developer",
+    "ML API development",
+    "Python machine learning freelance",
+  ],
+  openGraph: {
+    title: "Freelance ML Application Developer | DataLife",
+    description:
+      "Custom classification, regression, and forecasting models deployed as production REST APIs. Fixed-price ML development.",
+    url: "https://data-life.tech/services/ml-applications",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance ML Application Developer | DataLife",
+    description:
+      "Custom ML models deployed as production APIs. Freelance machine learning developer.",
+  },
+  alternates: { canonical: "https://data-life.tech/services/ml-applications" },
 };
 
 const FEATURES = [
