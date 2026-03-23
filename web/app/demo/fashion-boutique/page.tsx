@@ -1,18 +1,22 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Live Demo — Fashion Boutique Retail Analytics Dashboard",
-  description:
-    "Interactive 6-page Streamlit analytics dashboard built for Luxe & Thread Boutique. Explore revenue, markdowns, returns, and inventory live.",
-};
+import Link from "next/link";
+import { useState, useRef } from "react";
 
 const DEMO_URL = "https://binary01-gzhhs5ykmbvbdbc8qfb5di.streamlit.app";
 
 export default function FashionBoutiqueDemoPage() {
+  const [loaded, setLoaded] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  function handleWake() {
+    if (iframeRef.current) {
+      iframeRef.current.src = `${DEMO_URL}?embed=true&_t=${Date.now()}`;
+    }
+    window.open(DEMO_URL, "_blank", "noopener,noreferrer");
+  }
+
   return (
-    /* Root layout applies pt-16 (64px). Navbar is 68px fixed.
-       This container fills exactly: viewport - navbar = remaining space. */
     <div
       style={{
         display: "flex",
@@ -96,60 +100,86 @@ export default function FashionBoutiqueDemoPage() {
         </Link>
       </div>
 
-      {/* Streamlit iframe — fills remaining height */}
-      {DEMO_URL ? (
+      {/* Iframe + wake-up overlay */}
+      <div style={{ flex: 1, position: "relative", minHeight: 0 }}>
+        {!loaded && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "#0F172A",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1.25rem",
+              padding: "2rem",
+              textAlign: "center",
+              zIndex: 10,
+            }}
+          >
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                border: "3px solid rgba(62,189,122,0.2)",
+                borderTopColor: "var(--color-accent)",
+                animation: "spin 0.9s linear infinite",
+              }}
+            />
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+
+            <h2
+              style={{
+                color: "#fff",
+                fontFamily: "var(--font-display)",
+                margin: 0,
+                fontSize: "1.25rem",
+              }}
+            >
+              Loading demo…
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.55)",
+                fontFamily: "var(--font-body)",
+                maxWidth: "38ch",
+                lineHeight: 1.7,
+                margin: 0,
+                fontSize: "0.9rem",
+              }}
+            >
+              The app may be asleep on Streamlit Community Cloud. If it doesn&apos;t load in a few seconds, click below to wake it up.
+            </p>
+            <button
+              onClick={handleWake}
+              style={{
+                padding: "9px 22px",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                color: "#0F172A",
+                backgroundColor: "var(--color-accent)",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "var(--font-body)",
+              }}
+            >
+              Wake up app
+            </button>
+          </div>
+        )}
+
         <iframe
+          ref={iframeRef}
           src={`${DEMO_URL}?embed=true`}
           title="Fashion Boutique Retail Analytics Dashboard"
-          style={{ flex: 1, border: "none", width: "100%", display: "block", minHeight: 0 }}
+          style={{ width: "100%", height: "100%", border: "none", display: "block" }}
           allow="fullscreen"
+          onLoad={() => setLoaded(true)}
         />
-      ) : (
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#0F172A",
-            gap: "1.25rem",
-            padding: "2rem",
-            textAlign: "center",
-          }}
-        >
-          <span style={{ fontSize: "3rem" }}>📊</span>
-          <h2 style={{ color: "#fff", fontFamily: "var(--font-display)", margin: 0 }}>
-            Demo coming soon
-          </h2>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.55)",
-              fontFamily: "var(--font-body)",
-              maxWidth: "38ch",
-              lineHeight: 1.7,
-              margin: 0,
-            }}
-          >
-            The live Streamlit dashboard is being deployed to Streamlit Community Cloud. Read the full case study in the meantime.
-          </p>
-          <Link
-            href="/portfolio/fashion-boutique-dashboard"
-            style={{
-              padding: "10px 22px",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              color: "#fff",
-              backgroundColor: "var(--color-accent)",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontFamily: "var(--font-body)",
-            }}
-          >
-            View Case Study
-          </Link>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

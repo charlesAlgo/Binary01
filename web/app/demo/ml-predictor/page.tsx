@@ -1,15 +1,43 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Live Demo — E-Commerce Customer Spending Predictor",
-  description:
-    "Interactive ML application predicting yearly customer spend from behavioural data. OLS Linear Regression · R²=97.8% · RMSE=$10.48 · Built with scikit-learn + FastAPI.",
-};
+import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
 
 const DEMO_URL = "https://binary01-4uhsyappv2a3epfj9hn6699.streamlit.app";
+const AUTO_RETRY_SEC = 12;
 
 export default function MlPredictorDemoPage() {
+  const [loaded, setLoaded] = useState(false);
+  const [countdown, setCountdown] = useState(AUTO_RETRY_SEC);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Auto-retry: reload iframe every AUTO_RETRY_SEC seconds until it fires onLoad
+  useEffect(() => {
+    if (loaded) return;
+
+    const tick = setInterval(() => {
+      setCountdown((c) => {
+        if (c <= 1) {
+          if (iframeRef.current) {
+            iframeRef.current.src = `${DEMO_URL}?embed=true&_t=${Date.now()}`;
+          }
+          return AUTO_RETRY_SEC;
+        }
+        return c - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(tick);
+  }, [loaded]);
+
+  function handleWake() {
+    if (iframeRef.current) {
+      iframeRef.current.src = `${DEMO_URL}?embed=true&_t=${Date.now()}`;
+    }
+    setCountdown(AUTO_RETRY_SEC);
+    window.open(DEMO_URL, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <div
       style={{
@@ -94,13 +122,90 @@ export default function MlPredictorDemoPage() {
         </Link>
       </div>
 
-      {/* Streamlit iframe */}
-      <iframe
-        src={`${DEMO_URL}?embed=true`}
-        title="E-Commerce Customer Spending Predictor"
-        style={{ flex: 1, border: "none", width: "100%", display: "block", minHeight: 0 }}
-        allow="fullscreen"
-      />
+      {/* Iframe + wake-up overlay */}
+      <div style={{ flex: 1, position: "relative", minHeight: 0 }}>
+        {!loaded && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "#0F172A",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1.25rem",
+              padding: "2rem",
+              textAlign: "center",
+              zIndex: 10,
+            }}
+          >
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                border: "3px solid rgba(62,189,122,0.2)",
+                borderTopColor: "var(--color-accent)",
+                animation: "spin 0.9s linear infinite",
+              }}
+            />
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+
+            <h2
+              style={{
+                color: "#fff",
+                fontFamily: "var(--font-display)",
+                margin: 0,
+                fontSize: "1.25rem",
+              }}
+            >
+              Loading ML model…
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.55)",
+                fontFamily: "var(--font-body)",
+                maxWidth: "38ch",
+                lineHeight: 1.7,
+                margin: 0,
+                fontSize: "0.9rem",
+              }}
+            >
+              scikit-learn + pandas are booting on the server. Auto-retrying in{" "}
+              <span style={{ color: "var(--color-accent)", fontWeight: 700 }}>
+                {countdown}s
+              </span>
+              …
+            </p>
+            <button
+              onClick={handleWake}
+              style={{
+                padding: "9px 22px",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                color: "#0F172A",
+                backgroundColor: "var(--color-accent)",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "var(--font-body)",
+              }}
+            >
+              Wake up app
+            </button>
+          </div>
+        )}
+
+        <iframe
+          ref={iframeRef}
+          src={`${DEMO_URL}?embed=true`}
+          title="E-Commerce Customer Spending Predictor"
+          style={{ width: "100%", height: "100%", border: "none", display: "block" }}
+          allow="fullscreen"
+          onLoad={() => setLoaded(true)}
+        />
+      </div>
     </div>
   );
 }
