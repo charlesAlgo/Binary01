@@ -1,15 +1,22 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Live Demo — AI Natural Language Analytics Assistant",
-  description:
-    "Ask plain-English questions about retail data and get instant charts powered by Llama 3.3 70B. Built for Luxe & Thread Boutique.",
-};
+import Link from "next/link";
+import { useState, useRef } from "react";
 
 const DEMO_URL = "https://binary01-3fzxd8bzwu7app5keervpor.streamlit.app";
 
 export default function NLAssistantDemoPage() {
+  const [loaded, setLoaded] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  function handleWake() {
+    // Force-reload the iframe so it starts waking immediately
+    if (iframeRef.current) {
+      iframeRef.current.src = `${DEMO_URL}?embed=true&_t=${Date.now()}`;
+    }
+    window.open(DEMO_URL, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <div
       style={{
@@ -94,60 +101,93 @@ export default function NLAssistantDemoPage() {
         </Link>
       </div>
 
-      {/* Streamlit iframe — fills remaining height */}
-      {DEMO_URL ? (
+      {/* Iframe + wake-up overlay */}
+      <div style={{ flex: 1, position: "relative", minHeight: 0 }}>
+        {/* Wake-up overlay — visible until iframe fires onLoad */}
+        {!loaded && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor: "#0F172A",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1.25rem",
+              padding: "2rem",
+              textAlign: "center",
+              zIndex: 10,
+            }}
+          >
+            {/* Spinner */}
+            <div
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                border: "3px solid rgba(245,158,11,0.2)",
+                borderTopColor: "#F59E0B",
+                animation: "spin 0.9s linear infinite",
+              }}
+            />
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+
+            <h2
+              style={{
+                color: "#fff",
+                fontFamily: "var(--font-display)",
+                margin: 0,
+                fontSize: "1.25rem",
+              }}
+            >
+              Loading demo…
+            </h2>
+            <p
+              style={{
+                color: "rgba(255,255,255,0.55)",
+                fontFamily: "var(--font-body)",
+                maxWidth: "38ch",
+                lineHeight: 1.7,
+                margin: 0,
+                fontSize: "0.9rem",
+              }}
+            >
+              The app may be asleep on Streamlit Community Cloud. If it doesn&apos;t load in a few seconds, click below to wake it up.
+            </p>
+            <button
+              onClick={handleWake}
+              style={{
+                padding: "9px 22px",
+                fontSize: "0.875rem",
+                fontWeight: 600,
+                color: "#0F172A",
+                backgroundColor: "#F59E0B",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "var(--font-body)",
+              }}
+            >
+              Wake up app
+            </button>
+          </div>
+        )}
+
         <iframe
+          ref={iframeRef}
           src={`${DEMO_URL}?embed=true`}
           title="AI Natural Language Analytics Assistant"
-          style={{ flex: 1, border: "none", width: "100%", display: "block", minHeight: 0 }}
-          allow="fullscreen"
-        />
-      ) : (
-        <div
           style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#0F172A",
-            gap: "1.25rem",
-            padding: "2rem",
-            textAlign: "center",
+            width: "100%",
+            height: "100%",
+            border: "none",
+            display: "block",
           }}
-        >
-          <span style={{ fontSize: "3rem" }}>🤖</span>
-          <h2 style={{ color: "#fff", fontFamily: "var(--font-display)", margin: 0 }}>
-            Demo coming soon
-          </h2>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.55)",
-              fontFamily: "var(--font-body)",
-              maxWidth: "38ch",
-              lineHeight: 1.7,
-              margin: 0,
-            }}
-          >
-            The live AI assistant is being deployed to Streamlit Community Cloud. Read the full case study in the meantime.
-          </p>
-          <Link
-            href="/portfolio/nl-analytics-assistant"
-            style={{
-              padding: "10px 22px",
-              fontSize: "0.9rem",
-              fontWeight: 600,
-              color: "#fff",
-              backgroundColor: "var(--color-accent)",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontFamily: "var(--font-body)",
-            }}
-          >
-            View Case Study
-          </Link>
-        </div>
-      )}
+          allow="fullscreen"
+          onLoad={() => setLoaded(true)}
+        />
+      </div>
     </div>
   );
 }
