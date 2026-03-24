@@ -316,19 +316,20 @@ div[data-testid="stButton"] > button[kind="secondary"] {
 }
 
 /* ── Chat input — sticky bottom container ───────────────────────────────────── */
-[data-testid="stBottom"] {
-    background: linear-gradient(to top, #FFFFFF 60%, rgba(255,255,255,0)) !important;
+[data-testid="stBottom"],
+[data-testid="stBottom"] > div,
+[data-testid="stBottom"] > div > div {
+    background: #FFFFFF !important;
     padding: 0 0 8px !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
 }
 [data-testid="stBottom"] > div {
-    padding: 8px 0 4px !important;
     border-top: 1px solid rgba(124,58,237,0.1) !important;
 }
 
 /* ── Input widget card ───────────────────────────────────────────────────────── */
-[data-testid="stChatInput"] {
+[data-testid="stChatInput"],
+[data-testid="stChatInput"] > div,
+[data-testid="stChatInputContainer"] {
     border-radius: 18px !important;
     border: 1.5px solid #DDD6FE !important;
     background: #FFFFFF !important;
@@ -346,11 +347,13 @@ div[data-testid="stButton"] > button[kind="secondary"] {
         0 1px 4px rgba(0,0,0,0.06) !important;
 }
 
-/* ── Textarea text — explicitly white bg + dark readable text ────────────────── */
+/* ── Textarea text — white bg + dark readable text (broad catch-all) ─────────── */
 [data-testid="stChatInput"] textarea,
 [data-testid="stChatInput"] > div > textarea,
 [data-testid="stChatInputTextArea"],
-[data-testid="stChatInputTextArea"] textarea {
+[data-testid="stChatInputTextArea"] textarea,
+.stChatInput textarea,
+div[class*="chatInput"] textarea {
     color: #18181B !important;
     background-color: #FFFFFF !important;
     font-size: 0.925rem !important;
@@ -359,7 +362,8 @@ div[data-testid="stButton"] > button[kind="secondary"] {
     line-height: 1.6 !important;
 }
 [data-testid="stChatInput"] textarea::placeholder,
-[data-testid="stChatInputTextArea"]::placeholder {
+[data-testid="stChatInputTextArea"]::placeholder,
+.stChatInput textarea::placeholder {
     color: #A1A1AA !important;
     font-style: italic !important;
 }
