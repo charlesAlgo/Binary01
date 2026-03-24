@@ -255,6 +255,22 @@ def inject_css() -> None:
     }
     .stButton > button:hover { opacity: 0.88 !important; }
 
+    /* ── Number / Text inputs ── */
+    .stNumberInput input, .stTextInput input {
+        background: rgba(255,255,255,0.05) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        border-radius: 8px !important;
+        color: #E2E8F0 !important;
+    }
+    .stNumberInput input:focus, .stTextInput input:focus {
+        border-color: rgba(124,58,237,0.5) !important;
+        box-shadow: 0 0 0 2px rgba(124,58,237,0.15) !important;
+    }
+    .stNumberInput [data-baseweb="input"], .stTextInput [data-baseweb="input"] {
+        background: rgba(255,255,255,0.05) !important;
+        border-color: rgba(255,255,255,0.1) !important;
+    }
+
     /* ── Data table ── */
     .stDataFrame { border-radius: 12px; overflow: hidden; }
     .stDataFrame [data-testid="stDataFrameResizable"] { border-radius: 12px; }
