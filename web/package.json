@@ -29,7 +29,7 @@
     "framer-motion": "^12.36.0",
     "langchain": "^1.2.32",
     "lucide-react": "^0.577.0",
-    "next": "16.1.6",
+    "next": "^16.2.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "resend": "^6.9.3",
@@ -44,5 +44,14 @@
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "axios": ">=1.15.0",
+    "handlebars": ">=4.7.9",
+    "langsmith": ">=0.5.18",
+    "yaml": ">=2.8.3",
+    "flatted": ">=3.4.2",
+    "picomatch": ">=2.3.2",
+    "brace-expansion": ">=1.1.13"
   }
 }

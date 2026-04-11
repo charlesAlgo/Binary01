@@ -1,7 +1,7 @@
 pandas
 numpy
 pyarrow
-streamlit==1.32.0
+streamlit>=1.54.0
 altair>=5.0.0
 plotly==5.22.0
 groq
