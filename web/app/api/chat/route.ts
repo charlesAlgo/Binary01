@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import { generateText } from "ai";
 import { createGroq } from "@ai-sdk/groq";
 import { supabaseAdmin } from "@/lib/supabase";
+import { getClientIp, makeRateLimiter } from "@/lib/rate-limit";
 
 // Prevent Next.js from statically analysing / pre-rendering this route at build time.
 export const dynamic = "force-dynamic";
@@ -59,21 +60,7 @@ function containsPromptInjection(message: string): boolean {
 }
 
 /* ─── Rate limiter (per IP, max 20 messages / 10 min) ──────────────────── */
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 20;
-const WINDOW_MS = 10 * 60 * 1000;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  if (entry.count >= RATE_LIMIT) return true;
-  entry.count += 1;
-  return false;
-}
+const isRateLimited = makeRateLimiter(20, 10 * 60 * 1000);
 
 /** Keyword-based fallback used when GROQ_API_KEY is not configured. */
 function getKeywordReply(message: string): string {
@@ -120,7 +107,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = getClientIp(request);
   if (isRateLimited(ip)) {
     return NextResponse.json({ error: "Too many messages. Please wait a few minutes." }, { status: 429 });
   }

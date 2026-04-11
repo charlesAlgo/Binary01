@@ -2,26 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { Resend } from "resend";
 import QuoteConfirmationEmail from "@/components/emails/QuoteConfirmationEmail";
+import { getClientIp, makeRateLimiter } from "@/lib/rate-limit";
 
 // Prevent Next.js from statically analysing / pre-rendering this route at build time.
 export const dynamic = "force-dynamic";
 
 /* ─── IP rate limiter — generous limit, bot/flood protection only ──────── */
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 3;
-const WINDOW_MS  = 10 * 60 * 1000;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  if (entry.count >= RATE_LIMIT) return true;
-  entry.count += 1;
-  return false;
-}
+const isRateLimited = makeRateLimiter(3, 10 * 60 * 1000);
 
 /* ─── Email-based brief limit — max 5 submissions per email ────────────── */
 const BRIEF_LIMIT = 5;
@@ -49,7 +36,7 @@ interface QuoteRequestBody {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = getClientIp(request);
   if (isRateLimited(ip)) {
     return NextResponse.json(
       { success: false, error: "Too many requests. Please wait a few minutes and try again." },

@@ -1,26 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { getClientIp, makeRateLimiter } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-function isRateLimited(ip: string): boolean {
-  const limit = 30;
-  const windowMs = 10 * 60 * 1000;
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + windowMs });
-    return false;
-  }
-  if (entry.count >= limit) return true;
-  entry.count++;
-  return false;
-}
+const isRateLimited = makeRateLimiter(30, 10 * 60 * 1000);
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const ip = getClientIp(request);
   if (isRateLimited(ip)) {
     return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
@@ -45,6 +32,22 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const dayStart = rawStart && isValidISO(rawStart) ? rawStart : `${date}T00:00:00.000Z`;
   const dayEnd   = rawEnd   && isValidISO(rawEnd)   ? rawEnd   : `${date}T23:59:59.999Z`;
+
+  // S-1/S-2: Constrain the query window to prevent full-table scraping.
+  // Both bounds must be within ±48 h of the requested date's midnight UTC,
+  // and the total window must not exceed 48 hours.
+  const dateMs = new Date(`${date}T00:00:00.000Z`).getTime();
+  const startMs = new Date(dayStart).getTime();
+  const endMs   = new Date(dayEnd).getTime();
+  const MAX_OFFSET_MS = 48 * 60 * 60 * 1000; // 48 h
+
+  if (
+    Math.abs(startMs - dateMs) > MAX_OFFSET_MS ||
+    Math.abs(endMs   - dateMs) > MAX_OFFSET_MS ||
+    endMs - startMs > MAX_OFFSET_MS
+  ) {
+    return NextResponse.json({ error: "Invalid date range." }, { status: 422 });
+  }
 
   const { data, error } = await supabaseAdmin
     .from("bookings")

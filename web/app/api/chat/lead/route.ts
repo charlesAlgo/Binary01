@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { getClientIp, makeRateLimiter } from "@/lib/rate-limit";
 
 // Prevent Next.js from statically analysing / pre-rendering this route at build time.
 // Without this, the build traces the module and can execute module-level code before
@@ -7,21 +8,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 /* ─── Rate limiter (per IP, max 5 submissions / 10 min) ────────────────── */
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 5;
-const WINDOW_MS = 10 * 60 * 1000;
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  if (entry.count >= RATE_LIMIT) return true;
-  entry.count += 1;
-  return false;
-}
+const isRateLimited = makeRateLimiter(5, 10 * 60 * 1000);
 
 interface ChatLeadRequestBody {
   name: string;
@@ -33,7 +20,7 @@ interface ChatLeadRequestBody {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
+  const ip = getClientIp(request);
   if (isRateLimited(ip)) {
     return NextResponse.json({ success: false, error: "Too many requests. Please wait a few minutes." }, { status: 429 });
   }

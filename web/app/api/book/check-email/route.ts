@@ -1,25 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
+import { getClientIp, makeRateLimiter } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-function isRateLimited(ip: string, limit: number, windowMs: number): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + windowMs });
-    return false;
-  }
-  if (entry.count >= limit) return true;
-  entry.count++;
-  return false;
-}
+const isRateLimited = makeRateLimiter(5, 10 * 60 * 1000);
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (isRateLimited(ip, 20, 10 * 60 * 1000)) {
+  const ip = getClientIp(request);
+  if (isRateLimited(ip)) {
     return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   }
 
@@ -51,7 +40,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const now = new Date().toISOString();
   const { data, error } = await supabaseAdmin
     .from("bookings")
-    .select("id, start_time")
+    .select("start_time")
     .eq("attendee_email", sanitized.toLowerCase())
     .gt("start_time", now)
     .limit(1);
@@ -61,14 +50,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Server error." }, { status: 500 });
   }
 
+  // E-1: Do not reveal the booking date — generic message prevents schedule enumeration.
   if (data && data.length > 0) {
-    const bookingDate = new Date(data[0].start_time).toLocaleDateString(
-      "en-US",
-      { weekday: "long", month: "long", day: "numeric", year: "numeric" }
-    );
     return NextResponse.json(
       {
-        error: `This email already has a booking on ${bookingDate}. Please cancel or reschedule it first, or use a different email.`,
+        error: "This email already has an upcoming booking. Please cancel or reschedule it first, or use a different email.",
         hasBooking: true,
       },
       { status: 409 }
