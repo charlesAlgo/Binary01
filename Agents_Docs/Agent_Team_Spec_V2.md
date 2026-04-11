@@ -23,7 +23,7 @@ The firm operates on Upwork, Fiverr, and our website (the storefront). We follow
 
   **ML Applications**       Prediction, classification, recommendation engines as APIs         Models, APIs, model cards, monitoring, retraining pipelines
 
-  **LLM Bots**              Custom chatbots, RAG systems, AI copilots for workflows            RAG pipelines, chat UIs, prompt libraries, eval reports
+  **LLM Bots**              Custom chatbots, RAG systems, AI assistants for workflows          RAG pipelines, chat UIs, prompt libraries, eval reports
   ------------------------- ------------------------------------------------------------------ --------------------------------------------------------------------
 
 **1.2 Agile Sprint Structure**

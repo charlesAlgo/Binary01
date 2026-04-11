@@ -41,16 +41,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.3",
+    "eslint-config-next": "^16.2.3",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "overrides": {
-    "axios": ">=1.15.0",
-    "handlebars": ">=4.7.9",
-    "langsmith": ">=0.5.18",
-    "yaml": ">=2.8.3",
-    "flatted": ">=3.4.2",
-    "picomatch": ">=2.3.2"
   }
 }
