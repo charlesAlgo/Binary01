@@ -15,13 +15,13 @@ const sizeClass = {
 };
 
 const variantClass = {
-  filled: "bg-[var(--color-accent)] text-white border-2 border-transparent hover:bg-[var(--color-accent-hover)] hover:-translate-y-px",
-  ghost:  "bg-transparent text-[var(--color-accent)] border-2 border-[var(--color-accent)] hover:bg-[var(--color-bg-tag)] hover:-translate-y-px",
-  white:  "bg-white text-[var(--color-hero)] border-2 border-transparent hover:bg-[#f0faf5] hover:-translate-y-px",
+  filled: "bg-[var(--color-accent)] text-white border-2 border-transparent hover:bg-[var(--color-accent-hover)] hover:-translate-y-px hover:shadow-[0_8px_30px_var(--color-accent-glow)]",
+  ghost:  "bg-transparent text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:bg-[var(--color-accent-subtle)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:-translate-y-px",
+  white:  "bg-white text-[#09090b] border-2 border-transparent hover:bg-[#f0f4f8] hover:-translate-y-px",
 };
 
 export default function CTAButton({ label, href, variant = "filled", size = "md", external = false }: CTAButtonProps) {
-  const className = `inline-flex items-center justify-center gap-1.5 rounded-lg font-semibold transition-all duration-200 no-underline ${sizeClass[size]} ${variantClass[variant]}`;
+  const className = `inline-flex items-center justify-center gap-1.5 rounded-[980px] font-semibold transition-all duration-200 no-underline ${sizeClass[size]} ${variantClass[variant]}`;
   const style = { fontFamily: "var(--font-body)" };
 
   const arrow = external && (

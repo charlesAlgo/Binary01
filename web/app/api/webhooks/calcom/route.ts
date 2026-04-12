@@ -3,7 +3,7 @@ import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabase";
 import { Resend } from "resend";
 import BookingConfirmationEmail from "@/components/emails/BookingConfirmationEmail";
-import type { CalcomPayload, CalcomWebhookBody } from "@/types/calcom";
+import type { CalcomWebhookBody } from "@/types/calcom";
 
 // Prevent Next.js from statically analysing / pre-rendering this route at build time.
 export const dynamic = "force-dynamic";

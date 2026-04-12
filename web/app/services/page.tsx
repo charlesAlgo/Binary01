@@ -1,480 +1,395 @@
 import type { Metadata } from "next";
-import ServiceCard from "@/components/ServiceCard";
-import CTAButton from "@/components/CTAButton";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Freelance AI & Data Services — DataLife",
+  title: "Services — DataLife Automation Agency",
   description:
-    "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots. Freelance AI & data engineering services by Charles Shalua. Fixed-price, production-ready.",
-  keywords: [
-    "freelance AI services",
-    "data engineering services",
-    "machine learning services",
-    "LLM development services",
-    "AI freelancer services",
-    "custom AI solutions",
-  ],
-  openGraph: {
-    title: "Freelance AI & Data Services — DataLife",
-    description:
-      "Data Analysis, Augmented Analytics, ML Applications, and LLM Bots. Fixed-price, production-ready freelance AI services.",
-    url: "https://data-life.tech/services",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Freelance AI & Data Services — DataLife",
-    description:
-      "Data Analysis, Augmented Analytics, ML Applications, LLM Bots. Fixed-price freelance AI services.",
-  },
+    "DataLife builds end-to-end business automation systems — lead generation, nurture sequences, CRM automations, notifications, and AI-powered workflows using n8n and OpenClaw.",
   alternates: { canonical: "https://data-life.tech/services" },
 };
 
-const SERVICES = [
+const AUTOMATION_STAGES = [
+  {
+    num: "1",
+    href: "/services/data-analysis",
+    title: "Lead Generation Automation",
+    tagline: "Stop prospecting manually. Your pipeline fills itself.",
+    description: "We build automated lead capture systems that pull prospects from ads, forms, and web activity — enrich them with company and contact data — and push them directly into your CRM with a Slack alert. No manual data entry. No leads left in an inbox.",
+    accent: "#38BDF8",
+    tools: ["n8n", "OpenClaw", "Webhooks"],
+    features: [
+      "Form → CRM auto-entry (under 60 seconds)",
+      "Lead enrichment (company, title, LinkedIn)",
+      "Instant Slack + email alert to sales owner",
+      "Duplicate detection and deduplication",
+      "Source tagging (ads, organic, referral)",
+      "Webhook trigger from any landing page",
+    ],
+    phases: [
+      {
+        name: "Map Your Sources",
+        desc: "We identify every place a lead can enter your business — contact forms, ad platforms, referral links, event sign-ups — and document what data you capture versus what you need. You end the session knowing exactly where leads are falling through the cracks.",
+      },
+      {
+        name: "Build the Pipeline",
+        desc: "We wire every source into a single n8n workflow that enriches the lead data, creates the CRM record, and fires your Slack/email alert — all within 60 seconds of the lead landing. No Zapier subscriptions. No brittle integrations.",
+      },
+      {
+        name: "Test, Monitor & Hand Over",
+        desc: "We run live test submissions through every entry point, verify the CRM entries and alerts are firing correctly, and document the full workflow so your team can maintain it. 30-day monitoring included — we fix anything that breaks.",
+      },
+    ],
+  },
+  {
+    num: "2",
+    href: "/services/augmented-analytics",
+    title: "Nurture & Outreach Automation",
+    tagline: "Every lead gets followed up. Every time. Automatically.",
+    description: "We build behaviour-triggered outreach sequences that follow up with prospects based on what they do — opened an email, visited your pricing page, booked a call, went cold for 14 days. No manual chasing. No leads going cold because someone forgot.",
+    accent: "#14B8A6",
+    tools: ["n8n", "OpenClaw", "Email"],
+    features: [
+      "Behaviour-triggered email sequences",
+      "Multi-channel: email + SMS + LinkedIn",
+      "Re-engagement flows for cold leads",
+      "Meeting booked → auto confirmation + prep",
+      "Unsubscribe and bounce handling",
+      "Personalisation tokens from CRM data",
+    ],
+    phases: [
+      {
+        name: "Sequence Design",
+        desc: "We map your prospect journey from first touch to booked meeting — identifying the key trigger events, the right message for each stage, and the fallback steps when a lead goes quiet. You approve the flow before any automation is built.",
+      },
+      {
+        name: "Build & Personalise",
+        desc: "We build the sequences in n8n and OpenClaw — triggered by CRM stage changes, email opens, page visits, or time delays. Every message pulls personalisation tokens from your CRM so it reads like a one-to-one email, not a broadcast.",
+      },
+      {
+        name: "Track & Optimise",
+        desc: "We set up reply detection so sequences stop automatically when a prospect responds. Open rates, click rates, and conversion by step are tracked in a simple dashboard. After 30 days we review the data and tune underperforming steps.",
+      },
+    ],
+  },
+  {
+    num: "3",
+    href: "/services/ml-applications",
+    title: "CRM & Close Automation",
+    tagline: "Move deals through your pipeline on autopilot.",
+    description: "We automate the CRM workflows that your sales team does manually — stage updates, proposal sends, follow-up reminders, contract triggers, and deal-closed handoffs. Deals move faster. Nothing gets stuck waiting on a human to remember.",
+    accent: "#10B981",
+    tools: ["n8n", "OpenClaw", "CRM APIs"],
+    features: [
+      "Auto-advance deals on trigger events",
+      "Proposal send + follow-up sequence",
+      "Contract signed → onboarding trigger",
+      "Deal-closed → invoice + Slack celebration",
+      "Stale deal alerts (no activity > N days)",
+      "Pipeline health dashboard + weekly digest",
+    ],
+    phases: [
+      {
+        name: "Pipeline Mapping",
+        desc: "We audit your current CRM setup — stages, fields, deal flow, and the manual tasks your team does at each step. We identify every repetitive action that a workflow can replace and every stuck point where deals slow down unnecessarily.",
+      },
+      {
+        name: "Stage Automation",
+        desc: "We build n8n workflows that trigger on CRM stage changes — sending proposals, scheduling follow-ups, notifying team members, and moving deals forward automatically when conditions are met. Your pipeline runs itself between human touches.",
+      },
+      {
+        name: "Close & Handoff",
+        desc: "When a deal closes, the system fires: invoice created, welcome email sent, onboarding task list opened, Slack message to the team. Everything that used to take 30 minutes of admin after every win happens in under 60 seconds, automatically.",
+      },
+    ],
+  },
+  {
+    num: "4",
+    href: "/services/llm-bots",
+    title: "Notifications & Alerts",
+    tagline: "Your whole team stays in sync — instantly.",
+    description: "We build notification systems that alert your team the moment something important happens — new lead, deal closed, payment received, support ticket opened, inventory low, anomaly detected. The right person knows about every important event in real time.",
+    accent: "#8B5CF6",
+    tools: ["n8n", "Slack", "SMS", "Email"],
+    features: [
+      "Slack alerts for every key business event",
+      "Email digests (daily, weekly, on-trigger)",
+      "SMS alerts for urgent events",
+      "Multi-recipient routing by event type",
+      "Escalation chains (if not acknowledged)",
+      "AI-generated alert summaries",
+    ],
+    phases: [
+      {
+        name: "Event Identification",
+        desc: "We run a structured workshop to map every business event that your team currently finds out about too late — or not at all. New lead, payment overdue, 5-star review, inventory threshold, support spike. We prioritise by urgency and business impact.",
+      },
+      {
+        name: "Channel & Routing Setup",
+        desc: "We build the notification workflows in n8n — routing each event type to the right channel (Slack DM, channel, email, or SMS) and the right people. Urgent events get escalation logic. High-volume events get digest format. Every alert has context, not just a ping.",
+      },
+      {
+        name: "Monitor & Tune",
+        desc: "After go-live, we monitor alert volume and relevance for 30 days. Alerts that generate noise get tuned or consolidated. Missed events get added. The goal is a notification system your team trusts and acts on — not one they mute.",
+      },
+    ],
+  },
+];
+
+const SECONDARY_SERVICES = [
   {
     href: "/services/data-analysis",
-    title: "Data Analysis",
-    description:
-      "Custom dashboards, automated reporting pipelines, SQL optimisation, and stakeholder-ready exports. Turn raw data into clear decisions.",
-    count: "Most popular",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M12 20V10M18 20V4M6 20v-4" />
-      </svg>
-    ),
+    title: "Data Analysis & Dashboards",
+    desc: "Clean pipelines, Power BI dashboards, and automated reports that update themselves.",
+    accent: "#38BDF8",
+    icon: "📊",
   },
   {
     href: "/services/augmented-analytics",
     title: "Augmented Analytics",
-    description:
-      "AI-assisted data prep, automated insight generation, and natural-language query layers that put self-service analytics in every team member's hands.",
-    count: "",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="M21 21l-4.35-4.35" />
-        <path d="M11 8v6M8 11h6" />
-      </svg>
-    ),
+    desc: "Natural language queries and AI-generated insights on top of your existing BI stack.",
+    accent: "#14B8A6",
+    icon: "🔍",
   },
   {
     href: "/services/ml-applications",
     title: "ML Applications",
-    description:
-      "Production-ready prediction models — churn, demand forecasting, anomaly detection — wrapped in clean APIs your team can call from day one.",
-    count: "",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M9.5 2a2.5 2.5 0 0 1 0 5H7a2.5 2.5 0 0 0 0 5h1a2.5 2.5 0 0 1 0 5" />
-        <path d="M14.5 2a2.5 2.5 0 0 0 0 5H17a2.5 2.5 0 0 1 0 5h-1a2.5 2.5 0 0 0 0 5" />
-      </svg>
-    ),
+    desc: "Churn prediction, demand forecasting, and spend modelling — deployed as production APIs.",
+    accent: "#10B981",
+    icon: "🤖",
   },
   {
     href: "/services/llm-bots",
-    title: "LLM Bots",
-    description:
-      "RAG-powered chatbots grounded in your own documents — for customer support, internal Q&A, or lead qualification — with full data privacy control.",
-    count: "",
-    icon: (
-      <svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-    ),
-  },
-];
-
-const WHY = [
-  {
-    title: "Fixed-price scopes",
-    description:
-      "Every engagement starts with a written scope and a fixed price. No hourly billing surprises.",
-  },
-  {
-    title: "Production-ready delivery",
-    description:
-      "Code is documented, tested, and handed over with a 30-day bug-fix guarantee.",
-  },
-  {
-    title: "Async-first collaboration",
-    description:
-      "Weekly check-ins over Loom + Slack. You stay informed without sitting in meetings.",
-  },
-  {
-    title: "Full IP ownership",
-    description:
-      "Everything built for you is yours — source code, models, dashboards. No licence lock-in.",
+    title: "AI Chatbots & RAG",
+    desc: "RAG-powered bots trained on your documents for lead qualification and support.",
+    accent: "#8B5CF6",
+    icon: "💬",
   },
 ];
 
 export default function ServicesPage() {
   return (
     <>
-      {/* ── 1. Hero ── */}
+      {/* ── Hero ── */}
       <section
         style={{
           backgroundColor: "var(--color-hero)",
-          paddingTop: "clamp(4rem, 10vw, 7rem)",
+          paddingTop: "clamp(5rem, 12vw, 8rem)",
           paddingBottom: "clamp(4rem, 8vw, 6rem)",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* Radial glow */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: "-20%",
-            right: "-10%",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(62,189,122,0.10) 0%, transparent 65%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-5%", width: "600px", height: "600px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
 
-        <div
-          className="section-wrapper"
-          style={{ position: "relative", textAlign: "center" }}
-        >
-          {/* Label pill */}
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "7px",
-              padding: "5px 14px",
-              borderRadius: "999px",
-              border: "1px solid rgba(62,189,122,0.35)",
-              backgroundColor: "rgba(62,189,122,0.08)",
-              marginBottom: "1.5rem",
-            }}
-          >
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="var(--color-accent)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-            </svg>
-            <span
-              style={{
-                fontSize: "0.8125rem",
-                fontWeight: 500,
-                color: "var(--color-accent)",
-                fontFamily: "var(--font-body)",
-              }}
-            >
-              What I offer
-            </span>
+        <div className="section-wrapper" style={{ position: "relative", textAlign: "center" }}>
+          <div className="section-label" style={{ justifyContent: "center", marginBottom: "1.25rem" }}>
+            <span className="section-label-dash" />
+            <span>SERVICES</span>
           </div>
 
-          <h1
-            style={{
-              color: "#fff",
-              marginBottom: "1.25rem",
-              lineHeight: 1.08,
-              maxWidth: "20ch",
-              marginInline: "auto",
-            }}
-          >
-            Services
+          <h1 style={{ color: "var(--color-text-hero)", marginBottom: "1.25rem", lineHeight: 1.1, maxWidth: "22ch", marginInline: "auto" }}>
+            We automate your entire business pipeline.
           </h1>
 
-          <p
-            style={{
-              color: "rgba(255,255,255,0.62)",
-              fontSize: "1.0625rem",
-              maxWidth: "50ch",
-              lineHeight: 1.75,
-              fontFamily: "var(--font-body)",
-              marginInline: "auto",
-            }}
-          >
-            Four focused disciplines — each delivering production-ready
-            solutions with clear outcomes and fixed-price scopes.
+          <p style={{ color: "var(--color-text-hero-muted)", fontSize: "1.0625rem", maxWidth: "54ch", lineHeight: 1.75, fontFamily: "var(--font-body)", marginInline: "auto", marginBottom: "1.5rem" }}>
+            Four automation systems — built end-to-end using n8n, OpenClaw, and AI — covering every stage from first lead to closed deal and beyond.
           </p>
-        </div>
 
-        {/* Wave divider */}
-        <div
-          aria-hidden="true"
-          style={{ position: "absolute", bottom: -1, left: 0, right: 0 }}
-        >
-          <svg
-            viewBox="0 0 1440 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-            style={{ display: "block", width: "100%", height: "48px" }}
-          >
-            <path
-              d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z"
-              fill="#ffffff"
-            />
-          </svg>
-        </div>
-      </section>
-
-      {/* ── 2. Service Cards ── */}
-      <section
-        style={{
-          backgroundColor: "var(--color-bg-primary)",
-          paddingBlock: "clamp(4rem, 8vw, 6rem)",
-        }}
-      >
-        <div className="section-wrapper">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
-              gap: "1.25rem",
-            }}
-          >
-            {SERVICES.map((s) => (
-              <ServiceCard
-                key={s.href}
-                href={s.href}
-                title={s.title}
-                description={s.description}
-                icon={s.icon}
-                count={s.count || undefined}
-              />
+          {/* Tool badges */}
+          <div style={{ display: "flex", justifyContent: "center", gap: "0.625rem", flexWrap: "wrap" }}>
+            {["n8n", "OpenClaw", "Slack Alerts", "Webhooks", "AI Agents"].map((tool) => (
+              <span key={tool} style={{ padding: "4px 12px", borderRadius: "999px", fontSize: "0.8125rem", fontWeight: 500, fontFamily: "var(--font-body)", color: "rgba(255,255,255,0.65)", border: "1px solid rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.05)" }}>
+                {tool}
+              </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 3. Why work with me ── */}
-      <section
-        style={{
-          backgroundColor: "var(--color-bg-cream)",
-          paddingBlock: "clamp(4rem, 8vw, 6rem)",
-        }}
-      >
+      {/* ── Primary: Automation Systems ── */}
+      <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
         <div className="section-wrapper">
-          <div style={{ marginBottom: "3rem", textAlign: "center" }}>
-            <p
-              style={{
-                fontSize: "0.8125rem",
-                fontWeight: 500,
-                color: "var(--color-text-secondary)",
-                fontFamily: "var(--font-body)",
-                marginBottom: "0.625rem",
-              }}
-            >
-              How I work
-            </p>
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                color: "var(--color-text-primary)",
-                letterSpacing: "-0.02em",
-                marginBottom: "0.875rem",
-              }}
-            >
-              Built for independent teams and growing startups
+
+          <div style={{ marginBottom: "2.5rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.875rem" }}>
+              <span className="section-label-dash" />
+              <span>AUTOMATION SYSTEMS</span>
+            </div>
+            <h2 style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)", letterSpacing: "-0.02em", margin: 0 }}>
+              The four systems every business needs.
             </h2>
-            <p
-              style={{
-                fontSize: "1rem",
-                lineHeight: 1.7,
-                color: "var(--color-text-secondary)",
-                fontFamily: "var(--font-body)",
-                maxWidth: "52ch",
-                marginInline: "auto",
-              }}
-            >
-              Every engagement is scoped, priced, and delivered with the same
-              principles — no matter the project size.
-            </p>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))",
-              gap: "1.25rem",
-            }}
-          >
-            {WHY.map((w, i) => (
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            {AUTOMATION_STAGES.map((stage) => (
               <div
-                key={w.title}
-                style={{
-                  borderRadius: "14px",
-                  border: "1px solid var(--color-border)",
-                  backgroundColor: "#fff",
-                  padding: "1.5rem",
-                  boxShadow: "var(--shadow-card)",
-                }}
+                key={stage.num}
+                className="forte-card"
+                style={{ borderTopColor: stage.accent, padding: "clamp(1.5rem, 4vw, 2.5rem)" }}
               >
-                <div
-                  style={{
-                    width: "36px",
-                    height: "36px",
-                    borderRadius: "8px",
-                    backgroundColor: "var(--color-bg-tag)",
-                    color: "var(--color-hero)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "var(--font-display)",
-                    fontWeight: 700,
-                    fontSize: "0.875rem",
-                    marginBottom: "1rem",
-                    flexShrink: 0,
-                  }}
-                >
-                  {String(i + 1).padStart(2, "0")}
+                {/* Top: description + features */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem", marginBottom: "2rem" }} className="lg:grid-cols-[1.6fr_1fr]">
+
+                  {/* Left */}
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1rem" }}>
+                      <div
+                        className="stage-badge"
+                        style={{ backgroundColor: `${stage.accent}18`, color: stage.accent, border: `1px solid ${stage.accent}35` }}
+                      >
+                        {stage.num}
+                      </div>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: stage.accent, fontFamily: "var(--font-body)" }}>
+                        Stage {stage.num}
+                      </span>
+                      {/* Tool badges */}
+                      <div style={{ display: "flex", gap: "6px", marginLeft: "4px" }}>
+                        {stage.tools.map((t) => (
+                          <span key={t} style={{ padding: "2px 8px", borderRadius: "999px", fontSize: "0.7rem", fontWeight: 600, fontFamily: "var(--font-body)", backgroundColor: `${stage.accent}15`, color: stage.accent, border: `1px solid ${stage.accent}30` }}>
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 0.5rem", letterSpacing: "-0.02em" }}>
+                      {stage.title}
+                    </h2>
+
+                    <p style={{ fontSize: "1rem", fontStyle: "italic", color: stage.accent, fontFamily: "var(--font-body)", margin: "0 0 1rem" }}>
+                      &ldquo;{stage.tagline}&rdquo;
+                    </p>
+
+                    <p style={{ fontSize: "0.9375rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: "0 0 1.5rem", lineHeight: 1.75, maxWidth: "58ch" }}>
+                      {stage.description}
+                    </p>
+
+                    <Link
+                      href={stage.href}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "10px 22px",
+                        fontSize: "0.9375rem",
+                        fontWeight: 600,
+                        color: "#fff",
+                        backgroundColor: "var(--color-accent)",
+                        borderRadius: "8px",
+                        textDecoration: "none",
+                        fontFamily: "var(--font-body)",
+                        transition: "opacity 0.15s",
+                      }}
+                    >
+                      Get a Quote →
+                    </Link>
+                  </div>
+
+                  {/* Right — features */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+                    <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: "0 0 0.5rem" }}>
+                      What&rsquo;s included
+                    </p>
+                    {stage.features.map((f) => (
+                      <div key={f} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0, marginTop: "2px" }}>
+                          <circle cx="10" cy="10" r="9" stroke={stage.accent} strokeWidth="1.5" />
+                          <path d="M6.5 10l2.5 2.5 4.5-4.5" stroke={stage.accent} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", lineHeight: 1.6 }}>
+                          {f}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "1rem",
-                    fontWeight: 600,
-                    color: "var(--color-text-primary)",
-                    margin: "0 0 6px",
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {w.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: "0.875rem",
-                    color: "var(--color-text-secondary)",
-                    fontFamily: "var(--font-body)",
-                    margin: 0,
-                    lineHeight: 1.65,
-                  }}
-                >
-                  {w.description}
-                </p>
+
+                {/* Phase strip */}
+                <div style={{ borderTop: `1px solid ${stage.accent}25`, paddingTop: "1.75rem" }}>
+                  <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: "0 0 1.25rem" }}>
+                    How it works — 3 phases
+                  </p>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 220px), 1fr))", gap: "1px", backgroundColor: `${stage.accent}20`, borderRadius: "10px", overflow: "hidden", border: `1px solid ${stage.accent}20` }}>
+                    {stage.phases.map((phase, i) => (
+                      <div key={phase.name} style={{ backgroundColor: "var(--color-bg-primary)", padding: "1.5rem" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "0.875rem" }}>
+                          <div style={{ width: "28px", height: "28px", borderRadius: "50%", backgroundColor: `${stage.accent}18`, border: `1px solid ${stage.accent}40`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <span style={{ fontSize: "0.75rem", fontWeight: 700, color: stage.accent, fontFamily: "var(--font-display)" }}>{i + 1}</span>
+                          </div>
+                          <h4 style={{ fontFamily: "var(--font-display)", fontSize: "0.9375rem", fontWeight: 700, color: "var(--color-text-primary)", margin: 0, letterSpacing: "-0.01em" }}>
+                            {phase.name}
+                          </h4>
+                        </div>
+                        <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.7 }}>
+                          {phase.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 4. CTA Strip ── */}
-      <section
-        style={{
-          backgroundColor: "var(--color-hero)",
-          paddingBlock: "clamp(4rem, 8vw, 5.5rem)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "600px",
-            height: "300px",
-            borderRadius: "50%",
-            background:
-              "radial-gradient(ellipse, rgba(62,189,122,0.08) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          className="section-wrapper"
-          style={{ position: "relative", textAlign: "center" }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              color: "#fff",
-              marginBottom: "1rem",
-            }}
-          >
-            Not sure which service you need?
+      {/* ── Secondary: Data & AI ── */}
+      <section style={{ backgroundColor: "var(--color-bg-cream)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
+        <div className="section-wrapper">
+          <div style={{ marginBottom: "2.5rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.875rem" }}>
+              <span className="section-label-dash" />
+              <span>DATA &amp; AI SERVICES</span>
+            </div>
+            <h2 style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)", letterSpacing: "-0.02em", margin: "0 0 0.75rem" }}>
+              We also build the intelligence layer.
+            </h2>
+            <p style={{ fontSize: "1rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, maxWidth: "56ch", lineHeight: 1.7 }}>
+              Automation tells your systems what to do. Data and AI tell you what to automate next — and predict what&rsquo;s coming before it arrives.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: "1.25rem" }}>
+            {SECONDARY_SERVICES.map((s) => (
+              <Link key={s.href} href={s.href} style={{ textDecoration: "none" }}>
+                <div
+                  className="forte-card"
+                  style={{ borderTopColor: s.accent, padding: "1.75rem", height: "100%" }}
+                >
+                  <div style={{ fontSize: "1.75rem", marginBottom: "0.875rem", lineHeight: 1 }}>{s.icon}</div>
+                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 0.625rem", letterSpacing: "-0.02em" }}>
+                    {s.title}
+                  </h3>
+                  <p style={{ fontSize: "0.875rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: "0 0 1rem", lineHeight: 1.65 }}>
+                    {s.desc}
+                  </p>
+                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: s.accent, fontFamily: "var(--font-body)" }}>
+                    Learn more →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section style={{ backgroundColor: "var(--color-hero)", paddingBlock: "clamp(4rem, 8vw, 5.5rem)", position: "relative", overflow: "hidden" }}>
+        <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: "600px", height: "300px", borderRadius: "50%", background: "radial-gradient(ellipse, rgba(0,136,219,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div className="section-wrapper" style={{ position: "relative", textAlign: "center" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", color: "var(--color-text-hero)", marginBottom: "1rem" }}>
+            Ready to automate your pipeline?
           </h2>
-          <p
-            style={{
-              color: "rgba(255,255,255,0.62)",
-              fontSize: "1.0625rem",
-              fontFamily: "var(--font-body)",
-              maxWidth: "44ch",
-              marginInline: "auto",
-              marginBottom: "2.25rem",
-              lineHeight: 1.7,
-            }}
-          >
-            Book a free 30-minute discovery call and I&apos;ll recommend the
-            right approach for your specific data challenge.
+          <p style={{ color: "var(--color-text-hero-muted)", fontSize: "1.0625rem", fontFamily: "var(--font-body)", maxWidth: "48ch", marginInline: "auto", marginBottom: "2rem", lineHeight: 1.7 }}>
+            Book a free 30-minute automation audit. We&rsquo;ll identify your highest-ROI workflow and give you a fixed-price quote before you leave the call.
           </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "0.875rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <CTAButton
-              label="Book a Discovery Call"
-              href="/book"
-              variant="filled"
-              size="lg"
-            />
-            <CTAButton
-              label="View Case Studies"
-              href="/portfolio"
-              variant="white"
-              size="lg"
-            />
+          <div style={{ display: "flex", gap: "0.875rem", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/book" style={{ display: "inline-flex", alignItems: "center", padding: "13px 28px", fontSize: "1rem", fontWeight: 600, color: "#fff", backgroundColor: "var(--color-accent)", borderRadius: "8px", textDecoration: "none", fontFamily: "var(--font-body)" }}>
+              Book a Free Automation Audit
+            </Link>
+            <Link href="/products" style={{ display: "inline-flex", alignItems: "center", padding: "13px 28px", fontSize: "1rem", fontWeight: 500, color: "rgba(255,255,255,0.85)", backgroundColor: "transparent", border: "1px solid rgba(255,255,255,0.25)", borderRadius: "8px", textDecoration: "none", fontFamily: "var(--font-body)" }}>
+              View Pricing
+            </Link>
           </div>
         </div>
       </section>

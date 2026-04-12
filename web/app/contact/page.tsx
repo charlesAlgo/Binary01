@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 const INFO_CARDS = [
   { icon: "⚡", title: "Response within 24 hours", subtitle: "Weekdays — usually faster" },
   { icon: "📅", title: "Currently available", subtitle: "Open for new projects" },
-  { icon: "⭐", title: "Top Rated on Upwork", subtitle: "5-star track record" },
+  { icon: "⭐", title: "40+ Projects Delivered", subtitle: "5-star track record" },
   { icon: "💬", title: "Free discovery call", subtitle: "30 min, no commitment" },
 ];
 
@@ -68,7 +68,7 @@ export default function ContactPage() {
           overflow: "hidden",
         }}
       >
-        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-10%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(62,189,122,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-10%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
 
         <div className="section-wrapper" style={{ position: "relative" }}>
           {/* Breadcrumb */}
@@ -79,7 +79,7 @@ export default function ContactPage() {
           </nav>
 
           {/* Label pill */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(62,189,122,0.35)", backgroundColor: "rgba(62,189,122,0.08)", marginBottom: "1.25rem" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(0,136,219,0.35)", backgroundColor: "rgba(0,136,219,0.08)", marginBottom: "1.25rem" }}>
             <span style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>Get in touch</span>
           </div>
 
@@ -94,7 +94,7 @@ export default function ContactPage() {
         {/* Wave divider */}
         <div aria-hidden="true" style={{ position: "absolute", bottom: -1, left: 0, right: 0 }}>
           <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "48px" }}>
-            <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z" fill="#ffffff"/>
+            <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z" fill="var(--color-bg-primary)"/>
           </svg>
         </div>
       </section>
@@ -147,7 +147,7 @@ export default function ContactPage() {
             {FAQS.map((faq) => (
               <div
                 key={faq.q}
-                style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.75rem", boxShadow: "var(--shadow-card)" }}
+                style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-surface)", padding: "1.75rem", boxShadow: "var(--shadow-card)" }}
               >
                 <p style={{ fontFamily: "var(--font-display)", fontSize: "0.9375rem", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 0.625rem", letterSpacing: "-0.01em" }}>
                   {faq.q}

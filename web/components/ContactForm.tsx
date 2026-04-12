@@ -35,13 +35,15 @@ const inputBaseStyle: React.CSSProperties = {
   width: "100%",
   border: "1px solid var(--color-border)",
   borderRadius: "10px",
-  padding: "10px 14px",
+  padding: "11px 14px",
   fontSize: "0.9375rem",
   fontFamily: "var(--font-body)",
-  color: "var(--color-text-primary)",
-  backgroundColor: "#fff",
+  fontWeight: 400,
+  color: "#f0f4f8",
+  backgroundColor: "var(--color-surface)",
   outline: "none",
   transition: "border-color 0.15s",
+  colorScheme: "dark",
 };
 
 export default function ContactForm() {

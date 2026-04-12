@@ -1,29 +1,8 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import "./globals.css";
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const BASE_URL = "https://data-life.tech";
 
@@ -31,28 +10,28 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
 
   title: {
-    default: "AI & Data Freelancer for Hire — Charles Shalua | DataLife",
+    default: "Business Automation Agency — DataLife | n8n & AI Systems",
     template: "%s | DataLife",
   },
   description:
-    "DataLife delivers data analysis, ML apps, and LLM bots for growth-minded businesses. Ontario-based, available worldwide. Book a free strategy call today.",
+    "DataLife automates your entire business — from lead generation to closed deal. We build end-to-end automation systems using n8n, OpenClaw, and AI. Slack notifications, CRM automations, and outreach pipelines. Ontario-based, worldwide.",
 
   keywords: [
-    "hire freelance data analyst",
-    "freelance machine learning developer",
-    "AI chatbot developer for hire",
-    "augmented analytics consultant",
-    "data analysis consultant Canada",
-    "freelance AI engineer Ontario",
-    "ML application developer for hire",
-    "RAG pipeline developer freelance",
-    "freelance data analyst Toronto",
-    "LangChain developer for hire Canada",
+    "business automation agency",
+    "n8n automation agency",
+    "lead generation automation",
+    "CRM automation systems",
+    "sales pipeline automation",
+    "business process automation Canada",
+    "workflow automation freelancer Ontario",
+    "AI automation systems builder",
+    "Slack notification automation",
+    "automated outreach systems",
     "DataLife",
     "Charles Shalua",
-    "freelance AI developer Ontario",
-    "machine learning consultant Canada",
-    "PIPEDA-compliant data analyst freelance",
+    "OpenClaw automation",
+    "n8n workflow builder Canada",
+    "end-to-end business automation",
   ],
 
   authors: [{ name: "Charles Shalua", url: BASE_URL }],
@@ -76,9 +55,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: BASE_URL,
     siteName: "DataLife",
-    title: "AI & Data Freelancer for Hire — Charles Shalua | DataLife",
+    title: "Business Automation Agency — DataLife | n8n & AI Systems",
     description:
-      "DataLife delivers data analysis, ML apps, and LLM bots for growth-minded businesses. Ontario-based, available worldwide.",
+      "DataLife automates your entire business — from lead generation to closed deal. n8n, OpenClaw, AI bots, and notification systems. Ontario-based, worldwide.",
     images: [
       {
         url: "/og-image.png",
@@ -91,9 +70,9 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "AI & Data Freelancer for Hire — Charles Shalua | DataLife",
+    title: "Business Automation Agency — DataLife | n8n & AI Systems",
     description:
-      "DataLife delivers data analysis, ML apps, and LLM bots for growth-minded businesses. Ontario-based, available worldwide.",
+      "DataLife automates your entire business — from lead generation to closed deal. n8n, OpenClaw, AI bots, and notification systems. Ontario-based, worldwide.",
     images: ["/og-image.png"],
     creator: "@charlesshalua",
   },
@@ -122,7 +101,7 @@ const jsonLd = {
       name: "DataLife",
       url: BASE_URL,
       description:
-        "AI & Data Solutions firm specialising in Data Analysis, Augmented Analytics, ML Applications, and LLM Bots.",
+        "Business automation agency specialising in end-to-end automation systems — from lead generation to closed deal. Using n8n, OpenClaw, and AI.",
       foundingDate: "2023",
       founder: { "@id": `${BASE_URL}/#person` },
       address: {
@@ -136,8 +115,7 @@ const jsonLd = {
         url: `${BASE_URL}/contact`,
       },
       sameAs: [
-        "https://www.upwork.com/freelancers/charlesshalua",
-        "https://www.fiverr.com/charlesshalua",
+        "https://github.com/charlesAlgo",
       ],
     },
     {
@@ -162,8 +140,6 @@ const jsonLd = {
         "SQL",
       ],
       sameAs: [
-        "https://www.upwork.com/freelancers/charlesshalua",
-        "https://www.fiverr.com/charlesshalua",
         "https://github.com/charlesAlgo",
       ],
     },
@@ -206,8 +182,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="antialiased" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Inject theme before paint to avoid flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}`,
+          }}
+        />
+      </head>
+      <body className="antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

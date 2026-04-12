@@ -1,11 +1,32 @@
 'use client';
-import React, { useMemo, type JSX } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+// Declare all motion elements at module scope (never inside render) to
+// satisfy the react-hooks/static-components ESLint rule.
+const MOTION = {
+  p:       motion.p,
+  span:    motion.span,
+  div:     motion.div,
+  h1:      motion.h1,
+  h2:      motion.h2,
+  h3:      motion.h3,
+  h4:      motion.h4,
+  h5:      motion.h5,
+  h6:      motion.h6,
+  a:       motion.a,
+  button:  motion.button,
+  section: motion.section,
+  article: motion.article,
+  li:      motion.li,
+} as const;
+
+type MotionTag = keyof typeof MOTION;
+
 interface TextShimmerProps {
   children: string;
-  as?: React.ElementType;
+  as?: MotionTag;
   className?: string;
   duration?: number;
   spread?: number;
@@ -13,12 +34,12 @@ interface TextShimmerProps {
 
 export function TextShimmer({
   children,
-  as: Component = 'p',
+  as: tag = 'p',
   className,
   duration = 2,
   spread = 2,
 }: TextShimmerProps) {
-  const MotionComponent = motion(Component as keyof JSX.IntrinsicElements);
+  const MotionComponent = MOTION[tag];
 
   const dynamicSpread = useMemo(() => {
     return children.length * spread;

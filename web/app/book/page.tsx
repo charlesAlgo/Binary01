@@ -5,7 +5,7 @@ import BookingGate from "@/components/BookingGate";
 export const metadata: Metadata = {
   title: "Book a Free Discovery Call — Charles Shalua",
   description:
-    "Book a free 30-min call with Charles Shalua, Top-Rated Upwork AI & data engineer. Discuss your project, data, and goals. No pitch, no pressure. Ontario, Canada.",
+    "Book a free 30-min call with Charles Shalua, AI & data engineer. Discuss your project, data, and goals. No pitch, no pressure. Ontario, Canada.",
   keywords: [
     "book freelance data analyst",
     "schedule AI consultation",
@@ -17,14 +17,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Book a Free Discovery Call — Charles Shalua | DataLife",
     description:
-      "Free 30-min call with a Top-Rated Upwork AI & data engineer. Discuss your project with no pitch, no pressure.",
+      "Free 30-min call with an AI & data engineer. Discuss your project with no pitch, no pressure.",
     url: "https://data-life.tech/book",
   },
   twitter: {
     card: "summary_large_image",
     title: "Book a Free Discovery Call — Charles Shalua | DataLife",
     description:
-      "Free 30-min call with a Top-Rated Upwork AI & data engineer. No pitch, no pressure.",
+      "Free 30-min call with an AI & data engineer. No pitch, no pressure.",
   },
   alternates: { canonical: "https://data-life.tech/book" },
 };
@@ -70,7 +70,7 @@ export default function BookPage() {
           overflow: "hidden",
         }}
       >
-        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-10%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(62,189,122,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-10%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
 
         <div className="section-wrapper" style={{ position: "relative" }}>
           {/* Breadcrumb */}
@@ -81,7 +81,7 @@ export default function BookPage() {
           </nav>
 
           {/* Label pill */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(62,189,122,0.35)", backgroundColor: "rgba(62,189,122,0.08)", marginBottom: "1.25rem" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(0,136,219,0.35)", backgroundColor: "rgba(0,136,219,0.08)", marginBottom: "1.25rem" }}>
             <span style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>Discovery call</span>
           </div>
 
@@ -108,7 +108,7 @@ export default function BookPage() {
         {/* Wave divider */}
         <div aria-hidden="true" style={{ position: "absolute", bottom: -1, left: 0, right: 0 }}>
           <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "48px" }}>
-            <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z" fill="#ffffff"/>
+            <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z" fill="var(--color-bg-primary)"/>
           </svg>
         </div>
       </section>
@@ -124,13 +124,13 @@ export default function BookPage() {
 
               {/* What we'll cover */}
               <div style={{ borderRadius: "16px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-bg-primary)", padding: "2rem", boxShadow: "var(--shadow-card)" }}>
-                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-hero)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
+                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
                   What we&apos;ll cover
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                   {WHAT_WE_COVER.map((item) => (
                     <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
-                      <span style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: "var(--color-bg-tag)", color: "var(--color-accent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.65rem", fontWeight: 700, marginTop: "2px" }}>✓</span>
+                      <span style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: "rgba(0,136,219,0.12)", color: "var(--color-accent)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.65rem", fontWeight: 700, marginTop: "2px" }}>✓</span>
                       <span style={{ fontSize: "0.9375rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", lineHeight: 1.6 }}>{item}</span>
                     </div>
                   ))}
@@ -139,7 +139,7 @@ export default function BookPage() {
 
               {/* What happens next */}
               <div style={{ borderRadius: "16px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-bg-primary)", padding: "2rem", boxShadow: "var(--shadow-card)" }}>
-                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-hero)", fontFamily: "var(--font-body)", marginBottom: "0.875rem" }}>
+                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "0.875rem" }}>
                   What happens next
                 </p>
                 <p style={{ fontSize: "0.9375rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.7 }}>
@@ -149,7 +149,7 @@ export default function BookPage() {
 
               {/* Who it's for */}
               <div style={{ borderRadius: "16px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-bg-primary)", padding: "2rem", boxShadow: "var(--shadow-card)" }}>
-                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-hero)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
+                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
                   Who it&apos;s for
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -185,7 +185,7 @@ export default function BookPage() {
             {FAQS.map((faq) => (
               <div
                 key={faq.q}
-                style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.75rem", boxShadow: "var(--shadow-card)" }}
+                style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-surface)", padding: "1.75rem", boxShadow: "var(--shadow-card)" }}
               >
                 <p style={{ fontFamily: "var(--font-display)", fontSize: "0.9375rem", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 0.625rem", letterSpacing: "-0.01em" }}>
                   {faq.q}

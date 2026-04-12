@@ -29,14 +29,14 @@ const WHY_ME = [
 
 export default function HowWeWork() {
   return (
-    <section style={{ backgroundColor: "var(--color-bg-cream)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
+    <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
       <div className="section-wrapper">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(2.5rem,6vw,5rem)] items-start">
 
           {/* Left — visual */}
           <div>
             {/* Profile placeholder */}
-            <div style={{ borderRadius: "20px", backgroundColor: "var(--color-hero)", aspectRatio: "4/3", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1.25rem", position: "relative", overflow: "hidden" }}>
+            <div style={{ borderRadius: "20px", background: "linear-gradient(145deg, #141418 0%, #0f0f13 100%)", border: "1px solid rgba(255,255,255,0.08)", aspectRatio: "4/3", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "1.25rem", position: "relative", overflow: "hidden" }}>
               {/* bg pattern */}
               <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
               <div style={{ width: "80px", height: "80px", borderRadius: "50%", backgroundColor: "rgba(255,255,255,0.1)", border: "2px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
@@ -47,20 +47,20 @@ export default function HowWeWork() {
                 <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.55)", fontFamily: "var(--font-body)", margin: 0 }}>AI & Data Freelancer</p>
               </div>
               {/* Available badge */}
-              <div style={{ position: "absolute", top: "16px", right: "16px", display: "flex", alignItems: "center", gap: "6px", padding: "5px 12px", borderRadius: "999px", backgroundColor: "rgba(62,189,122,0.15)", border: "1px solid rgba(62,189,122,0.3)" }}>
+              <div style={{ position: "absolute", top: "16px", right: "16px", display: "flex", alignItems: "center", gap: "6px", padding: "5px 12px", borderRadius: "999px", backgroundColor: "rgba(0,136,219,0.15)", border: "1px solid rgba(0,136,219,0.3)" }}>
                 <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--color-accent)", display: "inline-block" }} />
                 <span style={{ fontSize: "0.75rem", color: "var(--color-accent)", fontFamily: "var(--font-body)", fontWeight: 500 }}>Available now</span>
               </div>
             </div>
 
             {/* Why me checklist */}
-            <div style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
+            <div style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-surface)", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
               <p style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-text-primary)", fontFamily: "var(--font-body)", marginBottom: "1rem", textTransform: "uppercase", letterSpacing: "0.06em" }}>
                 Why work with me
               </p>
               {WHY_ME.map((item) => (
                 <div key={item.label} style={{ display: "flex", alignItems: "flex-start", gap: "10px", padding: "8px 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: "var(--color-bg-tag)", color: "var(--color-accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>
+                  <span style={{ width: "20px", height: "20px", borderRadius: "50%", backgroundColor: "rgba(0,136,219,0.12)", color: "var(--color-accent)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>
                     {item.icon}
                   </span>
                   <span style={{ fontSize: "0.875rem", color: "var(--color-text-primary)", fontFamily: "var(--font-body)", lineHeight: 1.5 }}>{item.label}</span>
@@ -71,9 +71,9 @@ export default function HowWeWork() {
 
           {/* Right — steps */}
           <div>
-            <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", marginBottom: "0.5rem" }}>
-              How it works
-            </p>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "4px 14px", borderRadius: "980px", border: "1px solid rgba(0,136,219,0.25)", background: "rgba(0,136,219,0.08)", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
+              How It Works
+            </div>
             <h2 style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)", marginBottom: "2.5rem" }}>
               A straightforward process, start to finish
             </h2>

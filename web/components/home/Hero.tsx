@@ -1,173 +1,243 @@
 "use client";
 
-import { motion } from "framer-motion";
-import CTAButton from "@/components/CTAButton";
+import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
-import ButtonWithIcon from "@/components/ui/button-with-icon";
 
-const STATS = [
-  { number: "40+",  label: "Projects Delivered" },
-  { number: "98%",  label: "Client Satisfaction" },
-  { number: "4 hr", label: "Avg. Response Time" },
-  { number: "30d",  label: "Post-Launch Support" },
+const TOOLS = ["n8n", "OpenClaw", "Webhooks", "AI Agents", "Slack Alerts"];
+
+const PHRASES = [
+  "We build automation systems that close deals while you sleep.",
+  "From first lead to paid invoice — fully automated.",
+  "Replace manual work with AI-powered workflows.",
+  "One system. Zero dropped leads. Maximum revenue.",
+  "Your business on autopilot — built in days, not months.",
 ];
 
-const SERVICES_LIST = [
-  { label: "Data Analysis & BI Dashboards",  metric: "94% faster reporting" },
-  { label: "Custom ML Models & APIs",         metric: "87% avg. accuracy" },
-  { label: "LLM Bots & AI Automation",        metric: "70% query automation" },
-  { label: "Augmented Analytics",             metric: "Real-time insights" },
-];
+function PhraseTicker() {
+  const [index, setIndex] = useState(0);
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.11 } },
-};
-const item = {
-  hidden: { opacity: 0, y: 22 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as any } },
-};
+  useEffect(() => {
+    const id = setInterval(() => {
+      setIndex((i) => (i + 1) % PHRASES.length);
+    }, 3200);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div
+      style={{
+        height: "1.6em",
+        overflow: "hidden",
+        position: "relative",
+        marginBottom: "1.5rem",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={index}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            display: "block",
+            fontSize: "0.9375rem",
+            fontFamily: "var(--font-body)",
+            fontWeight: 500,
+            color: "rgba(0,136,219,0.9)",
+            letterSpacing: "0.01em",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {PHRASES[index]}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function Hero() {
   return (
     <section
       style={{
         position: "relative",
-        backgroundColor: "var(--color-hero)",
+        backgroundColor: "transparent",
         paddingTop: "clamp(7rem, 14vw, 10rem)",
         paddingBottom: "clamp(5rem, 10vw, 7rem)",
         overflow: "hidden",
       }}
     >
-      {/* Sparkles background */}
       <SparklesCore
         id="hero-sparkles"
         background="transparent"
         minSize={0.4}
         maxSize={1.2}
-        particleDensity={80}
-        particleColor="#3EBD7A"
-        speed={1.2}
+        particleDensity={70}
+        particleColor="#0088DB"
+        speed={1.1}
         className="absolute inset-0 w-full h-full pointer-events-none"
       />
 
-      {/* Radial glows */}
-      <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-8%", width: "700px", height: "700px", borderRadius: "50%", background: "radial-gradient(circle, rgba(62,189,122,0.13) 0%, transparent 60%)", pointerEvents: "none" }} />
-      <div aria-hidden="true" style={{ position: "absolute", bottom: "-15%", left: "-5%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(62,189,122,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-8%", width: "700px", height: "700px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.12) 0%, transparent 60%)", pointerEvents: "none" }} />
+      <div aria-hidden="true" style={{ position: "absolute", bottom: "-15%", left: "-5%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 65%)", pointerEvents: "none" }} />
 
       <div className="section-wrapper" style={{ position: "relative" }}>
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-1 lg:grid-cols-2 gap-[clamp(2rem,5vw,5rem)] items-center"
-        >
-          {/* ── Left: copy ── */}
-          <div>
-            {/* Available badge */}
-            <motion.div variants={item} style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "5px 16px", borderRadius: "999px", border: "1px solid rgba(62,189,122,0.35)", backgroundColor: "rgba(62,189,122,0.09)", marginBottom: "1.75rem" }}>
-              <span className="pulse-ring" style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "var(--color-accent)", display: "inline-block" }} />
-              <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-accent)", fontFamily: "var(--font-body)", letterSpacing: "0.01em" }}>
-                Available for new projects · March 2026
-              </span>
-            </motion.div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
 
-            {/* Headline */}
-            <motion.h1 variants={item} style={{ color: "#fff", maxWidth: "14ch", marginBottom: "1.5rem", lineHeight: 1.06, fontSize: "clamp(2.5rem, 5.5vw, 4.25rem)" }}>
-              AI & Data{" "}
-              <span className="gradient-text">Services</span>{" "}
-              That Move the Needle
-            </motion.h1>
+          {/* Label */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="section-label"
+            style={{ justifyContent: "center", marginBottom: "1rem" }}
+          >
+            <span className="section-label-dash" />
+            <span>AUTOMATION AGENCY &amp; SYSTEMS BUILDER</span>
+          </motion.div>
 
-            <motion.p variants={item} style={{ color: "rgba(255,255,255,0.62)", fontSize: "1.125rem", maxWidth: "44ch", lineHeight: 1.78, fontFamily: "var(--font-body)", marginBottom: "2.25rem" }}>
-              From messy spreadsheets to production ML pipelines — DataLife delivers full-stack AI solutions so your team ships results, not slide decks.
-            </motion.p>
+          {/* Phrase ticker */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.12 }}
+            style={{ width: "100%" }}
+          >
+            <PhraseTicker />
+          </motion.div>
 
-            {/* CTAs */}
-            <motion.div variants={item} style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "1.25rem" }}>
-              <CTAButton label="Get a Free Quote"      href="/contact"   variant="filled" size="lg" />
-              <CTAButton label="View Portfolio"        href="/portfolio" variant="white"  size="lg" />
-            </motion.div>
+          {/* Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              color: "#fff",
+              maxWidth: "15ch",
+              marginBottom: "1.5rem",
+              lineHeight: 1.06,
+              fontSize: "clamp(2.5rem, 5.5vw, 4.25rem)",
+              margin: "0 auto 1.5rem",
+              letterSpacing: "-0.03em",
+            }}
+          >
+            We automate your business{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg, #0088DB 0%, #06b6d4 50%, #38b2f5 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              end to end.
+            </span>
+          </motion.h1>
 
-            {/* FOMO + Let's Collaborate button */}
-            <motion.div variants={item} style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap", marginBottom: "2.75rem", rowGap: "0.625rem" }}>
-              <ButtonWithIcon label="Let's Collaborate" href="/contact" />
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0, minWidth: 0 }}>
-                <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#3EBD7A", display: "inline-block", boxShadow: "0 0 0 3px rgba(62,189,122,0.25)", animation: "pulse 2s infinite" }} />
-                <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.65)", fontFamily: "var(--font-body)", fontWeight: 500 }}>
-                  Open to new projects —{" "}
-                  <span style={{ color: "#3EBD7A", fontWeight: 700 }}>only 2 spots left</span>
-                  {" "}this month
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              color: "var(--color-text-secondary)",
+              fontSize: "1.125rem",
+              maxWidth: "560px",
+              lineHeight: 1.78,
+              fontFamily: "var(--font-body)",
+              marginBottom: "2.25rem",
+              marginInline: "auto",
+            }}
+          >
+            From first lead to closed deal — DataLife builds the automation systems that run your pipeline, follow up with prospects, notify your team, and close more business. Without hiring more people.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap", marginBottom: "2.5rem", justifyContent: "center" }}
+          >
+            <Link
+              href="/book"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "14px 30px",
+                fontSize: "1rem",
+                fontWeight: 600,
+                color: "#fff",
+                backgroundColor: "var(--color-accent)",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontFamily: "var(--font-body)",
+                transition: "background-color 0.2s, transform 0.15s",
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent-hover)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              Book a Free Automation Audit
+            </Link>
+            <Link
+              href="/work"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "14px 30px",
+                fontSize: "1rem",
+                fontWeight: 500,
+                color: "rgba(255,255,255,0.85)",
+                backgroundColor: "transparent",
+                border: "1px solid rgba(255,255,255,0.25)",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontFamily: "var(--font-body)",
+                transition: "border-color 0.2s, background-color 0.2s",
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.borderColor = "rgba(0,136,219,0.55)"; e.currentTarget.style.backgroundColor = "rgba(0,136,219,0.06)"; }}
+              onMouseOut={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; e.currentTarget.style.backgroundColor = "transparent"; }}
+            >
+              See What We&rsquo;ve Built
+            </Link>
+          </motion.div>
+
+          {/* Tools strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.38, ease: "easeOut" }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem" }}
+          >
+            <span style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontFamily: "var(--font-body)" }}>
+              Powered by
+            </span>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem", justifyContent: "center" }}>
+              {TOOLS.map((tool) => (
+                <span
+                  key={tool}
+                  style={{
+                    padding: "5px 14px",
+                    borderRadius: "999px",
+                    fontSize: "0.8125rem",
+                    fontWeight: 500,
+                    fontFamily: "var(--font-body)",
+                    color: "rgba(255,255,255,0.65)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    backgroundColor: "rgba(255,255,255,0.04)",
+                  }}
+                >
+                  {tool}
                 </span>
-              </div>
-            </motion.div>
-
-            {/* Trust micro-row */}
-            <motion.div variants={item} style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", alignItems: "center" }}>
-              {[
-                { badge: "Upwork Partner",          sub: "Verified" },
-                { badge: "Fiverr Partner",           sub: "Verified" },
-                { badge: "📚 Applied AI", sub: "Centennial College" },
-              ].map((b) => (
-                <div key={b.badge} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  <span style={{ fontSize: "0.8125rem", fontWeight: 600, color: "rgba(255,255,255,0.75)", fontFamily: "var(--font-body)" }}>{b.badge}</span>
-                  <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", fontFamily: "var(--font-body)" }}>· {b.sub}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* ── Right: cards ── */}
-          <motion.div variants={item} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {/* Deliverables card */}
-            <div className="glass-card" style={{ borderRadius: "18px", padding: "1.75rem" }}>
-              <p style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
-                What I deliver
-              </p>
-              {SERVICES_LIST.map((svc, i) => (
-                <motion.div
-                  key={svc.label}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.55 + i * 0.08, duration: 0.45, ease: "easeOut" }}
-                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", padding: "11px 0", borderBottom: i < SERVICES_LIST.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--color-accent)", display: "inline-block", flexShrink: 0 }} />
-                    <span style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.82)", fontFamily: "var(--font-body)" }}>{svc.label}</span>
-                  </div>
-                  <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "var(--color-accent)", fontFamily: "var(--font-mono)", whiteSpace: "nowrap", flexShrink: 0, padding: "2px 8px", borderRadius: "999px", backgroundColor: "rgba(62,189,122,0.12)", border: "1px solid rgba(62,189,122,0.2)" }}>
-                    {svc.metric}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Stats row — 2×2 on mobile, 4 columns from sm up */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              {STATS.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.75 + i * 0.07, duration: 0.4 }}
-                  className="glass-card"
-                  style={{ borderRadius: "12px", padding: "1rem 0.75rem", textAlign: "center" }}
-                >
-                  <p style={{ fontSize: "1.4rem", fontWeight: 800, color: "#fff", fontFamily: "var(--font-display)", letterSpacing: "-0.04em", margin: "0 0 3px" }}>{s.number}</p>
-                  <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.42)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.35 }}>{s.label}</p>
-                </motion.div>
               ))}
             </div>
           </motion.div>
-        </motion.div>
-      </div>
 
-      {/* Wave divider */}
-      <div aria-hidden="true" style={{ position: "absolute", bottom: -1, left: 0, right: 0 }}>
-        <svg viewBox="0 0 1440 56" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "56px" }}>
-          <path d="M0 56 C360 0 1080 0 1440 56 L1440 56 L0 56Z" fill="#ffffff"/>
-        </svg>
+        </div>
       </div>
     </section>
   );

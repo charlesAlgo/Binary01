@@ -22,17 +22,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const writingSlugs = [
+    "ai-small-business-compete-enterprise",
+    "data-problem-fix-30-days",
+    "roi-of-automation",
+  ];
+  const writingEntries: MetadataRoute.Sitemap = writingSlugs.map((slug) => ({
+    url: `${BASE_URL}/writing/${slug}`,
+    lastModified: new Date("2026-04-12"),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   return [
-    { url: BASE_URL,                                          lastModified: new Date("2026-03-19"), changeFrequency: "weekly",  priority: 1.0 },
-    { url: `${BASE_URL}/about`,                              lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/services`,                           lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/services/data-analysis`,             lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/services/augmented-analytics`,       lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/services/ml-applications`,           lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/services/llm-bots`,                  lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE_URL}/portfolio`,                          lastModified: new Date("2026-03-19"), changeFrequency: "weekly",  priority: 0.85 },
-    { url: `${BASE_URL}/contact`,                            lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.85 },
-    { url: `${BASE_URL}/book`,                               lastModified: new Date("2026-03-19"), changeFrequency: "monthly", priority: 0.9 },
+    { url: BASE_URL,                                          lastModified: new Date("2026-04-12"), changeFrequency: "weekly",  priority: 1.0 },
+    { url: `${BASE_URL}/about`,                              lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/services`,                           lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/services/data-analysis`,             lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/services/augmented-analytics`,       lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/services/ml-applications`,           lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/services/llm-bots`,                  lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/industries`,                         lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/products`,                           lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/work`,                               lastModified: new Date("2026-04-12"), changeFrequency: "weekly",  priority: 0.9 },
+    { url: `${BASE_URL}/reviews`,                            lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/writing`,                            lastModified: new Date("2026-04-12"), changeFrequency: "weekly",  priority: 0.8 },
+    { url: `${BASE_URL}/portfolio`,                          lastModified: new Date("2026-04-12"), changeFrequency: "weekly",  priority: 0.85 },
+    { url: `${BASE_URL}/contact`,                            lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/book`,                               lastModified: new Date("2026-04-12"), changeFrequency: "monthly", priority: 0.9 },
     ...portfolioEntries,
+    ...writingEntries,
   ];
 }

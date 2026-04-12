@@ -20,7 +20,7 @@ Your job: Help website visitors understand DataLife's services, answer questions
 
 ## Key Facts
 - 40+ projects across 15+ industries
-- Top Rated on Upwork · Level 2 on Fiverr
+- 40+ projects delivered across 15+ industries
 - Centennial College — Applied AI program
 - Fixed-price quotes — no surprises
 - Client owns 100% of code and data on delivery

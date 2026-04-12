@@ -12,9 +12,9 @@ export default function TechStack() {
     <section style={{ backgroundColor: "var(--color-bg-primary)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
       <div className="section-wrapper">
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <p style={{ fontSize: "0.8125rem", color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", marginBottom: "0.5rem" }}>
-            Tools & technologies
-          </p>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "4px 14px", borderRadius: "980px", border: "1px solid rgba(0,136,219,0.25)", background: "rgba(0,136,219,0.08)", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1.25rem" }}>
+            Tools &amp; Technologies
+          </div>
           <h2 style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)", margin: "0 0 0.75rem" }}>
             Tech stack I work with
           </h2>
@@ -25,8 +25,8 @@ export default function TechStack() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
           {STACK.map((group) => (
-            <div key={group.category} style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
-              <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-hero)", fontFamily: "var(--font-body)", marginBottom: "1rem" }}>
+            <div key={group.category} style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-surface)", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
+              <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1rem" }}>
                 {group.category}
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>

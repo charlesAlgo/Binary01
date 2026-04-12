@@ -21,22 +21,22 @@ const container = {
 };
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as any } },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
 export default function FounderSection() {
   return (
     <section
       style={{
-        backgroundColor: "var(--color-bg-cream)",
+        backgroundColor: "var(--color-bg-cream)", /* #0f0f13 */
         paddingBlock: "clamp(5rem, 10vw, 8rem)",
         position: "relative",
         overflow: "hidden",
       }}
     >
       {/* Decorative blobs */}
-      <div aria-hidden style={{ position: "absolute", top: "-10%", right: "-5%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(62,189,122,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
-      <div aria-hidden style={{ position: "absolute", bottom: "-15%", left: "-8%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(20,184,166,0.06) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", top: "-10%", right: "-5%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.08) 0%, transparent 65%)", pointerEvents: "none" }} />
+      <div aria-hidden style={{ position: "absolute", bottom: "-15%", left: "-8%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.05) 0%, transparent 65%)", pointerEvents: "none" }} />
 
       <div className="section-wrapper" style={{ position: "relative" }}>
         <motion.div
@@ -51,20 +51,20 @@ export default function FounderSection() {
             <div
               style={{
                 borderRadius: "24px",
-                background: "linear-gradient(145deg, var(--color-hero) 0%, #0f2d1f 100%)",
+                background: "linear-gradient(145deg, #141418 0%, #0f0f13 100%)",
                 padding: "2.5rem 2rem",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 textAlign: "center",
                 gap: "1.25rem",
-                boxShadow: "0 20px 60px rgba(24,61,48,0.22), 0 4px 16px rgba(0,0,0,0.08)",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
                 position: "relative",
                 overflow: "hidden",
               }}
             >
               {/* Card shimmer line */}
-              <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(90deg, transparent, rgba(62,189,122,0.5), transparent)" }} />
+              <div style={{ position: "absolute", top: 0, left: "20%", right: "20%", height: "1px", background: "linear-gradient(90deg, transparent, rgba(0,136,219,0.5), transparent)" }} />
 
               {/* Avatar */}
               <div style={{ position: "relative" }}>
@@ -73,12 +73,12 @@ export default function FounderSection() {
                     width: "110px",
                     height: "110px",
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, rgba(62,189,122,0.25) 0%, rgba(20,184,166,0.15) 100%)",
-                    border: "2px solid rgba(62,189,122,0.40)",
+                    background: "linear-gradient(135deg, rgba(0,136,219,0.25) 0%, rgba(6,182,212,0.15) 100%)",
+                    border: "2px solid rgba(0,136,219,0.40)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    boxShadow: "0 0 32px rgba(62,189,122,0.20)",
+                    boxShadow: "0 0 32px rgba(0,136,219,0.20)",
                   }}
                 >
                   <span style={{ fontFamily: "var(--font-display)", fontSize: "2.2rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.03em" }}>CS</span>
@@ -88,9 +88,9 @@ export default function FounderSection() {
                   style={{
                     position: "absolute", bottom: 4, right: 4,
                     width: "18px", height: "18px", borderRadius: "50%",
-                    backgroundColor: "#3EBD7A",
-                    border: "3px solid #0f2d1f",
-                    boxShadow: "0 0 8px rgba(62,189,122,0.6)",
+                    backgroundColor: "var(--color-accent)",
+                    border: "3px solid #0f0f13",
+                    boxShadow: "0 0 8px rgba(0,136,219,0.6)",
                   }}
                 />
               </div>
@@ -105,22 +105,19 @@ export default function FounderSection() {
                 </p>
               </div>
 
-              {/* Badges */}
+              {/* Badge */}
               <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
-                {["Upwork Partner", "Fiverr Partner"].map((b) => (
-                  <span
-                    key={b}
-                    style={{
-                      fontSize: "0.72rem", fontWeight: 600, color: "#3EBD7A",
-                      padding: "4px 12px", borderRadius: "999px",
-                      backgroundColor: "rgba(62,189,122,0.12)",
-                      border: "1px solid rgba(62,189,122,0.25)",
-                      fontFamily: "var(--font-body)",
-                    }}
-                  >
-                    {b}
-                  </span>
-                ))}
+                <span
+                  style={{
+                    fontSize: "0.72rem", fontWeight: 600, color: "var(--color-accent)",
+                    padding: "4px 12px", borderRadius: "999px",
+                    backgroundColor: "rgba(0,136,219,0.12)",
+                    border: "1px solid rgba(0,136,219,0.25)",
+                    fontFamily: "var(--font-body)",
+                  }}
+                >
+                  40+ Projects Delivered
+                </span>
               </div>
 
               {/* Details */}
@@ -143,15 +140,15 @@ export default function FounderSection() {
                 style={{
                   display: "block", width: "100%",
                   padding: "11px 0", borderRadius: "12px", textAlign: "center",
-                  background: "rgba(62,189,122,0.14)",
-                  border: "1px solid rgba(62,189,122,0.30)",
+                  background: "rgba(0,136,219,0.10)",
+                  border: "1px solid rgba(0,136,219,0.25)",
                   fontSize: "0.85rem", fontWeight: 600,
-                  color: "#3EBD7A", fontFamily: "var(--font-body)",
+                  color: "var(--color-accent)", fontFamily: "var(--font-body)",
                   textDecoration: "none",
                   transition: "background 0.2s",
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(62,189,122,0.24)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(62,189,122,0.14)")}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,136,219,0.20)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,136,219,0.10)")}
               >
                 View Full Profile →
               </Link>
@@ -160,15 +157,15 @@ export default function FounderSection() {
 
           {/* ── Right: Story & stats ── */}
           <div>
-            <motion.div variants={fadeUp} style={{ marginBottom: "0.5rem" }}>
-              <span style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>
-                Meet the founder
-              </span>
+            <motion.div variants={fadeUp} style={{ marginBottom: "1.25rem" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "4px 14px", borderRadius: "980px", border: "1px solid rgba(0,136,219,0.25)", background: "rgba(0,136,219,0.08)", fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>
+                Meet the Founder
+              </div>
             </motion.div>
 
             <motion.h2 variants={fadeUp} style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)", marginBottom: "1.5rem", lineHeight: 1.08 }}>
               The person behind<br />
-              <span style={{ background: "linear-gradient(135deg, #3EBD7A 0%, #14B8A6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span style={{ background: "linear-gradient(135deg, #0088DB 0%, #06b6d4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 the code
               </span>
             </motion.h2>
@@ -191,10 +188,10 @@ export default function FounderSection() {
                   style={{
                     borderRadius: "14px",
                     border: "1px solid var(--color-border)",
-                    backgroundColor: "#fff",
+                    backgroundColor: "var(--color-surface)",
                     padding: "1.1rem 0.75rem",
                     textAlign: "center",
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                    boxShadow: "var(--shadow-card)",
                   }}
                 >
                   <p style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--color-text-primary)", fontFamily: "var(--font-display)", letterSpacing: "-0.04em", margin: "0 0 3px" }}>{s.number}</p>
@@ -211,9 +208,9 @@ export default function FounderSection() {
                   style={{
                     fontSize: "0.78rem", fontFamily: "var(--font-mono)",
                     padding: "5px 12px", borderRadius: "8px",
-                    backgroundColor: "var(--color-bg-tag)",
-                    color: "var(--color-hero)",
-                    border: "1px solid rgba(62,189,122,0.18)",
+                    backgroundColor: "var(--color-surface)",
+                    color: "var(--color-accent)",
+                    border: "1px solid rgba(0,136,219,0.18)",
                     fontWeight: 500,
                   }}
                 >

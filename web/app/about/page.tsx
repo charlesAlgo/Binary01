@@ -7,27 +7,26 @@ import TechBadge from "@/components/TechBadge";
 export const metadata: Metadata = {
   title: "About Charles Shalua — Freelance AI & Data Engineer",
   description:
-    "Charles Shalua is a Top-Rated Upwork freelancer and Founder of DataLife. AI engineer, data analyst, and ML developer based in Ontario, Canada. 40+ projects delivered.",
+    "Charles Shalua is the Founder of DataLife. AI engineer, data analyst, and ML developer based in Ontario, Canada. 40+ projects delivered across 15+ industries.",
   keywords: [
     "Charles Shalua",
     "DataLife founder",
     "freelance AI engineer Canada",
     "data analyst Ontario",
     "machine learning freelancer",
-    "Top Rated Upwork data analyst",
     "AI engineer for hire",
   ],
   openGraph: {
     title: "About Charles Shalua — Freelance AI & Data Engineer | DataLife",
     description:
-      "Top-Rated Upwork freelancer, AI engineer, and founder of DataLife. 40+ projects delivered across data analysis, ML, and LLM bots.",
+      "Founder of DataLife. AI engineer with 40+ projects delivered across data analysis, ML, and LLM bots.",
     url: "https://data-life.tech/about",
   },
   twitter: {
     card: "summary_large_image",
     title: "About Charles Shalua — Freelance AI & Data Engineer | DataLife",
     description:
-      "Top-Rated Upwork freelancer and founder of DataLife. AI engineer based in Ontario, Canada.",
+      "Founder of DataLife. AI engineer based in Ontario, Canada. 40+ projects delivered.",
   },
   alternates: { canonical: "https://data-life.tech/about" },
 };
@@ -41,8 +40,8 @@ const STACK = [
 
 const CREDENTIALS = [
   { icon: "🎓", title: "Applied AI", subtitle: "Centennial College, Ontario" },
-  { icon: "⭐", title: "Top Rated", subtitle: "Cross-industry experience" },
-  { icon: "💻", title: "40+ Projects", subtitle: "Across 15+ Industries" },
+  { icon: "⭐", title: "40+ Projects", subtitle: "Cross-industry experience" },
+  { icon: "💻", title: "15+ Industries", subtitle: "Across sectors worldwide" },
   { icon: "🌍", title: "Global Clients", subtitle: "US, UK, Africa, Canada" },
 ];
 
@@ -75,7 +74,7 @@ export default function AboutPage() {
         }}
       >
         {/* Radial glow */}
-        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-10%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(62,189,122,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "-20%", right: "-10%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,136,219,0.10) 0%, transparent 65%)", pointerEvents: "none" }} />
 
         <div className="section-wrapper" style={{ position: "relative" }}>
           {/* Breadcrumb */}
@@ -86,13 +85,13 @@ export default function AboutPage() {
           </nav>
 
           {/* Label pill */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(62,189,122,0.35)", backgroundColor: "rgba(62,189,122,0.08)", marginBottom: "1.25rem" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "5px 14px", borderRadius: "999px", border: "1px solid rgba(0,136,219,0.35)", backgroundColor: "rgba(0,136,219,0.08)", marginBottom: "1.25rem" }}>
             <span style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>DataLife · Founder &amp; Co-Engineer</span>
           </div>
 
           <h1 style={{ color: "#fff", marginBottom: "1.25rem", lineHeight: 1.08, maxWidth: "20ch" }}>
             Founder &amp; Co-Engineer,{" "}
-            <span style={{ background: "linear-gradient(135deg, #3EBD7A 0%, #14B8A6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>DataLife</span>
+            <span style={{ background: "linear-gradient(135deg, #0088DB 0%, #06b6d4 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>DataLife</span>
           </h1>
 
           <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "1.0625rem", maxWidth: "48ch", lineHeight: 1.75, fontFamily: "var(--font-body)", marginBottom: "2rem" }}>
@@ -115,7 +114,7 @@ export default function AboutPage() {
         {/* Wave divider */}
         <div aria-hidden="true" style={{ position: "absolute", bottom: -1, left: 0, right: 0 }}>
           <svg viewBox="0 0 1440 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: "48px" }}>
-            <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z" fill="#ffffff"/>
+            <path d="M0 48 C360 0 1080 0 1440 48 L1440 48 L0 48Z" fill="var(--color-bg-primary)"/>
           </svg>
         </div>
       </section>
@@ -136,13 +135,13 @@ export default function AboutPage() {
                 alignItems: "center",
                 textAlign: "center",
                 gap: "1rem",
-                boxShadow: "0 8px 32px rgba(24,61,48,0.18)",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
                 position: "sticky",
                 top: "6rem",
               }}
             >
               {/* Avatar circle */}
-              <div style={{ width: "96px", height: "96px", borderRadius: "50%", backgroundColor: "rgba(62,189,122,0.15)", border: "2px solid rgba(62,189,122,0.35)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: "96px", height: "96px", borderRadius: "50%", backgroundColor: "rgba(0,136,219,0.15)", border: "2px solid rgba(0,136,219,0.35)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <span style={{ fontFamily: "var(--font-display)", fontSize: "2rem", fontWeight: 700, color: "#fff", letterSpacing: "-0.03em" }}>CS</span>
               </div>
 
@@ -152,8 +151,8 @@ export default function AboutPage() {
               </div>
 
               {/* Available badge */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "6px 14px", borderRadius: "999px", border: "1px solid rgba(62,189,122,0.35)", backgroundColor: "rgba(62,189,122,0.10)" }}>
-                <span style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "var(--color-accent)", display: "inline-block", boxShadow: "0 0 0 3px rgba(62,189,122,0.25)" }} />
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "6px 14px", borderRadius: "999px", border: "1px solid rgba(0,136,219,0.35)", backgroundColor: "rgba(0,136,219,0.10)" }}>
+                <span style={{ width: "7px", height: "7px", borderRadius: "50%", backgroundColor: "var(--color-accent)", display: "inline-block", boxShadow: "0 0 0 3px rgba(0,136,219,0.25)" }} />
                 <span style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>Available for projects</span>
               </div>
 
@@ -216,7 +215,7 @@ export default function AboutPage() {
             {CREDENTIALS.map((c) => (
               <div
                 key={c.title}
-                style={{ borderRadius: "16px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "2rem", textAlign: "center", boxShadow: "var(--shadow-card)", transition: "box-shadow 0.2s, transform 0.2s" }}
+                style={{ borderRadius: "16px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-surface)", padding: "2rem", textAlign: "center", boxShadow: "var(--shadow-card)", transition: "box-shadow 0.2s, transform 0.2s" }}
                 className="hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1"
               >
                 <div style={{ fontSize: "2.25rem", marginBottom: "0.75rem" }}>{c.icon}</div>
@@ -247,7 +246,7 @@ export default function AboutPage() {
                 style={{ borderRadius: "16px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-bg-primary)", padding: "2rem", boxShadow: "var(--shadow-card)", transition: "box-shadow 0.2s, transform 0.2s" }}
                 className="hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-1"
               >
-                <div style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "var(--color-hero)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.25rem", fontFamily: "var(--font-display)", fontSize: "0.9rem", fontWeight: 700 }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "8px", backgroundColor: "rgba(0,136,219,0.12)", color: "var(--color-accent)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.25rem", fontFamily: "var(--font-display)", fontSize: "0.9rem", fontWeight: 700 }}>
                   {String(i + 1).padStart(2, "0")}
                 </div>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.125rem", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 0.625rem", letterSpacing: "-0.02em" }}>
@@ -276,8 +275,8 @@ export default function AboutPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 240px), 1fr))", gap: "1.5rem" }}>
             {STACK.map((group) => (
-              <div key={group.category} style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "#fff", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
-                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-hero)", fontFamily: "var(--font-body)", marginBottom: "1rem" }}>
+              <div key={group.category} style={{ borderRadius: "14px", border: "1px solid var(--color-border)", backgroundColor: "var(--color-surface)", padding: "1.5rem", boxShadow: "var(--shadow-card)" }}>
+                <p style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--color-accent)", fontFamily: "var(--font-body)", marginBottom: "1rem" }}>
                   {group.category}
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -291,7 +290,7 @@ export default function AboutPage() {
 
       {/* ── 6. CTA ── */}
       <section style={{ backgroundColor: "var(--color-hero)", paddingBlock: "clamp(4rem, 8vw, 5.5rem)", position: "relative", overflow: "hidden" }}>
-        <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "600px", height: "300px", borderRadius: "50%", background: "radial-gradient(ellipse, rgba(62,189,122,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "600px", height: "300px", borderRadius: "50%", background: "radial-gradient(ellipse, rgba(0,136,219,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div className="section-wrapper" style={{ position: "relative", textAlign: "center" }}>
           <h2 style={{ fontFamily: "var(--font-display)", color: "#fff", marginBottom: "1rem" }}>
             Let&apos;s build something together

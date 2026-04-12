@@ -34,7 +34,7 @@ function SendIcon() {
 function TypingIndicator() {
   return (
     <div style={{ display: "flex", justifyContent: "flex-start" }}>
-      <div style={{ padding: "10px 14px", borderRadius: "14px 14px 14px 2px", backgroundColor: "#fff", border: "1px solid var(--color-border)", display: "flex", gap: "4px", alignItems: "center" }}>
+      <div style={{ padding: "10px 14px", borderRadius: "14px 14px 14px 2px", backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border)", display: "flex", gap: "4px", alignItems: "center" }}>
         {[0, 1, 2].map((i) => (
           <span key={i} style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--color-text-secondary)", display: "inline-block", animation: `typing-dot 1.2s ease-in-out ${i * 0.2}s infinite` }} />
         ))}
@@ -220,10 +220,10 @@ export default function ChatWidget() {
           </div>
 
           {/* Messages */}
-          <div style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", backgroundColor: "#fff" }}>
+          <div style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: "10px", backgroundColor: "var(--color-bg-primary)" }}>
             {messages.map((msg) => (
               <div key={msg.id} style={{ display: "flex", justifyContent: msg.role === "user" ? "flex-end" : "flex-start" }}>
-                <div style={{ maxWidth: "80%", padding: "9px 13px", borderRadius: msg.role === "user" ? "14px 14px 2px 14px" : "14px 14px 14px 2px", backgroundColor: msg.role === "user" ? "var(--color-hero)" : "#fff", color: msg.role === "user" ? "#fff" : "var(--color-text-primary)", border: msg.role === "bot" ? "1px solid var(--color-border)" : "none", fontFamily: "var(--font-body)", fontSize: "13.5px", lineHeight: 1.55 }}>
+                <div style={{ maxWidth: "80%", padding: "9px 13px", borderRadius: msg.role === "user" ? "14px 14px 2px 14px" : "14px 14px 14px 2px", backgroundColor: msg.role === "user" ? "var(--color-accent)" : "var(--color-surface)", color: "#f0f4f8", border: msg.role === "bot" ? "1px solid var(--color-border)" : "none", fontFamily: "var(--font-body)", fontSize: "13.5px", lineHeight: 1.55 }}>
                   {msg.text}
                 </div>
               </div>
@@ -234,7 +234,7 @@ export default function ChatWidget() {
 
           {/* Lead capture banner — shown after 3 exchanges, before input */}
           {showLeadCapture && (
-            <div style={{ borderTop: "1px solid var(--color-border)", padding: "10px 12px", backgroundColor: "#F0FDF4", flexShrink: 0 }}>
+            <div style={{ borderTop: "1px solid var(--color-border)", padding: "10px 12px", backgroundColor: "var(--color-bg-cream)", flexShrink: 0 }}>
               <p style={{ margin: "0 0 8px", fontSize: "12px", fontFamily: "var(--font-body)", color: "var(--color-text-secondary)", fontWeight: 500 }}>
                 Want Charles to follow up personally?
               </p>
@@ -248,7 +248,7 @@ export default function ChatWidget() {
                   placeholder="Your name"
                   aria-label="Your name for follow-up"
                   maxLength={100}
-                  style={{ flex: 1, border: "1px solid var(--color-border)", borderRadius: "8px", padding: "7px 10px", fontSize: "13px", fontFamily: "var(--font-body)", color: "var(--color-text-primary)", backgroundColor: "#fff", outline: "none" }}
+                  style={{ flex: 1, border: "1px solid var(--color-border)", borderRadius: "8px", padding: "7px 10px", fontSize: "13px", fontFamily: "var(--font-body)", color: "#f0f4f8", backgroundColor: "var(--color-surface)", outline: "none", colorScheme: "dark" }}
                   onFocus={(e) => { e.currentTarget.style.borderColor = "var(--color-accent)"; }}
                   onBlur={(e) => { e.currentTarget.style.borderColor = "var(--color-border)"; }}
                 />
@@ -264,7 +264,7 @@ export default function ChatWidget() {
           )}
 
           {/* Input */}
-          <div style={{ borderTop: "1px solid var(--color-border)", padding: "12px", display: "flex", gap: "8px", backgroundColor: "#fff", flexShrink: 0 }}>
+          <div style={{ borderTop: "1px solid var(--color-border)", padding: "12px", display: "flex", gap: "8px", backgroundColor: "var(--color-bg-primary)", flexShrink: 0 }}>
             <input
               ref={inputRef}
               type="text"
@@ -274,7 +274,7 @@ export default function ChatWidget() {
               placeholder="Ask me anything..."
               aria-label="Chat message"
               disabled={isLoading}
-              style={{ flex: 1, border: "1px solid var(--color-border)", borderRadius: "8px", padding: "8px 12px", fontSize: "13.5px", fontFamily: "var(--font-body)", color: "var(--color-text-primary)", backgroundColor: "#fff", outline: "none", opacity: isLoading ? 0.6 : 1 }}
+              style={{ flex: 1, border: "1px solid var(--color-border)", borderRadius: "8px", padding: "8px 12px", fontSize: "13.5px", fontFamily: "var(--font-body)", color: "#f0f4f8", backgroundColor: "var(--color-surface)", outline: "none", opacity: isLoading ? 0.6 : 1, colorScheme: "dark" }}
               onFocus={(e) => { e.currentTarget.style.borderColor = "var(--color-accent)"; }}
               onBlur={(e) => { e.currentTarget.style.borderColor = "var(--color-border)"; }}
             />

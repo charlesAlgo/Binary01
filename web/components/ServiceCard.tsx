@@ -13,27 +13,51 @@ export default function ServiceCard({ icon, title, description, href, count }: S
   return (
     <Link
       href={href}
-      className="group flex flex-col gap-4 rounded-xl border border-[var(--color-border)] bg-white p-6 no-underline shadow-[var(--shadow-card)] transition-all duration-200 hover:-translate-y-1 hover:border-[var(--color-accent)] hover:shadow-[var(--shadow-card-hover)]"
+      className="group flex flex-col gap-4 no-underline transition-all duration-250"
+      style={{
+        background: "var(--color-surface)",
+        border: "1px solid var(--color-border)",
+        borderRadius: "12px",
+        padding: "2rem",
+        position: "relative",
+        overflow: "hidden",
+      }}
+      onMouseEnter={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.transform = "translateY(-3px)";
+        el.style.boxShadow = "0 12px 40px rgba(0,136,219,0.15)";
+        el.style.borderColor = "rgba(0,136,219,0.2)";
+      }}
+      onMouseLeave={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.transform = "";
+        el.style.boxShadow = "";
+        el.style.borderColor = "rgba(255,255,255,0.06)";
+      }}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-[10px] bg-[var(--color-bg-tag)] text-[var(--color-hero)]">
+      {/* Top accent bar */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: "linear-gradient(90deg, var(--color-accent), var(--color-accent-teal))" }} />
+
+      {/* Icon */}
+      <div style={{ width: "44px", height: "44px", borderRadius: "8px", background: "var(--color-accent-subtle)", border: "1px solid rgba(0,136,219,0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--color-accent)" }}>
         {icon}
       </div>
 
       <div>
         {count && (
-          <p className="mb-1 text-xs text-[var(--color-text-secondary)]" style={{ fontFamily: "var(--font-body)", margin: "0 0 4px" }}>
+          <p style={{ fontSize: "0.78rem", color: "var(--color-accent-hover)", fontFamily: "var(--font-body)", margin: "0 0 4px", fontWeight: 600 }}>
             {count}
           </p>
         )}
-        <h3 className="mb-1.5 text-[1.0625rem] font-semibold tracking-tight text-[var(--color-text-primary)]" style={{ fontFamily: "var(--font-display)", margin: "0 0 6px" }}>
+        <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.0625rem", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 6px", letterSpacing: "-0.01em" }}>
           {title}
         </h3>
-        <p className="text-sm leading-relaxed text-[var(--color-text-secondary)]" style={{ fontFamily: "var(--font-body)", margin: 0, maxWidth: "none" }}>
+        <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "var(--color-text-secondary)", fontFamily: "var(--font-body)", margin: 0, maxWidth: "none" }}>
           {description}
         </p>
       </div>
 
-      <div className="mt-auto flex items-center gap-1 text-[0.8125rem] font-semibold text-[var(--color-accent)]" style={{ fontFamily: "var(--font-body)" }}>
+      <div style={{ marginTop: "auto", display: "flex", alignItems: "center", gap: "4px", fontSize: "0.8125rem", fontWeight: 600, color: "var(--color-accent)", fontFamily: "var(--font-body)" }}>
         Learn more
         <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">
           <path d="M2 7H12M12 7L8 3M12 7L8 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

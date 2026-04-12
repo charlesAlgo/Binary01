@@ -1,45 +1,81 @@
-import CTAButton from "@/components/CTAButton";
-
-const STEPS = [
-  { icon: "📋", title: "Post a project", description: "Fill in a short brief with your goals, data, and timeline." },
-  { icon: "🤝", title: "Get matched",    description: "Receive a clear proposal and fixed-price quote within 24 hours." },
-  { icon: "💳", title: "Pay safely",     description: "Milestone-based payments — only pay when you're satisfied." },
-  { icon: "🚀", title: "We ship it",     description: "Delivered with documentation, a handover call, and 30-day support." },
-];
+import Link from "next/link";
 
 export default function CTAStrip() {
   return (
-    <section style={{ backgroundColor: "var(--color-hero)", paddingBlock: "clamp(4rem, 8vw, 6rem)" }}>
-      <div className="section-wrapper">
+    <section
+      style={{
+        backgroundColor: "var(--color-hero)",
+        paddingBlock: "clamp(4rem, 8vw, 6rem)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "700px",
+          height: "350px",
+          borderRadius: "50%",
+          background: "radial-gradient(ellipse, rgba(0,136,219,0.12) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
 
-        {/* Headline */}
-        <div style={{ textAlign: "center", marginBottom: "3.5rem" }}>
-          <h2 style={{ color: "#fff", marginBottom: "0.875rem" }}>Need something done?</h2>
-          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.0625rem", fontFamily: "var(--font-body)", maxWidth: "44ch", marginInline: "auto" }}>
-            Most projects kick off within 48 hours. Let&rsquo;s talk scope.
-          </p>
+      <div className="section-wrapper" style={{ position: "relative", textAlign: "center" }}>
+        <div className="section-label" style={{ justifyContent: "center", marginBottom: "1.25rem" }}>
+          <span className="section-label-dash" />
+          <span>GET STARTED</span>
         </div>
 
-        {/* 4-step horizontal */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "0", marginBottom: "3.5rem", position: "relative" }}>
-          {/* Connecting line */}
-          <div aria-hidden="true" style={{ position: "absolute", top: "28px", left: "10%", right: "10%", height: "1px", background: "rgba(255,255,255,0.08)", display: "none" }} className="hidden md:block" />
-          {STEPS.map((step, i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "1.5rem 1rem", gap: "0.75rem", position: "relative" }}>
-              {/* Icon circle */}
-              <div style={{ width: "52px", height: "52px", borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.05)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.375rem", flexShrink: 0 }}>
-                {step.icon}
-              </div>
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 600, color: "#fff", margin: 0 }}>{step.title}</h3>
-              <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.5)", fontFamily: "var(--font-body)", margin: 0, lineHeight: 1.6 }}>{step.description}</p>
-            </div>
-          ))}
-        </div>
+        <h2 style={{ fontFamily: "var(--font-display)", color: "var(--color-text-hero)", marginBottom: "1rem", maxWidth: "24ch", marginInline: "auto" }}>
+          Not sure where to start? Book a free automation audit.
+        </h2>
 
-        {/* CTA Buttons */}
+        <p style={{ color: "var(--color-text-hero-muted)", fontSize: "1.0625rem", fontFamily: "var(--font-body)", maxWidth: "48ch", marginInline: "auto", marginBottom: "2.25rem", lineHeight: 1.7 }}>
+          In 30 minutes we&rsquo;ll map your current workflow, identify the highest-ROI automation in your business, and give you a fixed-price quote before you leave the call.
+        </p>
+
         <div style={{ display: "flex", gap: "0.875rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <CTAButton label="Get a Free Quote"       href="/contact" variant="filled" size="lg" />
-          <CTAButton label="Book a Discovery Call"  href="/book"    variant="white"  size="lg" />
+          <Link
+            href="/book"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "14px 30px",
+              fontSize: "1rem",
+              fontWeight: 600,
+              color: "#fff",
+              backgroundColor: "var(--color-accent)",
+              borderRadius: "8px",
+              textDecoration: "none",
+              fontFamily: "var(--font-body)",
+              transition: "background-color 0.2s",
+            }}
+          >
+            Book a Free Audit Call
+          </Link>
+          <Link
+            href="/contact"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              padding: "14px 30px",
+              fontSize: "1rem",
+              fontWeight: 500,
+              color: "rgba(255,255,255,0.85)",
+              backgroundColor: "transparent",
+              border: "1px solid rgba(255,255,255,0.25)",
+              borderRadius: "8px",
+              textDecoration: "none",
+              fontFamily: "var(--font-body)",
+            }}
+          >
+            Send a Brief
+          </Link>
         </div>
       </div>
     </section>

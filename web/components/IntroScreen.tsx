@@ -23,7 +23,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
 
   const x = useMotionValue(0);
   const progress = useTransform(x, [0, MAX_DRAG], [0, 1]);
-  const trackBg   = useTransform(progress, [0, 1], ["rgba(62,189,122,0.10)", "rgba(62,189,122,0.38)"]);
+  const trackBg   = useTransform(progress, [0, 1], ["rgba(62,189,122,0.08)", "rgba(62,189,122,0.28)"]);
   const thumbRot  = useTransform(x, [0, MAX_DRAG], [0, 360]);
   const labelOp   = useTransform(progress, [0, 0.5], [1, 0]);
 
@@ -60,18 +60,18 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
           exit={{ opacity: 0, scale: 1.05 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* ── Aurora gradient base — warm milk white ── */}
+          {/* ── Dark base with aurora green glow ── */}
           <div
             aria-hidden
             className="absolute inset-0"
             style={{
-              background: "#F4F1E8",
+              background: "#060d0a",
               backgroundImage: [
-                "radial-gradient(ellipse 90% 65% at 15% 8%,   rgba(62,189,122,0.20) 0%, transparent 58%)",
-                "radial-gradient(ellipse 75% 55% at 85% 82%,  rgba(20,184,166,0.14) 0%, transparent 52%)",
-                "radial-gradient(ellipse 65% 50% at 60% 20%,  rgba(134,198,100,0.12) 0%, transparent 55%)",
-                "radial-gradient(ellipse 80% 60% at 30% 75%,  rgba(180,230,180,0.22) 0%, transparent 60%)",
-                "radial-gradient(ellipse 50% 40% at 90% 10%,  rgba(100,210,160,0.10) 0%, transparent 50%)",
+                "radial-gradient(ellipse 90% 65% at 15% 8%,   rgba(62,189,122,0.13) 0%, transparent 58%)",
+                "radial-gradient(ellipse 75% 55% at 85% 82%,  rgba(20,184,166,0.09) 0%, transparent 52%)",
+                "radial-gradient(ellipse 65% 50% at 60% 20%,  rgba(62,189,122,0.08) 0%, transparent 55%)",
+                "radial-gradient(ellipse 80% 60% at 30% 75%,  rgba(20,184,166,0.10) 0%, transparent 60%)",
+                "radial-gradient(ellipse 50% 40% at 90% 10%,  rgba(100,210,160,0.06) 0%, transparent 50%)",
               ].join(", "),
               backgroundSize: "160% 160%, 140% 140%, 130% 130%, 120% 120%, 110% 110%",
               animation: "aurora-move 22s ease-in-out infinite",
@@ -81,19 +81,19 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
           {/* ── Neural network canvas ── */}
           <NeuralNetBg className="absolute inset-0 w-full h-full pointer-events-none" />
 
-          {/* ── Vignette — warm edges ── */}
+          {/* ── Dark vignette edges ── */}
           <div
             aria-hidden
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 35%, rgba(200,190,160,0.45) 100%)",
+              background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 35%, rgba(0,0,0,0.65) 100%)",
             }}
           />
 
           {/* ── Glass noise texture ── */}
           <div
             aria-hidden
-            className="absolute inset-0 pointer-events-none opacity-[0.035]"
+            className="absolute inset-0 pointer-events-none opacity-[0.025]"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")`,
               backgroundRepeat: "repeat",
@@ -116,7 +116,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
             >
               DL
             </div>
-            <span style={{ color: "rgba(15,40,25,0.5)", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.12em" }}>
+            <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.85rem", fontWeight: 600, letterSpacing: "0.12em" }}>
               DataLife · Est. 2023
             </span>
           </motion.div>
@@ -142,8 +142,8 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                   <div
                     className="inline-flex items-center gap-2 mb-7 px-4 py-2 rounded-full"
                     style={{
-                      background: "rgba(62,189,122,0.10)",
-                      border: "1px solid rgba(62,189,122,0.30)",
+                      background: "rgba(62,189,122,0.08)",
+                      border: "1px solid rgba(62,189,122,0.22)",
                       backdropFilter: "blur(12px)",
                     }}
                   >
@@ -151,7 +151,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                       className="w-2 h-2 rounded-full"
                       style={{ backgroundColor: "#3EBD7A", boxShadow: "0 0 8px #3EBD7A", animation: "pulse 2s infinite" }}
                     />
-                    <span style={{ color: "#2a9e62", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase" }}>
+                    <span style={{ color: "#3EBD7A", fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase" }}>
                       AI &amp; Data Services · Est. 2023
                     </span>
                   </div>
@@ -167,7 +167,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                       fontFamily: "var(--font-display)",
                     }}
                   >
-                    <span style={{ color: "#0f172a" }}>Turn your </span>
+                    <span style={{ color: "#f1f5f9" }}>Turn your </span>
                     <span
                       style={{
                         background: "linear-gradient(135deg, #3EBD7A 20%, #14B8A6 80%)",
@@ -178,12 +178,12 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                       data
                     </span>
                     <br />
-                    <span style={{ color: "#1e293b" }}>into decisions.</span>
+                    <span style={{ color: "#e2e8f0" }}>into decisions.</span>
                   </h1>
 
                   <p
                     style={{
-                      color: "rgba(15,23,42,0.45)",
+                      color: "rgba(255,255,255,0.40)",
                       fontSize: "1.05rem",
                       lineHeight: 1.75,
                       fontFamily: "var(--font-body)",
@@ -203,16 +203,16 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                         height: THUMB_W + 8,
                         padding: "4px",
                         background: trackBg,
-                        border: "1px solid rgba(62,189,122,0.28)",
+                        border: "1px solid rgba(62,189,122,0.22)",
                         backdropFilter: "blur(20px)",
-                        boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06)",
+                        boxShadow: "0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.04)",
                       }}
                     >
                       <motion.span
                         style={{ opacity: labelOp }}
                         className="absolute inset-0 flex items-center justify-center pointer-events-none"
                       >
-                        <span style={{ color: "rgba(15,23,42,0.35)", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.1em", paddingLeft: "3.5rem" }}>
+                        <span style={{ color: "rgba(255,255,255,0.30)", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "0.1em", paddingLeft: "3.5rem" }}>
                           slide to connect →
                         </span>
                       </motion.span>
@@ -244,7 +244,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                       </motion.div>
                     </motion.div>
 
-                    <span style={{ color: "rgba(15,23,42,0.28)", fontSize: "0.65rem", letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                    <span style={{ color: "rgba(255,255,255,0.22)", fontSize: "0.65rem", letterSpacing: "0.14em", textTransform: "uppercase" }}>
                       drag right to enter
                     </span>
                   </div>
@@ -292,7 +292,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                               fontFamily: "var(--font-display)",
                             }}
                           >
-                            <span style={{ color: "#0f172a" }}>We are </span>
+                            <span style={{ color: "#e2e8f0" }}>We are </span>
                             <span
                               style={{
                                 background: "linear-gradient(135deg, #3EBD7A 0%, #14B8A6 100%)",
@@ -316,7 +316,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                               fontFamily: "var(--font-display)",
                             }}
                           >
-                            <span style={{ color: "#0f172a" }}>We live with</span>{" "}
+                            <span style={{ color: "#cbd5e1" }}>We live with</span>{" "}
                             <span
                               style={{
                                 color: "#3EBD7A",
@@ -326,7 +326,7 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                             >
                               data
                             </span>{" "}
-                            <span style={{ color: "#0f172a", fontWeight: 300 }}>every day.</span>
+                            <span style={{ color: "#cbd5e1", fontWeight: 300 }}>every day.</span>
                           </p>
                         )}
 
@@ -337,10 +337,10 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
                                 fontSize: "clamp(5rem, 15vw, 11rem)",
                                 fontWeight: 900,
                                 letterSpacing: "-0.055em",
-                                color: "#0f172a",
+                                color: "#f1f5f9",
                                 lineHeight: 0.88,
                                 fontFamily: "var(--font-display)",
-                                filter: "drop-shadow(0 0 60px rgba(62,189,122,0.25))",
+                                filter: "drop-shadow(0 0 60px rgba(62,189,122,0.30))",
                               }}
                             >
                               Welcome.
@@ -383,13 +383,13 @@ export default function IntroScreen({ onComplete }: { onComplete: () => void }) 
           {/* Skip */}
           <motion.button
             className="absolute bottom-7 right-7 text-xs tracking-widest uppercase transition-colors"
-            style={{ color: "rgba(15,23,42,0.25)" }}
+            style={{ color: "rgba(255,255,255,0.22)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2, duration: 0.5 }}
             onClick={onComplete}
-            onMouseEnter={e => (e.currentTarget.style.color = "rgba(15,23,42,0.55)")}
-            onMouseLeave={e => (e.currentTarget.style.color = "rgba(15,23,42,0.25)")}
+            onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.22)")}
           >
             Skip →
           </motion.button>
