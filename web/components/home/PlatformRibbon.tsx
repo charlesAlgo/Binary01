@@ -33,7 +33,7 @@ type Platform = {
 };
 
 function CdnIcon({ src, alt }: { src: string; alt: string }) {
-  return <Image src={src} alt={alt} width={18} height={18} style={{ display: "block" }} />;
+  return <Image src={src} alt={alt} width={18} height={18} unoptimized style={{ display: "block" }} />;
 }
 
 const PLATFORMS: Platform[] = [
